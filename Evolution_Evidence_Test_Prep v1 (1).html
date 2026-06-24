@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Evidence for Evolution — Test Preparation</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#0d1b0d;color:#e2e8f0;min-height:100vh;display:flex;flex-direction:column;font-size:15px}
+
+/* TOP BAR */
+.topbar{background:#060e06;border-bottom:2px solid #166534;padding:9px 22px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.topbar-title{font-size:.83rem;font-weight:700;color:#bbf7d0;white-space:nowrap}
+.progress-steps{display:flex;gap:3px;flex:1;max-width:500px}
+.ps{flex:1;height:5px;border-radius:3px;background:#14532d;transition:background .3s}
+.ps.done{background:#22c55e}
+.ps.active{background:#86efac}
+.page-tag{background:#14532d;color:#86efac;border:1px solid #166534;border-radius:99px;font-size:.65rem;font-weight:700;padding:3px 11px;white-space:nowrap;flex-shrink:0}
+
+/* PAGES */
+.page{display:none;flex:1;overflow-y:auto;padding:26px 22px;max-width:780px;margin:0 auto;width:100%}
+.page.active{display:block}
+
+/* NAV BAR */
+.navbar{background:#060e06;border-top:1px solid #166534;padding:11px 22px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
+.nbtn{padding:8px 20px;border-radius:8px;border:none;font-family:inherit;font-size:.82rem;font-weight:700;cursor:pointer;transition:all .15s}
+.nbtn.fwd{background:#15803d;color:#fff}
+.nbtn.fwd:hover{background:#16a34a}
+.nbtn.bck{background:#1a2e1a;color:#6b7280;border:1px solid #2d4a2d}
+.nbtn.bck:hover{background:#2d4a2d;color:#e2e8f0}
+.nbtn:disabled{opacity:.25;cursor:default;pointer-events:none}
+.pg-ind{font-size:.68rem;color:#2d4a2d}
+
+/* TYPOGRAPHY */
+.section-tag{display:inline-block;font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#86efac;background:#14532d;border:1px solid #166534;border-radius:99px;padding:3px 12px;margin-bottom:9px}
+h1{font-size:1.5rem;font-weight:800;color:#f0fdf4;margin-bottom:6px;line-height:1.2}
+.subtitle{font-size:.8rem;color:#4b7a55;margin-bottom:20px;line-height:1.6}
+h2{font-size:1rem;font-weight:700;color:#bbf7d0;margin:22px 0 9px}
+h2:first-of-type{margin-top:4px}
+p{font-size:.81rem;line-height:1.78;color:#86a893;margin-bottom:10px}
+p strong{color:#e2e8f0}
+hr{border:none;border-top:1px solid #1a2e1a;margin:20px 0}
+
+/* CLAIM BOX */
+.claim-box{background:#0a1f0a;border:2px solid #15803d;border-radius:12px;padding:16px 18px;margin:14px 0 18px}
+.claim-label{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#4ade80;margin-bottom:7px}
+.claim-text{font-size:.95rem;font-weight:700;color:#f0fdf4;line-height:1.55}
+
+/* EVIDENCE TYPE FLIP CARDS */
+.etype-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}
+.etype-card{background:#0a1f0a;border:1px solid #1a4a1a;border-radius:11px;padding:14px;cursor:pointer;transition:border-color .2s}
+.etype-card:hover{border-color:#22c55e}
+.etype-card.revealed{border-color:#22c55e;background:#071507}
+.etype-letter{font-size:1.2rem;font-weight:800;color:#4ade80;margin-bottom:4px}
+.etype-name{font-size:.8rem;font-weight:700;color:#e2e8f0;margin-bottom:5px}
+.etype-preview{font-size:.72rem;color:#4b7a55;margin-bottom:8px}
+.etype-why{font-size:.74rem;color:#86efac;line-height:1.6;display:none;padding-top:8px;border-top:1px solid #1a4a1a;margin-top:8px}
+.etype-card.revealed .etype-why{display:block}
+.reveal-btn{font-size:.62rem;color:#22c55e;font-weight:700;text-transform:uppercase;letter-spacing:.07em}
+.etype-card.revealed .reveal-btn{display:none}
+
+/* EVIDENCE DISPLAY */
+.ev-box{background:#071507;border:1px solid #1a4a1a;border-radius:12px;padding:16px 18px;margin:12px 0}
+.ev-label{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:#4ade80;margin-bottom:9px}
+.ev-title{font-size:.9rem;font-weight:700;color:#bbf7d0;margin-bottom:10px}
+
+/* DATA TABLE */
+.data-table{width:100%;border-collapse:collapse;margin:8px 0;font-size:.78rem}
+.data-table th{background:#14532d;color:#bbf7d0;padding:9px 12px;text-align:left;border:1px solid #1a4a1a;font-weight:700}
+.data-table td{padding:8px 12px;border:1px solid #1a4a1a;color:#94a3b8;vertical-align:top;line-height:1.5}
+.data-table tr:nth-child(even) td{background:#071507}
+.data-table td.highlight{color:#86efac;font-weight:600;background:#0a1f0a}
+.data-table td.neutral{color:#64748b}
+.data-table td.diff{color:#f87171;background:#180808}
+
+/* CLADOGRAM */
+.clado-wrap{background:#040d04;border-radius:10px;padding:12px;border:1px solid #1a4a1a;margin:10px 0}
+.clado-legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:10px;font-size:.72rem;color:#4b7a55}
+.clado-legend-item{display:flex;align-items:center;gap:5px}
+.clado-dot{width:8px;height:8px;border-radius:50%}
+
+/* FOSSIL SEQUENCE */
+.fossil-seq{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:10px 0}
+.fossil-card{background:#0a1f0a;border:1px solid #1a4a1a;border-radius:9px;padding:10px 13px;flex:1;min-width:110px;text-align:center}
+.fossil-name{font-size:.75rem;font-weight:700;color:#bbf7d0;margin-bottom:4px}
+.fossil-desc{font-size:.68rem;color:#4b7a55;line-height:1.5}
+.fossil-arrow{font-size:1.4rem;color:#22c55e;flex-shrink:0}
+
+/* FOOT COMPARE */
+.foot-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:10px 0}
+.foot-card{background:#0a1f0a;border:1px solid #1a4a1a;border-radius:9px;padding:12px;text-align:center}
+.foot-card.match{border-color:#22c55e;background:#071a07}
+.foot-animal{font-size:.8rem;font-weight:700;color:#bbf7d0;margin-bottom:6px}
+.foot-icon{font-size:2rem;margin-bottom:7px}
+.foot-desc{font-size:.7rem;color:#4b7a55;line-height:1.5}
+
+/* EMBRYO TABLE */
+.embryo-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:10px 0}
+.emb-card{background:#0a1f0a;border:1px solid #1a4a1a;border-radius:9px;padding:12px;text-align:center}
+.emb-card.match{border-color:#22c55e;background:#071a07}
+.emb-animal{font-size:.8rem;font-weight:700;color:#bbf7d0;margin-bottom:7px}
+.emb-icon{font-size:1.8rem;margin-bottom:7px}
+.emb-traits{font-size:.7rem;color:#4b7a55;line-height:1.6;text-align:left}
+
+/* THINK/REVEAL */
+.think-box{background:#071507;border:1px solid #1a4a1a;border-radius:11px;padding:14px 16px;margin:13px 0}
+.think-label{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#fbbf24;margin-bottom:7px;display:flex;align-items:center;gap:6px}
+.think-q{font-size:.82rem;color:#e2e8f0;font-weight:600;margin-bottom:11px;line-height:1.5}
+.think-btn{background:#1a3a00;color:#86efac;border:1px solid #166534;border-radius:7px;padding:8px 16px;font-family:inherit;font-size:.75rem;font-weight:700;cursor:pointer;transition:all .15s}
+.think-btn:hover{background:#14532d}
+.model-answer{display:none;margin-top:12px;padding:12px 14px;background:#04100a;border-left:3px solid #22c55e;border-radius:0 8px 8px 0;font-size:.78rem;color:#86efac;line-height:1.75}
+.model-answer .ma-level{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-top:8px;margin-bottom:3px}
+.model-answer .ma-intermediate{color:#fbbf24}
+.model-answer .ma-proficient{color:#38bdf8}
+.model-answer .ma-advanced{color:#c084fc}
+.model-answer .ma-text{color:#cbd5e1;font-size:.77rem;line-height:1.7;margin-bottom:8px}
+
+/* MCQ */
+.mcq-wrap{background:#071507;border:1px solid #1a4a1a;border-radius:11px;padding:15px 16px;margin:13px 0}
+.mcq-label{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#38bdf8;margin-bottom:8px}
+.mcq-q{font-size:.85rem;color:#e2e8f0;font-weight:600;margin-bottom:12px;line-height:1.5}
+.mcq-opts{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:11px}
+.mcq-opt{background:#0a1f0a;border:2px solid #1a4a1a;border-radius:8px;padding:10px 13px;font-size:.8rem;color:#86a893;cursor:pointer;transition:all .15s;font-family:inherit;text-align:left}
+.mcq-opt:hover:not(:disabled){border-color:#22c55e;color:#e2e8f0}
+.mcq-opt.correct{background:#031a06;border-color:#15803d;color:#86efac}
+.mcq-opt.wrong{background:#1a0606;border-color:#991b1b;color:#fca5a5}
+.mcq-opt.reveal-correct{background:#031a06;border-color:#15803d;color:#86efac;opacity:.6}
+.mcq-opt:disabled{cursor:default}
+.mcq-fb{border-radius:8px;padding:10px 13px;font-size:.77rem;line-height:1.65;display:none;margin-top:2px}
+.mcq-fb.correct{background:#031a06;border:1px solid #15803d;color:#86efac;display:block}
+.mcq-fb.wrong{background:#1a0606;border:1px solid #991b1b;color:#fca5a5;display:block}
+.mcq-check{background:#15803d;color:#fff;border:none;border-radius:7px;padding:8px 18px;font-family:inherit;font-size:.77rem;font-weight:700;cursor:pointer}
+.mcq-check:hover{background:#16a34a}
+.mcq-check:disabled{opacity:.3;cursor:default}
+
+/* ANALOGOUS/HOMOLOGOUS */
+.ana-hom-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+.ah-card{border-radius:11px;padding:15px;border:2px solid}
+.ah-card.ana{background:#1a0a00;border-color:#f97316}
+.ah-card.hom{background:#001a12;border-color:#22c55e}
+.ah-card h3{font-size:.85rem;font-weight:700;margin-bottom:6px}
+.ah-card.ana h3{color:#fb923c}
+.ah-card.hom h3{color:#4ade80}
+.ah-card p{font-size:.74rem;line-height:1.65;color:#94a3b8}
+.ah-example{margin-top:8px;padding:7px 10px;border-radius:6px;font-size:.72rem;font-weight:600}
+.ah-card.ana .ah-example{background:#2d1000;color:#fdba74}
+.ah-card.hom .ah-example{background:#00200f;color:#86efac}
+.warning-box{background:#1a0c00;border:2px solid #f59e0b;border-radius:11px;padding:14px 16px;margin:14px 0}
+.warning-box h3{color:#fbbf24;font-size:.85rem;font-weight:700;margin-bottom:6px}
+.warning-box p{font-size:.78rem;line-height:1.68;color:#d97706}
+
+/* CER RUBRIC */
+.rubric-rows{display:grid;gap:10px;margin:14px 0}
+.rubric-row{border-radius:10px;padding:14px 16px;border:1px solid}
+.rubric-row.int{background:#0f0f00;border-color:#854d0e}
+.rubric-row.pro{background:#001018;border-color:#1e4d7a}
+.rubric-row.adv{background:#120020;border-color:#4c1d95}
+.rubric-level{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;margin-bottom:6px}
+.rubric-row.int .rubric-level{color:#fbbf24}
+.rubric-row.pro .rubric-level{color:#38bdf8}
+.rubric-row.adv .rubric-level{color:#c084fc}
+.rubric-bullets{list-style:none;display:flex;flex-direction:column;gap:5px}
+.rubric-bullets li{font-size:.78rem;color:#94a3b8;padding-left:14px;position:relative;line-height:1.6}
+.rubric-bullets li::before{content:'✓';position:absolute;left:0;font-size:.7rem}
+.rubric-row.int .rubric-bullets li::before{color:#fbbf24}
+.rubric-row.pro .rubric-bullets li::before{color:#38bdf8}
+.rubric-row.adv .rubric-bullets li::before{color:#c084fc}
+
+/* WELCOME */
+.welcome-hero{text-align:center;padding:14px 0 20px}
+.welcome-icon{font-size:2.8rem;margin-bottom:10px}
+.ev-pills{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0}
+.ev-pill{background:#0a1f0a;border:1px solid #1a4a1a;border-radius:99px;font-size:.72rem;color:#86a893;padding:5px 13px}
+.ev-pill span{color:#4ade80;font-weight:700;margin-right:4px}
+
+/* PRACTICE */
+.practice-claim{background:#1a0a18;border:2px solid #7c3aed;border-radius:12px;padding:15px 17px;margin:14px 0 18px}
+.practice-claim .practice-label{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#c084fc;margin-bottom:7px}
+.practice-claim .practice-text{font-size:.92rem;font-weight:700;color:#f0fdf4;line-height:1.55}
+
+/* CHECKLIST */
+.checklist{display:grid;gap:8px;margin:14px 0}
+.check-item{background:#071507;border:1px solid #1a4a1a;border-radius:9px;padding:11px 14px;display:flex;align-items:flex-start;gap:10px;cursor:pointer;transition:all .15s}
+.check-item:hover{border-color:#22c55e}
+.check-item.checked{background:#031a06;border-color:#15803d}
+.check-box{width:18px;height:18px;border:2px solid #1a4a1a;border-radius:4px;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;font-size:.75rem;color:#22c55e;transition:all .15s}
+.check-item.checked .check-box{background:#15803d;border-color:#15803d}
+.check-text{font-size:.8rem;color:#86a893;line-height:1.55}
+.check-item.checked .check-text{color:#bbf7d0}
+
+/* KEY CONCEPTS */
+.key-fact{background:#071507;border-left:3px solid #22c55e;padding:10px 14px;border-radius:0 9px 9px 0;margin:10px 0;font-size:.78rem;color:#86efac;line-height:1.7}
+.key-fact strong{color:#f0fdf4}
+
+/* node label for cladogram */
+.node-label{font-size:.65rem;fill:#4ade80;font-weight:700}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-title">🌿 Evidence for Evolution — Test Prep</div>
+  <div class="progress-steps">
+    <div class="ps active" id="ps0"></div>
+    <div class="ps" id="ps1"></div>
+    <div class="ps" id="ps2"></div>
+    <div class="ps" id="ps3"></div>
+    <div class="ps" id="ps4"></div>
+    <div class="ps" id="ps5"></div>
+    <div class="ps" id="ps6"></div>
+    <div class="ps" id="ps7"></div>
+    <div class="ps" id="ps8"></div>
+    <div class="ps" id="ps9"></div>
+    <div class="ps" id="ps10"></div>
+  </div>
+  <div class="page-tag" id="page-tag">Page 1 of 12</div>
+</div>
+
+<!-- ── PAGES ─────────────────────────────────────────────────────────── -->
+
+<!-- PAGE 0: WELCOME -->
+<div class="page active" id="pg0">
+  <div class="welcome-hero">
+    <div class="welcome-icon">🌿</div>
+    <h1>Evidence for Evolution</h1>
+    <p class="subtitle">Test Preparation Activity &nbsp;·&nbsp; FIS Science 8 &nbsp;·&nbsp; 12 pages &nbsp;·&nbsp; Practice all 6 evidence types</p>
+  </div>
+  <p>Your assessment will ask you to look at a <strong>claim about common ancestry</strong> and support it using evidence from an evidence bank. You'll need to:</p>
+  <p>① Choose <strong>two different types</strong> of evidence &nbsp; ② Explain WHY each type is generally useful &nbsp; ③ Identify the SPECIFIC PATTERNS in each piece that support the claim</p>
+  <div class="claim-box">
+    <div class="claim-label">The Claim you will need to support</div>
+    <div class="claim-text">"Even though bats and owls have many similarities, such as both flying and being nocturnal, bats have a more recent common ancestor with humans than they do with owls."</div>
+  </div>
+  <p>The evidence bank contains six pieces (A–F). This activity walks you through each one, teaches you how to read it, and helps you practice building your argument.</p>
+  <div class="ev-pills">
+    <div class="ev-pill"><span>A</span>Homologous Forelimb Structures</div>
+    <div class="ev-pill"><span>B</span>Comparative Traits Table</div>
+    <div class="ev-pill"><span>C</span>Transitional Fossils</div>
+    <div class="ev-pill"><span>D</span>Foot Structure Comparison</div>
+    <div class="ev-pill"><span>E</span>Embryonic Development</div>
+    <div class="ev-pill"><span>F</span>DNA Cladogram</div>
+  </div>
+</div>
+
+<!-- PAGE 1: KEY WARNING — ANALOGOUS vs HOMOLOGOUS -->
+<div class="page" id="pg1">
+  <div class="section-tag">⚠️ Critical Concept First</div>
+  <h1>Analogous vs Homologous</h1>
+  <p class="subtitle">Before looking at the evidence, you need to understand why the claim mentions flying and being nocturnal — and why those traits DON'T count as evidence.</p>
+
+  <div class="warning-box">
+    <h3>⚠️ The Trap in This Assessment</h3>
+    <p>The claim specifically mentions that bats and owls both <strong>fly</strong> and are both <strong>nocturnal</strong>. This is to test whether you can recognise that these shared traits are <em>NOT evidence of common ancestry</em> — they're analogous structures, which evolved independently in two unrelated lineages.</p>
+  </div>
+
+  <div class="ana-hom-grid">
+    <div class="ah-card ana">
+      <h3>🔴 Analogous Structures</h3>
+      <p>Structures that look similar and do the same job, but <strong>evolved independently</strong> in two unrelated lineages. They arose because of similar environmental pressures — NOT because of shared ancestry.</p>
+      <div class="ah-example">Example: Bat wings and Owl wings both allow flight, but bat wings are modified arm bones while owl wings are modified forelimb feathers. They work similarly but are built differently — and arose separately.</div>
+    </div>
+    <div class="ah-card hom">
+      <h3>🟢 Homologous Structures</h3>
+      <p>Structures that share the <strong>same underlying origin</strong> — the same ancestral structure — even if they look different or do different jobs today. These ARE evidence of common ancestry.</p>
+      <div class="ah-example">Example: The bat wing, human arm, dolphin flipper, and bird wing all contain the SAME bones (humerus, radius, ulna, carpals, phalanges) because they all evolved from the same ancestor's forelimb.</div>
+    </div>
+  </div>
+
+  <div class="key-fact">💡 <strong>Rule of thumb:</strong> If two organisms share a trait because they face the same environmental challenge (e.g. both need to fly), it could be <em>analogous</em>. If they share the same underlying structure or genetic sequence, it's likely <em>homologous</em> — and that's evidence of common ancestry.</div>
+
+  <div class="mcq-wrap" id="mcq0-wrap">
+    <div class="mcq-label">🧠 Quick Check</div>
+    <div class="mcq-q">Dolphins and sharks both have streamlined bodies and fins for swimming. Why is this <em>not</em> good evidence that they share a recent common ancestor?</div>
+    <div class="mcq-opts">
+      <button class="mcq-opt" id="mcq0-opt0" onclick="selectMcq(0,0)">Dolphins and sharks live in completely different parts of the ocean</button>
+      <button class="mcq-opt" id="mcq0-opt1" onclick="selectMcq(0,1)">Their streamlined shapes evolved independently due to similar water pressure — they are analogous, not homologous</button>
+      <button class="mcq-opt" id="mcq0-opt2" onclick="selectMcq(0,2)">You can only use DNA evidence to determine common ancestry</button>
+      <button class="mcq-opt" id="mcq0-opt3" onclick="selectMcq(0,3)">Both organisms are fish, so they must be related</button>
+    </div>
+    <button class="mcq-check" id="mcq0-check" onclick="checkMcq(0)" disabled>Check Answer</button>
+    <div class="mcq-fb" id="mcq0-fb"></div>
+  </div>
+</div>
+
+<!-- PAGE 2: EVIDENCE A — HOMOLOGOUS FORELIMBS -->
+<div class="page" id="pg2">
+  <div class="section-tag">Evidence A</div>
+  <h1>Homologous Forelimb Structures</h1>
+  <p class="subtitle">Comparative anatomy — looking at the bones inside the forelimbs of different vertebrates.</p>
+
+  <div class="ev-box">
+    <div class="ev-label">Evidence A — Homologies of the forelimb in vertebrates</div>
+    <div class="ev-title">Same bones, different shapes — six vertebrates compared</div>
+    <p style="font-size:.76rem;color:#4b7a55;margin-bottom:10px">The diagram shows the forelimb/wing bones of six vertebrates. All six contain the same set of bones: humerus (upper arm), radius and ulna (lower arm), carpals (wrist), metacarpals (palm), and phalanges (fingers/digits).</p>
+    <div class="data-table" style="font-size:.74rem">
+      <table class="data-table" style="width:100%">
+        <tr><th>Animal</th><th>Humerus</th><th>Radius/Ulna</th><th>Phalanges (digits)</th><th>Function of limb</th></tr>
+        <tr><td>Box turtle</td><td>Short, broad</td><td>Compact</td><td>5 clawed digits</td><td>Walking/swimming</td></tr>
+        <tr><td>Dolphin</td><td>Very short, flat</td><td>Compressed</td><td>Many short phalanges</td><td>Steering in water</td></tr>
+        <tr><td class="highlight">Human</td><td class="highlight">Long, slender</td><td class="highlight">Long, mobile</td><td class="highlight">5 long digits, dexterous</td><td class="highlight">Grasping/manipulation</td></tr>
+        <tr><td>Horse</td><td>Large, robust</td><td>Fused/elongated</td><td>Single digit (hoof)</td><td>Weight-bearing/running</td></tr>
+        <tr><td class="highlight">Bat</td><td class="highlight">Long humerus</td><td class="highlight">Long radius</td><td class="highlight">4 very long digits (wing membrane stretched between)</td><td class="highlight">Flight (modified hand)</td></tr>
+        <tr><td class="diff">Bird (chicken)</td><td class="diff">Short</td><td class="diff">Fused bones (carpometacarpus)</td><td class="diff">Highly reduced — 1–2 small fused digits</td><td class="diff">Flight (feather support)</td></tr>
+      </table>
+    </div>
+    <p style="font-size:.72rem;color:#4b7a55;margin-top:8px">🔑 Key observation: Bat and human forelimbs both have a full set of five elongated digits. The bird wing is built from <em>fused, reduced</em> bones — a very different modification.</p>
+  </div>
+
+  <div class="think-box">
+    <div class="think-label">💭 Think first, then reveal</div>
+    <div class="think-q">Why is homologous structure evidence generally useful for determining common ancestry? Think about your answer, then reveal the model response.</div>
+    <button class="think-btn" onclick="revealModel(this)">Reveal Model Answer</button>
+    <div class="model-answer">
+      <div class="ma-level ma-intermediate">★ Intermediate answer</div>
+      <div class="ma-text">Homologous structures are useful because organisms that share the same bones must have inherited them from a common ancestor. If different animals have the same structures, it suggests they are related.</div>
+      <div class="ma-level ma-proficient">★★ Proficient answer (adds specifics)</div>
+      <div class="ma-text">Homologous structures are useful because shared structural features (particularly internal bone patterns) are inherited from a common ancestor — they wouldn't look the same by coincidence. The more similar the bone structure, the more recent the common ancestor, because less evolutionary time has passed for the bones to change.</div>
+      <div class="ma-level ma-advanced">★★★ Advanced answer (brings in deeper reasoning)</div>
+      <div class="ma-text">Homologous structures are powerful evidence because the same bone arrangement would not arise independently in unrelated lineages — natural selection would produce different solutions. The shared bones represent an inherited blueprint from a common ancestor. Additionally, the degree of similarity tells us <em>how recent</em> the ancestor is: structures that are more similar suggest more recent divergence, because fewer mutations have modified them since the split.</div>
+    </div>
+  </div>
+
+  <div class="think-box">
+    <div class="think-label">💭 What SPECIFIC patterns support the claim?</div>
+    <div class="think-q">Looking at Evidence A, what specific pattern suggests bats have a more recent common ancestor with humans than with owls/birds? Be as specific as possible.</div>
+    <button class="think-btn" onclick="revealModel(this)">Reveal Model Answer</button>
+    <div class="model-answer">
+      <div class="ma-level ma-proficient">★★ Proficient — specific reference to evidence</div>
+      <div class="ma-text">The bat forelimb has four very long digits (phalanges) forming its wing — the same number and type of bones as in the human hand, which also has five long digits. The bird (chicken) wing, by contrast, has highly reduced and fused digits — a very different bone arrangement. This shows the bat and human forelimb are more structurally similar to each other than either is to the bird, suggesting bats and humans share a more recent common ancestor.</div>
+      <div class="ma-level ma-advanced">★★★ Advanced — adds evolutionary reasoning</div>
+      <div class="ma-text">Both the bat wing and human arm share elongated humerus, radius, and a full set of five phalanges — structures inherited from their shared mammalian ancestor. The bird wing has fused carpometacarpus bones and reduced/absent digit bones, which are modifications that occurred in the bird lineage long after birds diverged from the mammal lineage. The structural similarity between bat and human forelimbs is therefore homologous (inherited), while any similarity between bat and bird wings is analogous (both evolved for flight separately). This supports the claim that bats share a more recent ancestor with humans.</div>
+    </div>
+  </div>
+
+  <div class="mcq-wrap" id="mcq1-wrap">
+    <div class="mcq-label">🧠 Quick Check</div>
+    <div class="mcq-q">Looking at the forelimb bone table, which pair of animals has the most similar forelimb structure?</div>
+    <div class="mcq-opts">
+      <button class="mcq-opt" id="mcq1-opt0" onclick="selectMcq(1,0)">Dolphin and horse — both are large mammals</button>
+      <button class="mcq-opt" id="mcq1-opt1" onclick="selectMcq(1,1)">Bat and bird (chicken) — both use forelimbs for flight</button>
+      <button class="mcq-opt" id="mcq1-opt2" onclick="selectMcq(1,2)">Bat and human — both have elongated humerus, radius, and five long phalanges</button>
+      <button class="mcq-opt" id="mcq1-opt3" onclick="selectMcq(1,3)">Horse and turtle — both walk on four legs</button>
+    </div>
+    <button class="mcq-check" id="mcq1-check" onclick="checkMcq(1)" disabled>Check Answer</button>
+    <div class="mcq-fb" id="mcq1-fb"></div>
+  </div>
+</div>
+
+<!-- PAGE 3: EVIDENCE B — COMPARATIVE TRAITS -->
+<div class="page" id="pg3">
+  <div class="section-tag">Evidence B</div>
+  <h1>Comparative Traits</h1>
+  <p class="subtitle">A table comparing behaviors and physical characteristics across owls, bats, and humans.</p>
+
+  <div class="ev-box">
+    <div class="ev-label">Evidence B — Different behaviors and traits</div>
+    <table class="data-table">
+      <tr><th>Characteristic</th><th>Owls</th><th>Bats</th><th>Humans</th></tr>
+      <tr>
+        <td><strong>Diet</strong></td>
+        <td class="diff">Mostly carnivores</td>
+        <td>Varies — mostly herbivores or omnivores</td>
+        <td>Omnivores</td>
+      </tr>
+      <tr>
+        <td><strong>Type of birth</strong></td>
+        <td class="diff">Laying eggs</td>
+        <td class="highlight">Live births</td>
+        <td class="highlight">Live births</td>
+      </tr>
+      <tr>
+        <td><strong>Feed young?</strong></td>
+        <td class="diff">Yes, through regurgitation</td>
+        <td class="highlight">Yes, through mammary glands</td>
+        <td class="highlight">Yes, through mammary glands</td>
+      </tr>
+      <tr>
+        <td><strong>Skin covering</strong></td>
+        <td class="diff">Feathers</td>
+        <td class="highlight">Fur</td>
+        <td class="highlight">Fur / hair</td>
+      </tr>
+    </table>
+    <p style="font-size:.72rem;color:#4b7a55;margin-top:8px">🟢 Green cells = shared between bats and humans &nbsp; 🔴 Red cells = unique to owls (bird traits)</p>
+  </div>
+
+  <div class="key-fact">💡 <strong>What are these shared traits called?</strong> Live birth, mammary glands, and fur are the defining characteristics of <strong>mammals</strong>. Bats are mammals, not birds — these shared traits reflect their shared mammalian ancestry with humans.</div>
+
+  <div class="think-box">
+    <div class="think-label">💭 Think first, then reveal</div>
+    <div class="think-q">Why are shared behavioral and physical traits generally useful as evidence for common ancestry? Think carefully — why can't it just be a coincidence?</div>
+    <button class="think-btn" onclick="revealModel(this)">Reveal Model Answer</button>
+    <div class="model-answer">
+      <div class="ma-level ma-intermediate">★ Intermediate</div>
+      <div class="ma-text">Shared traits suggest common ancestry because organisms that share many of the same characteristics are likely to have inherited them from a shared ancestor.</div>
+      <div class="ma-level ma-proficient">★★ Proficient</div>
+      <div class="ma-text">Shared physical and behavioral traits (especially complex ones like live birth and producing milk through mammary glands) are unlikely to have arisen multiple times independently. When two species share these traits while a third doesn't, it suggests the two species diverged from each other more recently than either did from the third species — they still share traits inherited from their more recent common ancestor.</div>
+      <div class="ma-level ma-advanced">★★★ Advanced</div>
+      <div class="ma-text">Complex biological traits like mammary glands and live birth require many genetic changes to evolve. It is statistically extremely unlikely that these evolved identically and independently in two unrelated lineages. Their presence in both bats and humans — but absence in owls — indicates a shared inherited origin: they were both present in the common mammalian ancestor of bats and humans, and retained in both lineages after they diverged. The more unique and complex a shared trait, the more strongly it indicates common ancestry.</div>
+    </div>
+  </div>
+
+  <div class="think-box">
+    <div class="think-label">💭 Specific patterns that support the claim</div>
+    <div class="think-q">Look carefully at the table. How many traits do bats share with humans but NOT with owls? Name them. How does this support the claim?</div>
+    <button class="think-btn" onclick="revealModel(this)">Reveal Model Answer</button>
+    <div class="model-answer">
+      <div class="ma-level ma-proficient">★★ Proficient</div>
+      <div class="ma-text">Bats share <strong>three</strong> traits with humans that owls do not share: (1) live birth rather than egg-laying, (2) feeding young through mammary glands rather than regurgitation, and (3) having fur/hair rather than feathers. These three traits are defining mammalian features. Owls, as birds, have none of these. The pattern shows that bats are more closely aligned with humans in their fundamental biological characteristics — supporting the claim that bats and humans share a more recent common ancestor.</div>
+      <div class="ma-level ma-advanced">★★★ Advanced</div>
+      <div class="ma-text">Three out of four traits show bats align with humans, not owls: live birth, mammary gland feeding, and fur. These three traits are the core defining features of class Mammalia. Owls, as birds (class Aves), lack all three. Crucially, these are not superficial similarities — mammary glands are a complex organ system that evolved once in the mammalian lineage. The fact that bats and humans both possess this trait while owls (with whom bats share the analogous traits of flying and being nocturnal) do not, directly supports the claim: the similarities between bats and owls are superficial (analogous), while the similarities between bats and humans reflect deep shared ancestry (homologous).</div>
+    </div>
+  </div>
+
+  <div class="mcq-wrap" id="mcq2-wrap">
+    <div class="mcq-label">🧠 Quick Check</div>
+    <div class="mcq-q">A student says: "Bats and owls both fly and hunt at night, so Evidence B shows they are closely related." What is wrong with this reasoning?</div>
+    <div class="mcq-opts">
+      <button class="mcq-opt" id="mcq2-opt0" onclick="selectMcq(2,0)">The student is correct — shared behaviors are the strongest type of evidence</button>
+      <button class="mcq-opt" id="mcq2-opt1" onclick="selectMcq(2,1)">Evidence B doesn't show flying or being nocturnal — the student is looking at the wrong evidence</button>
+      <button class="mcq-opt" id="mcq2-opt2" onclick="selectMcq(2,2)">Flying and being nocturnal are analogous traits (from similar environment pressures), not homologous ones — they are not in the table and cannot be used as evidence of common ancestry</button>
+      <button class="mcq-opt" id="mcq2-opt3" onclick="selectMcq(2,3)">Evidence B is not a reliable source because it was made by a teacher</button>
+    </div>
+    <button class="mcq-check" id="mcq2-check" onclick="checkMcq(2)" disabled>Check Answer</button>
+    <div class="mcq-fb" id="mcq2-fb"></div>
+  </div>
+</div>
+
+<!-- PAGE 4: EVIDENCE C — TRANSITIONAL FOSSILS -->
+<div class="page" id="pg4">
+  <div class="section-tag">Evidence C</div>
+  <h1>Transitional Fossils</h1>
+  <p class="subtitle">The fossil record — showing intermediate organisms that link one group to another through geological time.</p>
+
+  <div class="ev-box">
+    <div class="ev-label">Evidence C — Transitional organisms: Ptilocercus → Icaronycteris</div>
+    <div class="fossil-seq">
+      <div class="fossil-card">
+        <div class="fossil-name">Ptilocercus</div>
+        <div class="fossil-desc">A small, shrew-like proto-mammal. Four-legged, no wings. Related to the common ancestor of both humans and bats. Body plan similar to early primates.</div>
+      </div>
+      <div class="fossil-arrow">→</div>
+      <div class="fossil-card">
+        <div class="fossil-name">Hypothetical Transitional Taxon 1</div>
+        <div class="fossil-desc">Slightly larger. Forelimb bones beginning to elongate. Small skin membranes visible between arm and body. Still primarily a ground/tree dweller.</div>
+      </div>
+      <div class="fossil-arrow">→</div>
+      <div class="fossil-card">
+        <div class="fossil-name">Hypothetical Transitional Taxon 2</div>
+        <div class="fossil-desc">Expanded wing membranes between elongated finger bones. More bat-like posture. Mammalian features (fur, body plan) clearly visible.</div>
+      </div>
+      <div class="fossil-arrow">→</div>
+      <div class="fossil-card" style="border-color:#22c55e;background:#071a07">
+        <div class="fossil-name" style="color:#4ade80">Icaronycteris</div>
+        <div class="fossil-desc">The earliest known bat fossil (~52 million years ago). Fully formed bat wings — highly elongated finger bones with membrane. Clearly mammalian skeleton throughout.</div>
+      </div>
+    </div>
+    <p style="font-size:.72rem;color:#4b7a55;margin-top:8px">🔑 Key: The entire sequence goes from a mammal (Ptilocercus, related to humans) toward a bat — NOT from a bird toward a bat. The bat body plan evolved from within the mammal lineage.</p>
+  </div>
+
+  <div class="think-box">
+    <div class="think-label">💭 Why are transitional fossils useful?</div>
+    <div class="think-q">Why does finding a sequence of transitional fossils help us determine common ancestry? What would it mean if there were NO transitional forms?</div>
+    <button class="think-btn" onclick="revealModel(this)">Reveal Model Answer</button>
+    <div class="model-answer">
+      <div class="ma-level ma-intermediate">★ Intermediate</div>
+      <div class="ma-text">Transitional fossils are useful because they show intermediate stages between two different types of organism, demonstrating that one evolved from the other over time.</div>
+      <div class="ma-level ma-proficient">★★ Proficient</div>
+      <div class="ma-text">Transitional fossils show organisms that have characteristics of two different groups, demonstrating the evolutionary pathway from one to the other. They provide a physical record of gradual change over time. If we find a sequence of fossils showing step-by-step changes from one body plan toward another, it is strong evidence that these groups share a common ancestor — one evolved from a lineage shared with the other.</div>
+      <div class="ma-level ma-advanced">★★★ Advanced</div>
+      <div class="ma-text">Transitional fossils are particularly powerful evidence because they show not just that two groups are related, but <em>how</em> the transition occurred — which traits changed in which order. This rules out the explanation that two groups just happen to look similar by coincidence. The presence of specifically mammalian features (fur, mammalian skull structure, mammalian limb plan) throughout the Ptilocercus-to-Icaronycteris sequence means we can positively identify that bats evolved from within the mammal lineage, ruling out any close relationship with birds at this evolutionary timeframe.</div>
+    </div>
+  </div>
+
+  <div class="think-box">
+    <div class="think-label">💭 Specific patterns that support the claim</div>
+    <div class="think-q">What is the most important thing about Evidence C that directly supports the claim? Hint: think about where the sequence STARTS.</div>
+    <button class="think-btn" onclick="revealModel(this)">Reveal Model Answer</button>
+    <div class="model-answer">
+      <div class="ma-level ma-proficient">★★ Proficient</div>
+      <div class="ma-text">The most important feature is that the sequence begins with Ptilocercus — a proto-mammal that is also an ancestor of humans. This means the bat lineage evolved directly from within the mammal group. Bats did not evolve from a bird ancestor — they evolved from the same mammalian line that also gave rise to humans. This directly supports the claim that bats share a more recent common ancestor with humans (the shared mammalian ancestor) than with owls (which evolved separately in the bird lineage).</div>
+      <div class="ma-level ma-advanced">★★★ Advanced</div>
+      <div class="ma-text">The sequence starts with Ptilocercus — a shrew-like proto-mammal that is explicitly stated to be "also related to humans." This establishes that the bat lineage branched off from within the mammal family tree, which itself branched away from birds hundreds of millions of years earlier. Throughout the entire sequence from Ptilocercus to Icaronycteris, every organism retains mammalian characteristics (body plan, skull structure). No bird-like features appear at any point. This rules out any close evolutionary relationship between bats and owls — their flight arose via completely different evolutionary pathways in completely different lineages.</div>
+    </div>
+  </div>
+
+  <div class="mcq-wrap" id="mcq3-wrap">
+    <div class="mcq-label">🧠 Quick Check</div>
+    <div class="mcq-q">Evidence C shows a transitional sequence from Ptilocercus to Icaronycteris. What is Ptilocercus described as, and why does this matter for the claim?</div>
+    <div class="mcq-opts">
+      <button class="mcq-opt" id="mcq3-opt0" onclick="selectMcq(3,0)">A bird ancestor — this shows owls and bats share a common ancestor</button>
+      <button class="mcq-opt" id="mcq3-opt1" onclick="selectMcq(3,1)">A proto-mammal also related to humans — this shows bats evolved from within the mammal lineage, which humans also belong to</button>
+      <button class="mcq-opt" id="mcq3-opt2" onclick="selectMcq(3,2)">An early reptile — this shows all land animals share one ancestor</button>
+      <button class="mcq-opt" id="mcq3-opt3" onclick="selectMcq(3,3)">An early bat — this shows bats have always existed in their current form</button>
+    </div>
+    <button class="mcq-check" id="mcq3-check" onclick="checkMcq(3)" disabled>Check Answer</button>
+    <div class="mcq-fb" id="mcq3-fb"></div>
+  </div>
+</div>
+
+<!-- PAGE 5: EVIDENCE D — FOOT STRUCTURE -->
+<div class="page" id="pg5">
+  <div class="section-tag">Evidence D</div>
+  <h1>Foot Structure Comparison</h1>
+  <p class="subtitle">Comparative anatomy — looking at the feet of owls, bats, and humans for structural similarities.</p>
+
+  <div class="ev-box">
+    <div class="ev-label">Evidence D — Foot structure in owls, bats, and humans</div>
+    <div class="foot-row">
+      <div class="foot-card">
+        <div class="foot-animal">🦉 Owl Foot</div>
+        <div class="foot-icon">🦅</div>
+        <div class="foot-desc">
+          <strong>Arrangement:</strong> Zygodactyl — 2 toes forward, 2 toes backward<br><br>
+          <strong>Claws:</strong> Large, curved, sharp talons for gripping prey<br><br>
+          <strong>Structure:</strong> Highly modified for predation — very different internal bone arrangement from mammal feet
+        </div>
+      </div>
+      <div class="foot-card match">
+        <div class="foot-animal">🦇 Bat Foot</div>
+        <div class="foot-icon">🐾</div>
+        <div class="foot-desc">
+          <strong>Arrangement:</strong> 5 toes, similar digit arrangement to human foot<br><br>
+          <strong>Claws:</strong> Small curved claws on each toe, used for hanging<br><br>
+          <strong>Structure:</strong> Same 5-toe plan as human foot. Ankle, heel, and digit bones follow the same basic mammalian pattern
+        </div>
+      </div>
+      <div class="foot-card match">
+        <div class="foot-animal">👤 Human Foot</div>
+        <div class="foot-icon">🦶</div>
+        <div class="foot-desc">
+          <strong>Arrangement:</strong> 5 toes, flat plantar surface<br><br>
+          <strong>Claws:</strong> Flat nails on each toe (modified from ancestral claws)<br><br>
+          <strong>Structure:</strong> Same 5-toe mammalian plan as bat. Heel, arch, and tarsals follow the mammalian blueprint
+        </div>
+      </div>
+    </div>
+    <p style="font-size:.72rem;color:#4b7a55;margin-top:8px">🟢 Bat and human feet share the same 5-toe mammalian plan. The owl foot has a completely different arrangement (zygodactyl) and structure.</p>
+  </div>
+
+  <div class="think-box">
+    <div class="think-label">💭 Specific patterns that support the claim</div>
+    <div class="think-q">Based on Evidence D, describe ONE specific structural similarity between bat and human feet that the owl foot does NOT share. Explain what this suggests.</div>
+    <button class="think-btn" onclick="revealModel(this)">Reveal Model Answer</button>
+    <div class="model-answer">
+      <div class="ma-level ma-proficient">★★ Proficient</div>
+      <div class="ma-text">Both the bat and human foot have five toes arranged in the same forward-facing direction, following the basic mammalian foot plan. The owl foot, by contrast, is zygodactyl (two toes forward, two backward) — a completely different structural arrangement. This similarity between bat and human feet suggests they inherited the same foot structure from their shared mammalian ancestor, while owls evolved a different foot structure in the bird lineage.</div>
+    </div>
+  </div>
+
+  <div class="mcq-wrap" id="mcq4-wrap">
+    <div class="mcq-label">🧠 Quick Check</div>
+    <div class="mcq-q">Based on Evidence D, whose feet are most structurally similar to bat feet?</div>
+    <div class="mcq-opts">
+      <button class="mcq-opt" id="mcq4-opt0" onclick="selectMcq(4,0)">Owls — because both bats and owls use their feet for gripping while perched</button>
+      <button class="mcq-opt" id="mcq4-opt1" onclick="selectMcq(4,1)">Humans — both have five toes with the same mammalian foot plan</button>
+      <button class="mcq-opt" id="mcq4-opt2" onclick="selectMcq(4,2)">Neither — bat feet are completely unique</button>
+      <button class="mcq-opt" id="mcq4-opt3" onclick="selectMcq(4,3)">Owls — because both bats and owls are good at night-time hunting</button>
+    </div>
+    <button class="mcq-check" id="mcq4-check" onclick="checkMcq(4)" disabled>Check Answer</button>
+    <div class="mcq-fb" id="mcq4-fb"></div>
+  </div>
+</div>
+
+<!-- PAGE 6: EVIDENCE E — EMBRYOLOGY -->
+<div class="page" id="pg6">
+  <div class="section-tag">Evidence E</div>
+  <h1>Embryonic Development</h1>
+  <p class="subtitle">Comparative embryology — comparing the appearance of organisms at similar mid-stage points of embryonic development.</p>
+
+  <div class="ev-box">
+    <div class="ev-label">Evidence E — Mid-stage embryos of owl, bat, and human</div>
+    <div class="embryo-row">
+      <div class="emb-card">
+        <div class="emb-animal">🦉 Owl embryo</div>
+        <div class="emb-icon">🥚</div>
+        <div class="emb-traits">
+          <strong>Shape:</strong> Elongated, narrow<br>
+          <strong>Limb buds:</strong> Prominent wing buds extending widely from the sides<br>
+          <strong>Head:</strong> Large beak structure beginning to form<br>
+          <strong>Overall:</strong> Clearly different in proportion and shape from bat and human embryos
+        </div>
+      </div>
+      <div class="emb-card match">
+        <div class="emb-animal">🦇 Bat embryo</div>
+        <div class="emb-icon">🌱</div>
+        <div class="emb-traits">
+          <strong>Shape:</strong> Rounded, compact — very similar to human embryo<br>
+          <strong>Limb buds:</strong> Small, positioned similarly to human embryo<br>
+          <strong>Head:</strong> Large, rounded — similar curvature to human<br>
+          <strong>Overall:</strong> Strikingly similar to human embryo in shape and proportions
+        </div>
+      </div>
+      <div class="emb-card match">
+        <div class="emb-animal">👤 Human embryo</div>
+        <div class="emb-icon">🌿</div>
+        <div class="emb-traits">
+          <strong>Shape:</strong> Rounded, compact — very similar to bat embryo<br>
+          <strong>Limb buds:</strong> Small, rounded<br>
+          <strong>Head:</strong> Large, rounded — very similar curvature<br>
+          <strong>Overall:</strong> Similar profile and body proportions to bat embryo
+        </div>
+      </div>
+    </div>
+    <p style="font-size:.72rem;color:#4b7a55;margin-top:8px">🔑 The bat and human embryos are very similar in shape, proportions, and developmental features. The owl embryo looks distinctly different.</p>
+  </div>
+
+  <div class="key-fact">💡 <strong>Why does embryo similarity matter?</strong> The instructions for building an embryo are written in DNA. If two organisms develop in very similar ways, it means their developmental gene sequences are very similar — inherited from a shared common ancestor. The embryo development program is one of the most conserved (least changed) parts of an organism's genome.</div>
+
+  <div class="think-box">
+    <div class="think-label">💭 Specific patterns that support the claim</div>
+    <div class="think-q">What does the visual similarity between bat and human embryos suggest, and why does this support the claim about common ancestry?</div>
+    <button class="think-btn" onclick="revealModel(this)">Reveal Model Answer</button>
+    <div class="model-answer">
+      <div class="ma-level ma-proficient">★★ Proficient</div>
+      <div class="ma-text">The bat and human embryos look strikingly similar at mid-stage — both are rounded, compact, and have similarly proportioned heads and limb buds. The owl embryo looks noticeably different, with a more elongated shape and differently positioned limb buds. This similarity in development suggests that bat and human embryos follow a similar developmental program, which they inherited from their shared mammalian common ancestor. Organisms that develop similarly share similar developmental genes, which are passed down through shared ancestry.</div>
+      <div class="ma-level ma-advanced">★★★ Advanced</div>
+      <div class="ma-text">The developmental gene sequences that control embryonic body plan are among the most conserved in all of biology. If bat and human embryos are building themselves in a similar way, it means they are using very similar developmental instructions — almost certainly inherited from a shared common ancestor rather than evolved independently. The fact that the owl embryo looks distinctly different supports the cladistic picture: birds diverged from the mammal lineage hundreds of millions of years ago, giving their developmental program time to diverge. Bats and humans, which are both mammals, diverged much more recently, so their developmental programs are still very similar.</div>
+    </div>
+  </div>
+
+  <div class="mcq-wrap" id="mcq5-wrap">
+    <div class="mcq-label">🧠 Quick Check</div>
+    <div class="mcq-q">What does it mean if two organisms look similar during embryonic development?</div>
+    <div class="mcq-opts">
+      <button class="mcq-opt" id="mcq5-opt0" onclick="selectMcq(5,0)">They will look identical as adults</button>
+      <button class="mcq-opt" id="mcq5-opt1" onclick="selectMcq(5,1)">They live in similar habitats as embryos</button>
+      <button class="mcq-opt" id="mcq5-opt2" onclick="selectMcq(5,2)">They share similar developmental gene sequences, likely inherited from a common ancestor</button>
+      <button class="mcq-opt" id="mcq5-opt3" onclick="selectMcq(5,3)">They were born at the same time of year</button>
+    </div>
+    <button class="mcq-check" id="mcq5-check" onclick="checkMcq(5)" disabled>Check Answer</button>
+    <div class="mcq-fb" id="mcq5-fb"></div>
+  </div>
+</div>
+
+<!-- PAGE 7: EVIDENCE F — CLADOGRAM -->
+<div class="page" id="pg7">
+  <div class="section-tag">Evidence F</div>
+  <h1>DNA Cladogram</h1>
+  <p class="subtitle">A cladogram built from comparative DNA analysis — the most direct evidence of evolutionary relationships.</p>
+
+  <div class="ev-box">
+    <div class="ev-label">Evidence F — Cladogram based on comparative DNA analysis</div>
+    <div class="clado-wrap">
+      <svg viewBox="0 0 460 310" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:460px;display:block;margin:0 auto">
+        <!-- Background -->
+        <rect width="460" height="310" fill="#040d04"/>
+        <!-- Time arrow -->
+        <line x1="420" y1="285" x2="420" y2="28" stroke="#2d4a2d" stroke-width="2"/>
+        <polygon points="420,20 415,32 425,32" fill="#2d4a2d"/>
+        <text x="436" y="168" font-size="11" fill="#2d4a2d" font-family="'Segoe UI',Arial,sans-serif" transform="rotate(90,436,168)">TIME →</text>
+        <!-- LEAVES (top = present) -->
+        <!-- Chicken at x=60, Owl at x=130, Humans at x=240, Bats at x=340 -->
+        <text x="60" y="22" text-anchor="middle" font-size="12" fill="#94a3b8" font-family="'Segoe UI',Arial,sans-serif">Chicken</text>
+        <text x="60" y="34" text-anchor="middle" font-size="10" fill="#64748b" font-family="'Segoe UI',Arial,sans-serif">🐔</text>
+        <text x="135" y="22" text-anchor="middle" font-size="12" fill="#94a3b8" font-family="'Segoe UI',Arial,sans-serif">Owl</text>
+        <text x="135" y="34" text-anchor="middle" font-size="10" fill="#64748b" font-family="'Segoe UI',Arial,sans-serif">🦉</text>
+        <text x="255" y="22" text-anchor="middle" font-size="12" fill="#bbf7d0" font-family="'Segoe UI',Arial,sans-serif" font-weight="700">Humans</text>
+        <text x="255" y="34" text-anchor="middle" font-size="10" fill="#86efac" font-family="'Segoe UI',Arial,sans-serif">👤</text>
+        <text x="340" y="22" text-anchor="middle" font-size="12" fill="#bbf7d0" font-family="'Segoe UI',Arial,sans-serif" font-weight="700">Bats</text>
+        <text x="340" y="34" text-anchor="middle" font-size="10" fill="#86efac" font-family="'Segoe UI',Arial,sans-serif">🦇</text>
+        <!-- Branches from leaves down to bird node -->
+        <line x1="60" y1="42" x2="60" y2="135" stroke="#64748b" stroke-width="2"/>
+        <line x1="135" y1="42" x2="135" y2="135" stroke="#64748b" stroke-width="2"/>
+        <!-- Bird node horizontal -->
+        <line x1="60" y1="135" x2="135" y2="135" stroke="#64748b" stroke-width="2"/>
+        <!-- Bird node marker -->
+        <circle cx="97" cy="135" r="7" fill="#1a2e1a" stroke="#4b7a55" stroke-width="2"/>
+        <text x="97" y="158" text-anchor="middle" font-size="10" fill="#4b7a55" font-family="'Segoe UI',Arial,sans-serif">Bird ancestor</text>
+        <!-- Bird node trunk down -->
+        <line x1="97" y1="135" x2="97" y2="240" stroke="#64748b" stroke-width="2"/>
+        <!-- Branches from leaves down to mammal node (higher = more recent) -->
+        <line x1="255" y1="42" x2="255" y2="105" stroke="#22c55e" stroke-width="2.5"/>
+        <line x1="340" y1="42" x2="340" y2="105" stroke="#22c55e" stroke-width="2.5"/>
+        <!-- Mammal node horizontal -->
+        <line x1="255" y1="105" x2="340" y2="105" stroke="#22c55e" stroke-width="2.5"/>
+        <!-- Mammal node marker -->
+        <circle cx="297" cy="105" r="8" fill="#071507" stroke="#22c55e" stroke-width="2.5"/>
+        <!-- Mammal node annotation -->
+        <text x="366" y="100" font-size="10" fill="#22c55e" font-family="'Segoe UI',Arial,sans-serif" font-weight="700">← Mammal common ancestor</text>
+        <text x="366" y="113" font-size="10" fill="#4ade80" font-family="'Segoe UI',Arial,sans-serif">(MORE RECENT)</text>
+        <!-- Mammal node trunk down -->
+        <line x1="297" y1="105" x2="297" y2="240" stroke="#22c55e" stroke-width="2.5"/>
+        <!-- Root horizontal -->
+        <line x1="97" y1="240" x2="297" y2="240" stroke="#4b7a55" stroke-width="2"/>
+        <!-- Root node marker -->
+        <circle cx="197" cy="240" r="8" fill="#071507" stroke="#4b7a55" stroke-width="2"/>
+        <text x="197" y="270" text-anchor="middle" font-size="10" fill="#4b7a55" font-family="'Segoe UI',Arial,sans-serif">Common ancestor</text>
+        <text x="197" y="283" text-anchor="middle" font-size="10" fill="#2d4a2d" font-family="'Segoe UI',Arial,sans-serif">(of birds &amp; mammals — more ancient)</text>
+        <!-- BIRDS bracket label -->
+        <rect x="44" y="58" width="105" height="18" rx="4" fill="#0a1000" stroke="#2d4a2d" stroke-width="1" opacity="0.8"/>
+        <text x="96" y="71" text-anchor="middle" font-size="10" fill="#64748b" font-family="'Segoe UI',Arial,sans-serif" font-weight="700">BIRDS</text>
+        <!-- MAMMALS bracket label -->
+        <rect x="228" y="58" width="130" height="18" rx="4" fill="#071507" stroke="#15803d" stroke-width="1" opacity="0.9"/>
+        <text x="293" y="71" text-anchor="middle" font-size="10" fill="#4ade80" font-family="'Segoe UI',Arial,sans-serif" font-weight="700">MAMMALS</text>
+      </svg>
+      <div class="clado-legend">
+        <div class="clado-legend-item"><div class="clado-dot" style="background:#22c55e"></div><span>Humans + Bats node (more recent split)</span></div>
+        <div class="clado-legend-item"><div class="clado-dot" style="background:#4b7a55"></div><span>Birds + Mammals split (more ancient)</span></div>
+        <div class="clado-legend-item"><div class="clado-dot" style="background:#64748b"></div><span>Chicken + Owl node (bird ancestor)</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="key-fact">💡 <strong>How to read a cladogram:</strong> Each branching point (node) represents a common ancestor. If two organisms share a node that is <em>higher up</em> on the time axis (closer to the present), they share a <em>more recent</em> common ancestor. Humans and bats share a node that is <strong>more recent</strong> than the node where the bird lineage and mammal lineage split.</div>
+
+  <div class="think-box">
+    <div class="think-label">💭 Specific patterns that support the claim</div>
+    <div class="think-q">Read the cladogram carefully. Explain what the position of the humans+bats node tells us about the claim. Compare it to where bats and owls would meet on the cladogram.</div>
+    <button class="think-btn" onclick="revealModel(this)">Reveal Model Answer</button>
+    <div class="model-answer">
+      <div class="ma-level ma-proficient">★★ Proficient</div>
+      <div class="ma-text">The cladogram shows humans and bats sharing a branching point (node) that is <strong>more recent</strong> (higher on the time axis, closer to the present) than the point where the bird lineage and the mammal lineage diverge. To trace from a bat to an owl on this cladogram, you would have to go all the way back to the ancient common ancestor of all birds and mammals — much further back in time. But to trace from a bat to a human, you only go back to the more recent mammal common ancestor. This directly shows that bats and humans share a more recent common ancestor than bats and owls.</div>
+      <div class="ma-level ma-advanced">★★★ Advanced</div>
+      <div class="ma-text">This cladogram is built from comparative DNA analysis, which makes it particularly reliable — DNA similarity directly reflects evolutionary distance. The humans+bats node is positioned more recently on the time axis than the root node (where birds and mammals split). To find a common ancestor shared by a bat and an owl, you must travel back to the root — the point at which the entire bird and mammal lineages diverged, which occurred hundreds of millions of years ago. The fact that this cladogram is based on DNA means it captures the cumulative mutation differences between species: humans and bats share far more of their DNA than either does with owls, because they have had less time to accumulate genetic differences since their more recent common ancestor.</div>
+    </div>
+  </div>
+
+  <div class="mcq-wrap" id="mcq6-wrap">
+    <div class="mcq-label">🧠 Quick Check</div>
+    <div class="mcq-q">According to the cladogram, which statement correctly describes the evolutionary relationships shown?</div>
+    <div class="mcq-opts">
+      <button class="mcq-opt" id="mcq6-opt0" onclick="selectMcq(6,0)">Owls and bats share a more recent common ancestor than bats and humans</button>
+      <button class="mcq-opt" id="mcq6-opt1" onclick="selectMcq(6,1)">Chickens and humans share a more recent common ancestor than humans and bats</button>
+      <button class="mcq-opt" id="mcq6-opt2" onclick="selectMcq(6,2)">Humans and bats share a more recent common ancestor than bats and owls</button>
+      <button class="mcq-opt" id="mcq6-opt3" onclick="selectMcq(6,3)">All four species diverged from each other at the same time</button>
+    </div>
+    <button class="mcq-check" id="mcq6-check" onclick="checkMcq(6)" disabled>Check Answer</button>
+    <div class="mcq-fb" id="mcq6-fb"></div>
+  </div>
+</div>
+
+<!-- PAGE 8: CER FRAMEWORK -->
+<div class="page" id="pg8">
+  <div class="section-tag">Your Test</div>
+  <h1>The CER Framework</h1>
+  <p class="subtitle">The test asks for Claim → Evidence → Reasoning. Understanding the rubric levels will help you know what to write.</p>
+
+  <div class="rubric-rows">
+    <div class="rubric-row int">
+      <div class="rubric-level">★ Intermediate — The starting point</div>
+      <ul class="rubric-bullets">
+        <li>Correctly names the two types of evidence you chose (e.g., "comparative anatomy" or "transitional fossils")</li>
+        <li>Explains IN GENERAL TERMS why that type of evidence is useful for determining common ancestry — without referencing the specific evidence in front of you</li>
+      </ul>
+    </div>
+    <div class="rubric-row pro">
+      <div class="rubric-level">★★ Proficient — The target</div>
+      <ul class="rubric-bullets">
+        <li>Everything in Intermediate PLUS:</li>
+        <li>References SPECIFIC DETAILS from the evidence in front of you (e.g., "In Evidence B, bats share live birth, mammary glands, and fur with humans, but NOT with owls")</li>
+        <li>Links those specific details back to the claim with clear reasoning</li>
+      </ul>
+    </div>
+    <div class="rubric-row adv">
+      <div class="rubric-level">★★★ Advanced — Going further</div>
+      <ul class="rubric-bullets">
+        <li>Everything in Proficient PLUS:</li>
+        <li>Brings in deeper scientific understanding (e.g., explaining WHY shared traits are unlikely to be coincidence, or discussing analogous vs homologous)</li>
+        <li>Makes connections between different pieces of evidence</li>
+        <li>Uses precise scientific vocabulary accurately throughout</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>Your two-part response structure</h2>
+  <p>For each piece of evidence you choose, you write TWO things:</p>
+  <div class="key-fact" style="border-color:#fbbf24;color:#fbbf24">
+    <strong>Box 1 — General usefulness:</strong> "This type of evidence is useful in general for determining common ancestry because [reason why this type of evidence works as a principle]..."
+  </div>
+  <div class="key-fact" style="border-color:#38bdf8;color:#38bdf8;margin-top:8px">
+    <strong>Box 2 — Specific patterns:</strong> "In this particular evidence, the pattern that supports the claim is [specific observation]. This supports the claim because [reasoning that links the observation to the conclusion about bats, humans, and owls]..."
+  </div>
+
+  <div class="key-fact" style="margin-top:14px">
+    💡 <strong>Choosing your evidence:</strong> You need two pieces of <em>different types</em>. The strongest choices for this claim tend to be Evidence B (traits), Evidence F (cladogram), Evidence A (homologous structures), or Evidence C (transitional fossils) — but any two will work if your reasoning is sound.
+  </div>
+</div>
+
+<!-- PAGE 9: PRACTICE RUN -->
+<div class="page" id="pg9">
+  <div class="section-tag">Practice</div>
+  <h1>Practice Run</h1>
+  <p class="subtitle">Here is a similar claim about a different set of organisms. Practice using the CER framework before your test.</p>
+
+  <div class="practice-claim">
+    <div class="practice-label">Practice Claim</div>
+    <div class="practice-text">"Even though dolphins and sharks both have streamlined bodies and dorsal fins, dolphins have a more recent common ancestor with horses than they do with sharks."</div>
+  </div>
+
+  <p>Imagine you are given two pieces of evidence:</p>
+  <div class="ev-box" style="margin-bottom:10px">
+    <div class="ev-label">Evidence 1 — Comparative Traits Table</div>
+    <table class="data-table">
+      <tr><th>Characteristic</th><th>Sharks</th><th>Dolphins</th><th>Horses</th></tr>
+      <tr><td>Type of birth</td><td class="diff">Eggs / live (no placenta)</td><td class="highlight">Live birth (placenta)</td><td class="highlight">Live birth (placenta)</td></tr>
+      <tr><td>Feed young?</td><td class="diff">No — young are independent immediately</td><td class="highlight">Yes — mammary glands</td><td class="highlight">Yes — mammary glands</td></tr>
+      <tr><td>Body temperature</td><td class="diff">Mostly ectotherm (cold-blooded)</td><td class="highlight">Endotherm (warm-blooded)</td><td class="highlight">Endotherm (warm-blooded)</td></tr>
+      <tr><td>Skeleton</td><td class="diff">Cartilage</td><td class="highlight">Bone</td><td class="highlight">Bone</td></tr>
+    </table>
+  </div>
+  <div class="ev-box">
+    <div class="ev-label">Evidence 2 — Forelimb Bone Structure</div>
+    <p style="font-size:.78rem;color:#4b7a55">Dolphins have a forelimb with a humerus, radius, ulna, carpals, and phalanges (the same set of bones as a horse's leg). Sharks have no such bone structure — their fins are made of cartilaginous rays (a completely different underlying structure).</p>
+  </div>
+
+  <div class="think-box">
+    <div class="think-label">💭 Your turn — Evidence 1 (Traits Table)</div>
+    <div class="think-q">Write your own answer: Why is a traits comparison table generally useful? Then explain what specific pattern in this table supports the claim. When you're ready, reveal the model answer.</div>
+    <button class="think-btn" onclick="revealModel(this)">Reveal Model Answer</button>
+    <div class="model-answer">
+      <div class="ma-level ma-proficient">★★ Proficient model answer</div>
+      <div class="ma-text"><strong>Why useful in general:</strong> Comparative trait tables are useful because organisms that share many fundamental biological characteristics are likely to have inherited those traits from a shared common ancestor. Complex traits — especially ones like live birth with a placenta, or milk production through mammary glands — are unlikely to have evolved identically and independently in unrelated lineages.<br><br>
+      <strong>Specific patterns in this evidence:</strong> The table shows that dolphins and horses share all four traits — live birth (with placenta), mammary gland feeding, warm-bloodedness, and bony skeleton — while sharks share none of these traits with dolphins. Sharks do not have mammary glands, do not have bony skeletons, and are mostly cold-blooded. This pattern of three shared traits between dolphins and horses, but zero shared between dolphins and sharks, directly supports the claim that dolphins and horses share a more recent common ancestor.</div>
+    </div>
+  </div>
+
+  <div class="think-box">
+    <div class="think-label">💭 Your turn — Evidence 2 (Forelimb Bones)</div>
+    <div class="think-q">Write your own answer for Evidence 2 using the same two-part structure. Then reveal the model answer.</div>
+    <button class="think-btn" onclick="revealModel(this)">Reveal Model Answer</button>
+    <div class="model-answer">
+      <div class="ma-level ma-proficient">★★ Proficient model answer</div>
+      <div class="ma-text"><strong>Why useful in general:</strong> Homologous structures — structures built from the same bones or tissues in different organisms — suggest common ancestry because the same internal blueprint would not arise independently. The more similar the bone structure, the more recently the two organisms shared an ancestor.<br><br>
+      <strong>Specific patterns in this evidence:</strong> The dolphin's forelimb contains a humerus, radius, ulna, carpals, and phalanges — the exact same bones as a horse's leg, just modified into a flipper shape. Sharks have no such bone structure at all — their fins are made entirely of cartilaginous rays. This homologous bone structure between dolphin and horse (but not shark) indicates they inherited the same ancestral forelimb blueprint from their shared mammalian ancestor. The dolphin's flipper is a modified mammalian limb, not a modified fish fin — directly supporting the claim.</div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 10: TEST CHECKLIST -->
+<div class="page" id="pg10">
+  <div class="section-tag">Test Ready</div>
+  <h1>Test Preparation Checklist</h1>
+  <p class="subtitle">Go through each item below. Click it to check it off when you feel confident. Aim for all ticked before your test.</p>
+
+  <div class="checklist" id="checklist">
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box">✓</div>
+      <div class="check-text"><strong>I can explain the claim</strong> — I understand that the test asks me to support the idea that bats and humans share a more recent common ancestor than bats and owls.</div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box">✓</div>
+      <div class="check-text"><strong>I understand analogous vs homologous</strong> — I know that bats and owls both flying does NOT mean they are closely related (analogous), and I won't use that as evidence.</div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box">✓</div>
+      <div class="check-text"><strong>I can describe Evidence A (Homologous forelimbs)</strong> — Bat and human forelimbs share the same five bones (humerus, radius, ulna, carpals, phalanges); bird wings are built differently from fused/reduced bones.</div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box">✓</div>
+      <div class="check-text"><strong>I can describe Evidence B (Traits table)</strong> — Bats and humans share 3 mammalian traits owls don't have: live birth, mammary glands, fur.</div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box">✓</div>
+      <div class="check-text"><strong>I can describe Evidence C (Transitional fossils)</strong> — Ptilocercus is a proto-mammal ALSO related to humans; the sequence shows bats evolved from within the mammal lineage, not from birds.</div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box">✓</div>
+      <div class="check-text"><strong>I can describe Evidence D (Foot structure)</strong> — Bat and human feet share the same 5-toe mammalian plan; owl feet are zygodactyl (different structure entirely).</div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box">✓</div>
+      <div class="check-text"><strong>I can describe Evidence E (Embryology)</strong> — Bat and human mid-stage embryos look strikingly similar in shape; owl embryos look very different — shared developmental genes from common ancestor.</div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box">✓</div>
+      <div class="check-text"><strong>I can read Evidence F (Cladogram)</strong> — The humans+bats node is MORE RECENT than the bird+mammal split. Bats and owls only share the ancient root node. Bats and humans share a more recent mammal ancestor node.</div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box">✓</div>
+      <div class="check-text"><strong>I know the two-part response structure</strong> — For each evidence: ① General reason why this TYPE of evidence is useful ② Specific patterns in THIS evidence that support the claim</div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box">✓</div>
+      <div class="check-text"><strong>I know what Proficient looks like</strong> — Proficient = general reason + specific named details from the evidence + clear link to the claim</div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box">✓</div>
+      <div class="check-text"><strong>I know what Advanced looks like</strong> — Advanced = adds deeper reasoning (e.g. why complex traits can't be coincidence, what analogous vs homologous means, connections between evidence pieces)</div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box">✓</div>
+      <div class="check-text"><strong>I have practised writing a full response</strong> — I used the practice claim on the previous page to write both parts of my answer for two pieces of evidence</div>
+    </div>
+  </div>
+  <p style="margin-top:16px;font-size:.76rem;color:#2d4a2d">Good luck on your test! Remember: the strongest answers are the ones that name SPECIFIC details from the evidence and clearly explain what those details mean for the claim.</p>
+</div>
+
+<!-- NAV BAR -->
+<div class="navbar">
+  <button class="nbtn bck" id="btn-prev" onclick="navigate(-1)" disabled>← Prev</button>
+  <span class="pg-ind" id="pg-ind">Page 1 of 11</span>
+  <button class="nbtn fwd" id="btn-next" onclick="navigate(1)">Next →</button>
+</div>
+
+<script>
+// ── MCQ DATA ─────────────────────────────────────────────────────────────────
+const MCQS = [
+  { correct: 1, explanation: 'Correct! Their streamlined bodies evolved independently in response to the same challenge (moving efficiently through water) — this is called <strong>convergent evolution</strong>, producing analogous structures. Dolphins are mammals and sharks are fish — they diverged hundreds of millions of years ago.', wrong_exp: 'Their similar shapes are a result of both lineages adapting to the same environment independently — this is called <strong>convergent evolution</strong> (analogous structures). Dolphins are mammals; sharks are cartilaginous fish. They are not closely related.' },
+  { correct: 2, explanation: 'Correct! Both bat and human forelimbs have an elongated humerus and four/five long phalanges — the same mammalian limb plan. The bird wing has fused, reduced bones — a very different modification. Similarity in function (flight) does not mean similarity in structure.', wrong_exp: 'Flight is an analogous trait — bats and birds both fly, but their wing structures are built completely differently. Bat and human forelimbs share the same underlying bone structure (humerus, radius, five phalanges) — this homologous structure is the evidence of common ancestry.' },
+  { correct: 2, explanation: 'Correct! The claim is about whether bats and owls are closely related. Flying and being nocturnal are <strong>analogous traits</strong> — they evolved independently in bats and owls because both groups face the same environmental challenges. They are NOT in the traits table, and they should NOT be used as evidence of common ancestry.', wrong_exp: 'Flying and being nocturnal are analogous traits — they evolved independently in birds and bats for similar environmental reasons, but through completely different evolutionary paths. They are NOT in Evidence B, and using them as evidence of common ancestry would be a mistake.' },
+  { correct: 1, explanation: 'Correct! Ptilocercus is described as a "proto-mammal also related to humans." This means bats evolved from within the mammal lineage — the same lineage that includes humans. The transitional sequence is entirely within mammals, ruling out any close relationship with birds.', wrong_exp: 'Ptilocercus is explicitly described as a "proto-mammal also related to humans." This is the key — it shows the transitional sequence begins in the mammal group, not the bird group. Bats evolved within the same lineage as humans.' },
+  { correct: 1, explanation: 'Correct! Both bat and human feet share the same 5-toe mammalian foot plan — this is a homologous structure inherited from their shared mammalian ancestor. The owl foot is zygodactyl (2 toes forward, 2 backward) — a completely different structure that evolved in the bird lineage.', wrong_exp: 'Although bats and owls both perch and grip, the structure of their feet is very different. Bat feet follow the same 5-toe mammalian plan as human feet. The owl foot is zygodactyl — a bird-specific adaptation. Structure (not function) is what matters for common ancestry.' },
+  { correct: 2, explanation: 'Correct! Similar embryonic development means the developmental gene sequences are similar — these instructions are inherited from a shared common ancestor. The embryo\'s body plan is controlled by deeply conserved genetic pathways that reflect evolutionary history.', wrong_exp: 'Embryonic similarity reflects similarity in developmental gene sequences — the genetic instructions for building the body. These are inherited from a shared common ancestor. Two organisms could look completely different as adults yet have similar embryos if they share a common ancestry, because the early developmental program is very conserved.' },
+  { correct: 2, explanation: 'Correct! The humans+bats node is positioned more recently on the time axis (higher up) than the bird+mammal root node. To trace a bat to an owl, you must go all the way to the ancient root. To trace a bat to a human, you only go back to the more recent mammal node. Humans and bats share a more recent common ancestor.', wrong_exp: 'Look at the cladogram carefully — the humans+bats branching point (node) is positioned MORE RECENTLY on the time axis than the point where the bird lineage and mammal lineage split. To find a common ancestor of bats and owls, you must go all the way to the ancient root. Humans and bats share a more recent node.' }
+];
+
+const mcqState = MCQS.map(() => ({ selected: null, answered: false }));
+
+function selectMcq(qIdx, optIdx) {
+  const s = mcqState[qIdx];
+  if (s.answered) return;
+  s.selected = optIdx;
+  const n = MCQS[qIdx].correct === optIdx ? 4 : 4;
+  for (let i = 0; i < n; i++) {
+    const el = document.getElementById(`mcq${qIdx}-opt${i}`);
+    if (!el) continue;
+    el.style.borderColor = i === optIdx ? '#22c55e' : '';
+    el.style.color = i === optIdx ? '#e2e8f0' : '';
+    el.style.background = i === optIdx ? '#0a2a0a' : '';
+  }
+  const checkBtn = document.getElementById(`mcq${qIdx}-check`);
+  if (checkBtn) checkBtn.disabled = false;
+}
+
+function checkMcq(qIdx) {
+  const s = mcqState[qIdx];
+  const q = MCQS[qIdx];
+  if (s.selected === null || s.answered) return;
+  s.answered = true;
+  const correct = s.selected === q.correct;
+  const optCount = 4;
+  for (let i = 0; i < optCount; i++) {
+    const el = document.getElementById(`mcq${qIdx}-opt${i}`);
+    if (!el) continue;
+    el.disabled = true;
+    el.style.borderColor = '';
+    el.style.color = '';
+    el.style.background = '';
+    if (i === q.correct) el.classList.add(correct ? 'correct' : 'reveal-correct');
+    if (!correct && i === s.selected) el.classList.add('wrong');
+  }
+  const fb = document.getElementById(`mcq${qIdx}-fb`);
+  fb.className = 'mcq-fb ' + (correct ? 'correct' : 'wrong');
+  fb.innerHTML = `<strong>${correct ? '✓ Correct!' : '✗ Not quite.'}</strong> ${correct ? q.explanation : q.wrong_exp}`;
+  const checkBtn = document.getElementById(`mcq${qIdx}-check`);
+  if (checkBtn) checkBtn.style.display = 'none';
+}
+
+// ── REVEAL MODEL ANSWERS ─────────────────────────────────────────────────────
+function revealModel(btn) {
+  const ma = btn.nextElementSibling;
+  ma.style.display = 'block';
+  btn.style.display = 'none';
+}
+
+// ── CHECKLIST ────────────────────────────────────────────────────────────────
+function toggleCheck(item) {
+  item.classList.toggle('checked');
+}
+
+// ── PAGE NAVIGATION ──────────────────────────────────────────────────────────
+const PAGES = ['pg0','pg1','pg2','pg3','pg4','pg5','pg6','pg7','pg8','pg9','pg10'];
+const TOTAL = PAGES.length;
+let cur = 0;
+
+function navigate(dir) {
+  const np = cur + dir;
+  if (np < 0 || np >= TOTAL) return;
+  cur = np;
+  renderPage();
+}
+
+function renderPage() {
+  PAGES.forEach((id, i) => document.getElementById(id).classList.toggle('active', i === cur));
+  for (let i = 0; i <= 10; i++) {
+    const el = document.getElementById('ps' + i);
+    if (!el) continue;
+    el.className = 'ps' + (i < cur ? ' done' : i === cur ? ' active' : '');
+  }
+  document.getElementById('pg-ind').textContent = `Page ${cur + 1} of ${TOTAL}`;
+  document.getElementById('page-tag').textContent = `Page ${cur + 1} of ${TOTAL}`;
+  document.getElementById('btn-prev').disabled = cur === 0;
+  document.getElementById('btn-next').disabled = cur === TOTAL - 1;
+  window.scrollTo ? window.scrollTo(0, 0) : null;
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' && cur < TOTAL - 1) navigate(1);
+  if (e.key === 'ArrowLeft'  && cur > 0)          navigate(-1);
+});
+
+renderPage();
+</script>
+</body>
+</html>

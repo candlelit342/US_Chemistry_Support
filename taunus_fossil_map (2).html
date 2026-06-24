@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Taunus Region Fossil Map — centred on Hohemark, Oberursel</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Georgia', serif;
+      background: #1a1a2e;
+      color: #e8e0d0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
+      padding: 14px 22px;
+      border-bottom: 2px solid #4a6fa5;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    header .title-block h1 {
+      font-size: 1.3rem;
+      color: #d4a853;
+      letter-spacing: 0.04em;
+    }
+    header .title-block p {
+      font-size: 0.78rem;
+      color: #8ab4d4;
+      margin-top: 2px;
+    }
+
+    .era-legend-inline {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-left: auto;
+    }
+    .era-legend-inline .era-chip {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 20px;
+      padding: 4px 10px;
+      font-size: 0.72rem;
+      color: #ccc;
+    }
+    .era-chip .dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .main-layout {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    #map {
+      flex: 1;
+      z-index: 1;
+    }
+
+    .sidebar {
+      width: 300px;
+      background: #12122a;
+      border-left: 2px solid #2a3a5e;
+      overflow-y: auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .sidebar h2 {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #d4a853;
+      border-bottom: 1px solid #2a3a5e;
+      padding-bottom: 6px;
+      margin-bottom: 4px;
+    }
+
+    .sidebar-intro {
+      font-size: 0.78rem;
+      color: #a0b0c0;
+      line-height: 1.55;
+    }
+
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .tl-era {
+      display: flex;
+      align-items: stretch;
+      gap: 10px;
+    }
+    .tl-bar {
+      width: 8px;
+      border-radius: 4px;
+      flex-shrink: 0;
+      min-height: 52px;
+    }
+    .tl-content {
+      padding: 6px 0 10px 0;
+    }
+    .tl-era-name {
+      font-size: 0.82rem;
+      font-weight: bold;
+      color: #e8e0d0;
+    }
+    .tl-age {
+      font-size: 0.69rem;
+      color: #8ab4d4;
+      margin-top: 1px;
+    }
+    .tl-rocks {
+      font-size: 0.69rem;
+      color: #a0c0a0;
+      margin-top: 3px;
+      font-style: italic;
+    }
+    .tl-note {
+      font-size: 0.68rem;
+      color: #9090a0;
+      margin-top: 3px;
+      line-height: 1.4;
+    }
+
+    .rock-key h2 { margin-top: 4px; }
+    .rock-entry {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 7px;
+      align-items: flex-start;
+    }
+    .rock-swatch {
+      width: 32px;
+      height: 32px;
+      border-radius: 4px;
+      flex-shrink: 0;
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+    .rock-info .rock-name {
+      font-size: 0.78rem;
+      font-weight: bold;
+      color: #d4a853;
+    }
+    .rock-info .rock-desc {
+      font-size: 0.7rem;
+      color: #a0b0c0;
+      line-height: 1.4;
+      margin-top: 2px;
+    }
+
+    .tip-box {
+      background: #1a2a1a;
+      border: 1px solid #2a5a2a;
+      border-radius: 6px;
+      padding: 10px;
+      font-size: 0.72rem;
+      color: #a0c8a0;
+      line-height: 1.5;
+    }
+    .tip-box strong {
+      color: #70c870;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    footer {
+      background: #0a0a1a;
+      text-align: center;
+      font-size: 0.65rem;
+      color: #555;
+      padding: 5px;
+      border-top: 1px solid #222244;
+    }
+
+    /* Leaflet popup custom styling */
+    .fossil-popup {
+      font-family: 'Georgia', serif;
+      font-size: 0.82rem;
+      max-width: 340px;
+      color: #222;
+    }
+    .fossil-popup .pop-title {
+      font-size: 1.0rem;
+      font-weight: bold;
+      color: #1a1a4e;
+      border-bottom: 2px solid;
+      padding-bottom: 4px;
+      margin-bottom: 8px;
+    }
+    .fossil-popup .pop-rock-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 0.7rem;
+      font-weight: bold;
+      color: white;
+      margin-bottom: 8px;
+    }
+    .fossil-popup .pop-rock-info {
+      background: #f0f4e8;
+      border-left: 3px solid #6a9a6a;
+      padding: 5px 8px;
+      margin-bottom: 8px;
+      font-size: 0.75rem;
+      color: #333;
+      border-radius: 0 4px 4px 0;
+    }
+    .fossil-popup .pop-rock-info strong {
+      color: #1a5a1a;
+    }
+    .fossil-popup .fossil-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .fossil-popup .fossil-entry {
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 6px 8px;
+      margin-bottom: 6px;
+      background: #fafafe;
+    }
+    .fossil-popup .fossil-name {
+      font-weight: bold;
+      font-style: italic;
+      color: #1a1a8a;
+      font-size: 0.82rem;
+    }
+    .fossil-popup .fossil-common {
+      color: #444;
+      font-size: 0.77rem;
+    }
+    .fossil-popup .fossil-meta {
+      font-size: 0.7rem;
+      color: #666;
+      margin-top: 3px;
+      line-height: 1.4;
+    }
+    .fossil-popup .fossil-meta span {
+      display: inline-block;
+      margin-right: 6px;
+    }
+    .fossil-popup .badge-age {
+      background: #e8eaf6;
+      color: #303f9f;
+      padding: 1px 5px;
+      border-radius: 8px;
+      font-size: 0.67rem;
+    }
+    .fossil-popup .badge-year {
+      background: #e8f5e9;
+      color: #1b5e20;
+      padding: 1px 5px;
+      border-radius: 8px;
+      font-size: 0.67rem;
+    }
+    .fossil-popup .fossil-note {
+      font-size: 0.7rem;
+      color: #555;
+      margin-top: 3px;
+      font-style: italic;
+    }
+    .fossil-popup .pop-student-note {
+      background: #fff8e1;
+      border-left: 3px solid #f9a825;
+      padding: 5px 8px;
+      margin-top: 8px;
+      font-size: 0.72rem;
+      color: #444;
+      border-radius: 0 4px 4px 0;
+    }
+    .fossil-popup .pop-student-note strong {
+      color: #e65100;
+    }
+
+    .leaflet-popup-content-wrapper {
+      border-radius: 10px !important;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.35) !important;
+    }
+    .leaflet-popup-content {
+      margin: 14px 16px !important;
+      width: 340px !important;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="title-block">
+    <h1>🦴 Taunus Region Fossil Map</h1>
+    <p>Centred on Hohemark, Oberursel &nbsp;·&nbsp; 60 km radius &nbsp;·&nbsp; Interactive student reference</p>
+  </div>
+  <div class="era-legend-inline">
+    <div class="era-chip"><span class="dot" style="background:#5b9bd5"></span>Devonian ~380 Ma</div>
+    <div class="era-chip"><span class="dot" style="background:#a855f7"></span>Eocene ~47 Ma</div>
+    <div class="era-chip"><span class="dot" style="background:#22c55e"></span>Oligocene ~30 Ma</div>
+    <div class="era-chip"><span class="dot" style="background:#f97316"></span>Miocene ~9.5 Ma</div>
+  </div>
+</header>
+
+<div class="main-layout">
+  <div id="map"></div>
+
+  <div class="sidebar">
+
+    <div>
+      <h2>About this Map</h2>
+      <p class="sidebar-intro">
+        This map shows important fossil sites within <strong>60 km</strong> of Hohemark, Oberursel (Taunus).
+        Click any marker to see full details: organism, geological age, discovery year and discoverer,
+        and rock type information for students.
+      </p>
+    </div>
+
+    <div>
+      <h2>Geological Timeline</h2>
+      <div class="timeline">
+
+        <div class="tl-era">
+          <div class="tl-bar" style="background:#5b9bd5"></div>
+          <div class="tl-content">
+            <div class="tl-era-name">Devonian Period</div>
+            <div class="tl-age">419 – 359 million years ago</div>
+            <div class="tl-rocks">Taunus Quartzite · Reef Limestone · Phyllite · Greywacke</div>
+            <div class="tl-note">The Taunus itself is made of Devonian rocks. A warm tropical sea covered the region, producing coral reefs and marine organisms.</div>
+          </div>
+        </div>
+
+        <div class="tl-era">
+          <div class="tl-bar" style="background:#a855f7"></div>
+          <div class="tl-content">
+            <div class="tl-era-name">Eocene Epoch</div>
+            <div class="tl-age">56 – 33.9 million years ago</div>
+            <div class="tl-rocks">Oil Shale (lacustrine) · Volcanic maar sediment</div>
+            <div class="tl-note">A volcanic maar lake near Messel trapped and preserved thousands of organisms in fine-grained oil shale. Exceptional soft-tissue preservation.</div>
+          </div>
+        </div>
+
+        <div class="tl-era">
+          <div class="tl-bar" style="background:#22c55e"></div>
+          <div class="tl-content">
+            <div class="tl-era-name">Oligocene Epoch</div>
+            <div class="tl-age">33.9 – 23 million years ago</div>
+            <div class="tl-rocks">Marine limestone · Sandy marl · Coastal sediments</div>
+            <div class="tl-note">A shallow subtropical sea covered the Mainz Basin, depositing rich marine sediments with molluscs, sharks, and even whales.</div>
+          </div>
+        </div>
+
+        <div class="tl-era">
+          <div class="tl-bar" style="background:#f97316"></div>
+          <div class="tl-content">
+            <div class="tl-era-name">Miocene Epoch</div>
+            <div class="tl-age">23 – 5.3 million years ago</div>
+            <div class="tl-rocks">Fluvial sands · Gravels (Dinotheriensande)</div>
+            <div class="tl-note">The Proto-Rhine River deposited sandy sediments in Rheinhessen, preserving giant elephant-like mammals under subtropical conditions.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="rock-key">
+      <h2>Rock Types — Student Key</h2>
+
+      <div class="rock-entry">
+        <div class="rock-swatch" style="background: repeating-linear-gradient(45deg,#6a8fbf,#6a8fbf 3px,#4a6f9f 3px,#4a6f9f 6px)"></div>
+        <div class="rock-info">
+          <div class="rock-name">Taunus Quartzite (Taunusquarzit)</div>
+          <div class="rock-desc">Very hard metamorphic sandstone, Early Devonian (~400–415 Ma). Originally coastal beach sand, now forms the high Taunus ridgeline. Few fossils due to intense metamorphism.</div>
+        </div>
+      </div>
+
+      <div class="rock-entry">
+        <div class="rock-swatch" style="background: repeating-linear-gradient(135deg,#7a9f7a,#7a9f7a 3px,#5a7f5a 3px,#5a7f5a 6px)"></div>
+        <div class="rock-info">
+          <div class="rock-name">Reef Limestone (Lahnmarmor)</div>
+          <div class="rock-desc">Middle–Upper Devonian carbonate, ~375–385 Ma. Formed from coral reefs in a tropical shallow sea. Polishes to marble; used in the Empire State Building!</div>
+        </div>
+      </div>
+
+      <div class="rock-entry">
+        <div class="rock-swatch" style="background: repeating-linear-gradient(45deg,#2a2a2a,#2a2a2a 3px,#4a3a2a 3px,#4a3a2a 6px)"></div>
+        <div class="rock-info">
+          <div class="rock-name">Oil Shale (Ölschiefer)</div>
+          <div class="rock-desc">Middle Eocene lacustrine sediment, ~47–48 Ma. Fine dark laminated mud from the floor of a volcanic maar lake. Exceptional fossil preservation — sometimes with fur and stomach contents!</div>
+        </div>
+      </div>
+
+      <div class="rock-entry">
+        <div class="rock-swatch" style="background: repeating-linear-gradient(135deg,#c8b080,#c8b080 3px,#a89060 3px,#a89060 6px)"></div>
+        <div class="rock-info">
+          <div class="rock-name">Dinotheriensande (Fluvial Sands)</div>
+          <div class="rock-desc">Late Miocene fluvial deposits, ~9.5 Ma. Sandy and gravelly river sediments of the ancient Proto-Rhine. Preserves large mammal bones but not soft tissue.</div>
+        </div>
+      </div>
+
+      <div class="rock-entry">
+        <div class="rock-swatch" style="background: repeating-linear-gradient(45deg,#88b888,#88b888 3px,#608060 3px,#608060 6px)"></div>
+        <div class="rock-info">
+          <div class="rock-name">Marine Limestone & Marl (Mainz Basin)</div>
+          <div class="rock-desc">Oligocene marine sediments, ~25–35 Ma. Deposited in a warm shallow sea that covered the Mainz Basin. Contains marine shells, shark teeth, and whale remains.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="tip-box">
+      <strong>💡 Student Tip: Why does rock type matter?</strong>
+      Fine-grained, oxygen-poor sediments (like oil shale) preserve fossils best — even fur and feathers.
+      Coarse sediments (sands/gravels) preserve bones but lose detail. Metamorphic rocks
+      (quartzite, phyllite) rarely preserve fossils because heat and pressure destroy them.
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  Data sources: UNESCO World Heritage (Messel), Senckenberg Research Institute, Mainz University, PLoS ONE, Wikipedia. For educational use. Map tiles © OpenStreetMap contributors.
+</footer>
+
+<script>
+  // ── Map Initialisation ──────────────────────────────────────────────────────
+  const CENTER = [50.198, 8.574]; // Hohemark, Oberursel
+
+  const map = L.map('map', {
+    center: CENTER,
+    zoom: 9,
+    zoomControl: true
+  });
+
+  // Tile layer — CartoDB Positron (light, scholarly feel)
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors © <a href="https://carto.com/">CARTO</a>',
+    subdomains: 'abcd',
+    maxZoom: 19
+  }).addTo(map);
+
+  // ── 60 km Radius Circle ─────────────────────────────────────────────────────
+  L.circle(CENTER, {
+    radius: 60000,
+    color: '#d4a853',
+    weight: 2,
+    dashArray: '8 5',
+    fillColor: '#d4a853',
+    fillOpacity: 0.04
+  }).addTo(map);
+
+  // ── Centre Marker (Hohemark) ────────────────────────────────────────────────
+  const centreIcon = L.divIcon({
+    html: `<div style="
+      width:18px;height:18px;
+      background:#d4a853;
+      border:3px solid #fff;
+      border-radius:50%;
+      box-shadow:0 0 0 2px #d4a853;
+    "></div>`,
+    iconSize: [18, 18],
+    iconAnchor: [9, 9],
+    className: ''
+  });
+
+  L.marker(CENTER, { icon: centreIcon })
+    .addTo(map)
+    .bindPopup(`
+      <div class="fossil-popup">
+        <div class="pop-title" style="border-color:#d4a853">📍 Hohemark, Oberursel — Map Centre</div>
+        <div class="pop-rock-info">
+          <strong>You are here</strong><br>
+          Hohemark (alt. ~490 m) sits on the southern slope of the Hohe Taunus, at the boundary
+          between Quaternary valley sediments and the ancient Devonian rocks of the Taunus massif.<br><br>
+          The visitor centre for the Hochtaunus Regional Park is here. Taunusquarzit outcrops
+          are visible on nearby ridges.
+        </div>
+        <div class="pop-student-note">
+          <strong>🎓 Student note:</strong> The Taunus quartzite ridges visible to the north
+          are among the oldest rocks in Hesse — deposited as coastal sands in a Devonian tropical
+          sea over 400 million years ago.
+        </div>
+      </div>`, { maxWidth: 380 });
+
+  // ── Colour Helper ───────────────────────────────────────────────────────────
+  const ERA_COLOURS = {
+    devonian:  '#5b9bd5',
+    eocene:    '#a855f7',
+    oligocene: '#22c55e',
+    miocene:   '#f97316'
+  };
+
+  function siteIcon(era, letter) {
+    const col = ERA_COLOURS[era];
+    return L.divIcon({
+      html: `<div style="
+        width:32px;height:32px;
+        background:${col};
+        border:3px solid white;
+        border-radius:50%;
+        display:flex;align-items:center;justify-content:center;
+        font-weight:bold;font-size:13px;color:white;
+        box-shadow:0 2px 8px rgba(0,0,0,0.5);
+        font-family:Georgia,serif;
+      ">${letter}</div>`,
+      iconSize: [32, 32],
+      iconAnchor: [16, 16],
+      className: ''
+    });
+  }
+
+  // ── Fossil Site Data ────────────────────────────────────────────────────────
+
+  // ── SITE 1: Messel Pit ──────────────────────────────────────────────────────
+  L.marker([49.919, 8.762], { icon: siteIcon('eocene', 'M') })
+    .addTo(map)
+    .bindPopup(`
+      <div class="fossil-popup">
+        <div class="pop-title" style="border-color:#a855f7">🦎 Messel Pit (Grube Messel)</div>
+        <div class="pop-rock-badge" style="background:#a855f7">Eocene · ~47–48 Ma · UNESCO World Heritage</div>
+
+        <div class="pop-rock-info">
+          <strong>Rock type:</strong> Oil Shale (Ölschiefer) — dark, finely laminated lacustrine sediment<br>
+          <strong>Depositional environment:</strong> Floor of an ancient volcanic maar lake, oxygen-depleted bottom waters prevented decay<br>
+          <strong>Why so good?</strong> Fossils often preserve fur, feathers, stomach contents, and even unborn young — exceptional preservation unique worldwide<br>
+          <strong>Location:</strong> ~30 km SE of Hohemark · near Darmstadt
+        </div>
+
+        <ul class="fossil-list">
+          <li class="fossil-entry">
+            <div class="fossil-name">Propalaeotherium parvulum &amp; P. hassiacum</div>
+            <div class="fossil-common">Early pygmy horse ("Urpferdchen")</div>
+            <div class="fossil-meta">
+              <span class="badge-age">🕰 47 Ma</span>
+              <span class="badge-year">📅 Systematic finds: 1970s–present</span>
+            </div>
+            <div class="fossil-note">
+              Stood only 30–55 cm tall (size of a fox). Over 70 skeletons found, including pregnant mares with unborn foals.
+              Preserves fur and stomach contents (leaves, grapes, seeds).
+              Excavated by Senckenberg Research Institute from the 1970s onward.
+            </div>
+          </li>
+          <li class="fossil-entry">
+            <div class="fossil-name">Darwinius masillae</div>
+            <div class="fossil-common">"Ida" — early primate (adapiform)</div>
+            <div class="fossil-meta">
+              <span class="badge-age">🕰 47 Ma</span>
+              <span class="badge-year">📅 Found: 1983 · Described: 2009</span>
+            </div>
+            <div class="fossil-note">
+              Exceptionally complete skeleton (~95% preserved). Found in 1983 by a private collector at Messel,
+              purchased by Jørn Hurum (Natural History Museum, Oslo) and formally described in 2009.
+              One section held at the Senckenberg Museum, Frankfurt. Named in honour of Charles Darwin's 200th birthday.
+            </div>
+          </li>
+          <li class="fossil-entry">
+            <div class="fossil-name">Leptictidium auderiense</div>
+            <div class="fossil-common">Hopping insectivore mammal</div>
+            <div class="fossil-meta">
+              <span class="badge-age">🕰 47 Ma</span>
+              <span class="badge-year">📅 Described: 1987 (Tobias &amp; Storch)</span>
+            </div>
+            <div class="fossil-note">
+              Bipedal hopping mammal, 60–90 cm long including tail. Three species found at Messel.
+              Stomach contents revealed it ate insects, small lizards, and plants.
+              No living relatives — an extinct mammal order (Leptictida).
+            </div>
+          </li>
+          <li class="fossil-entry">
+            <div class="fossil-name">Gastornis (Diatryma) sp.</div>
+            <div class="fossil-common">Giant flightless bird (~2 m tall)</div>
+            <div class="fossil-meta">
+              <span class="badge-age">🕰 47 Ma</span>
+              <span class="badge-year">📅 First Messel finds: early 1900s</span>
+            </div>
+            <div class="fossil-note">
+              Once thought to be a fearsome predator; now believed to be a herbivore
+              using its massive bill to crack hard nuts and seeds.
+              First animal remains from Messel (a crocodile) found in 1875;
+              systematic excavation began ~1970 by Hessisches Landesamt für Bodenforschung.
+            </div>
+          </li>
+          <li class="fossil-entry">
+            <div class="fossil-name">Various bat species (Palaeochiropteryx, Archaeonycteris)</div>
+            <div class="fossil-common">Early bats — some of the world's oldest</div>
+            <div class="fossil-meta">
+              <span class="badge-age">🕰 47 Ma</span>
+              <span class="badge-year">📅 Major finds: 1970s–2000s</span>
+            </div>
+            <div class="fossil-note">
+              Over 600 bat skeletons recovered — some with wing membranes preserved.
+              Already fully adapted for echolocation and flight, showing bats evolved very early.
+              Key specimens held at Senckenberg Museum, Frankfurt and HLMD Darmstadt.
+            </div>
+          </li>
+        </ul>
+
+        <div class="pop-student-note">
+          <strong>🎓 Student note:</strong> Messel is the world's best window into early Eocene life.
+          The oil shale formed when dead organisms sank into the anoxic (oxygen-free) bottom of a
+          volcanic crater lake and were preserved before bacteria could destroy them.
+          It was nearly turned into a rubbish dump in the 1990s — campaigners saved it.
+          UNESCO World Heritage Site since 1995.
+        </div>
+      </div>`, { maxWidth: 400 });
+
+  // ── SITE 2: Taunus / Hochtaunus ────────────────────────────────────────────
+  L.marker([50.25, 8.42], { icon: siteIcon('devonian', 'T') })
+    .addTo(map)
+    .bindPopup(`
+      <div class="fossil-popup">
+        <div class="pop-title" style="border-color:#5b9bd5">⛰ Hohe Taunus — Devonian Rocks</div>
+        <div class="pop-rock-badge" style="background:#5b9bd5">Early Devonian · ~400–415 Ma</div>
+
+        <div class="pop-rock-info">
+          <strong>Rock type:</strong> Taunusquarzit (Taunus Quartzite) — dense, pale grey metamorphic sandstone forming the high ridge;<br>
+          <strong>Also:</strong> Phyllites, greywacke (slate-like metamorphic mudstones) in valley areas<br>
+          <strong>Depositional environment:</strong> Shallow coastal seas on the margin of the ancient continent Laurussia (Old Red Continent)<br>
+          <strong>Metamorphism:</strong> Variscan orogeny (~320 Ma) cooked and compressed the rocks, destroying most fossils
+        </div>
+
+        <ul class="fossil-list">
+          <li class="fossil-entry">
+            <div class="fossil-name">Brachiopods (Spirifer, Atrypa)</div>
+            <div class="fossil-common">Marine brachiopods (lamp shells)</div>
+            <div class="fossil-meta">
+              <span class="badge-age">🕰 ~400–410 Ma (Emsian)</span>
+              <span class="badge-year">📅 Known since 19th century geological surveys</span>
+            </div>
+            <div class="fossil-note">
+              Rare fossil finds in less-metamorphosed carbonate lenses within the Taunus sequence.
+              Brachiopods superficially resemble clams but are unrelated — they were the dominant
+              filter-feeders in Devonian seas.
+              The Geological Survey of Hesse (HLUG) has recorded occurrences since the 1800s.
+            </div>
+          </li>
+          <li class="fossil-entry">
+            <div class="fossil-name">Trace fossils (Skolithos, Cruziana)</div>
+            <div class="fossil-common">Marine burrow traces</div>
+            <div class="fossil-meta">
+              <span class="badge-age">🕰 ~405–415 Ma</span>
+              <span class="badge-year">📅 Documented: 20th-century geological surveys</span>
+            </div>
+            <div class="fossil-note">
+              The Taunusquartzit preserves ancient burrowing traces from worms and arthropods
+              in what was a sandy, wave-washed shoreline. Trace fossils survive metamorphism
+              better than body fossils. Visible in quartzite outcrops on the Taunus ridgeline.
+            </div>
+          </li>
+        </ul>
+
+        <div class="pop-student-note">
+          <strong>🎓 Student note:</strong> The Taunus mountains are <em>ancient</em> —
+          their rocks are 400+ million years old, far older than the Alps.
+          The quartzite ridgeline (Großer Feldberg, 879 m) is so resistant to erosion
+          because silica-cemented quartz grains fused during metamorphism.
+          Fossils are rare here because heat and pressure destroyed them — compare
+          this to Messel's gentle lake mud, where preservation is perfect.
+        </div>
+      </div>`, { maxWidth: 400 });
+
+  // ── SITE 3: Lahn Valley / Weilburg ─────────────────────────────────────────
+  L.marker([50.483, 8.250], { icon: siteIcon('devonian', 'L') })
+    .addTo(map)
+    .bindPopup(`
+      <div class="fossil-popup">
+        <div class="pop-title" style="border-color:#5b9bd5">🪸 Lahn Valley — Devonian Reef (Weilburg)</div>
+        <div class="pop-rock-badge" style="background:#5b9bd5">Middle–Upper Devonian · ~375–385 Ma · Givetian–Frasnian</div>
+
+        <div class="pop-rock-info">
+          <strong>Rock type:</strong> Lahnmarmor — reef limestone that polishes to marble; creamy to pink in colour<br>
+          <strong>Depositional environment:</strong> Tropical coral reef in a warm shallow sea, similar to today's Great Barrier Reef<br>
+          <strong>Why "marble"?</strong> The limestone was slightly metamorphosed and recrystallised, giving it a marbled appearance<br>
+          <strong>Famous use:</strong> Lahnmarmor was used in the Empire State Building (New York) and many European palaces<br>
+          <strong>Location:</strong> Weilburg an der Lahn (~37 km NW of Hohemark); also Runkel, Limburg
+        </div>
+
+        <ul class="fossil-list">
+          <li class="fossil-entry">
+            <div class="fossil-name">Stromatopora (stromatoporoids)</div>
+            <div class="fossil-common">Reef-building sponge-like organisms</div>
+            <div class="fossil-meta">
+              <span class="badge-age">🕰 ~375–385 Ma (Givetian–Frasnian)</span>
+              <span class="badge-year">📅 Known since early quarrying, 17th century</span>
+            </div>
+            <div class="fossil-note">
+              Stromatoporoids were the primary reef-builders of Devonian seas — massive layered
+              colonial organisms related to sponges. They form the bulk of the Lahnmarmor reef framework.
+              Quarrying at Weilburg has exposed magnificent cross-sections of ancient reef structure.
+            </div>
+          </li>
+          <li class="fossil-entry">
+            <div class="fossil-name">Favosites, Thamnopora (tabulate corals)</div>
+            <div class="fossil-common">Colonial "honeycomb" and "pipe-organ" corals</div>
+            <div class="fossil-meta">
+              <span class="badge-age">🕰 ~380 Ma</span>
+              <span class="badge-year">📅 Systematically studied: 19th–20th centuries</span>
+            </div>
+            <div class="fossil-note">
+              Tabulate corals formed honeycomb and branching structures.
+              Extinct after the end-Devonian mass extinction (~359 Ma).
+              Beautifully preserved specimens visible in polished Lahnmarmor floor tiles.
+            </div>
+          </li>
+          <li class="fossil-entry">
+            <div class="fossil-name">Rugose corals (Acanthophyllum, Calceola)</div>
+            <div class="fossil-common">Solitary and colonial "horn corals"</div>
+            <div class="fossil-meta">
+              <span class="badge-age">🕰 ~380 Ma</span>
+              <span class="badge-year">📅 Described by Goldfuss &amp; others, early 1800s</span>
+            </div>
+            <div class="fossil-note">
+              Rugose corals had a characteristic wrinkled outer wall (Latin: ruga = wrinkle).
+              Calceola sandalina has a slipper-like shape — a classic Devonian index fossil.
+              Also extinct after the end-Devonian extinction.
+            </div>
+          </li>
+          <li class="fossil-entry">
+            <div class="fossil-name">Crinoids (sea lilies) &amp; Brachiopods</div>
+            <div class="fossil-common">Marine invertebrates of the reef community</div>
+            <div class="fossil-meta">
+              <span class="badge-age">🕰 ~375–385 Ma</span>
+              <span class="badge-year">📅 Known from early 19th century paleontology</span>
+            </div>
+            <div class="fossil-note">
+              Crinoid stem segments ("Trochiten") are very common in Devonian limestones —
+              they look like stone buttons. Brachiopods were the dominant shellfish of the reef.
+              Both lived anchored to or near the reef framework.
+            </div>
+          </li>
+        </ul>
+
+        <div class="pop-student-note">
+          <strong>🎓 Student note:</strong> When the Lahn Valley corals were alive, Germany
+          was close to the equator and covered by a warm tropical sea. The reef organisms
+          are now stone — compressed into marble. Examine polished Lahnmarmor floor tiles
+          in any old German building and you may see real fossil coral cross-sections!
+        </div>
+      </div>`, { maxWidth: 400 });
+
+  // ── SITE 4: Mainz Basin / Alzey area ───────────────────────────────────────
+  L.marker([49.790, 8.110], { icon: siteIcon('oligocene', 'B') })
+    .addTo(map)
+    .bindPopup(`
+      <div class="fossil-popup">
+        <div class="pop-title" style="border-color:#22c55e">🐚 Mainz Basin — Oligocene Marine Fossils (Alzey / Flonheim)</div>
+        <div class="pop-rock-badge" style="background:#22c55e">Oligocene · ~25–35 Ma · Rupelian–Chattian</div>
+
+        <div class="pop-rock-info">
+          <strong>Rock type:</strong> Marine limestone, sandy marl, glauconitic sands (Alzey Formation; Rupelian stage)<br>
+          <strong>Depositional environment:</strong> Shallow subtropical sea connecting the North Sea to the Mediterranean via the Mainz Basin embayment<br>
+          <strong>Study history:</strong> One of the most studied Tertiary marine basins in the world — researched for ~200 years<br>
+          <strong>Location:</strong> Rheinhessen region, ~45–55 km SW of Hohemark; collections at Naturhistorisches Museum Mainz
+        </div>
+
+        <ul class="fossil-list">
+          <li class="fossil-entry">
+            <div class="fossil-name">Mysticete cetacean (whale, undescribed)</div>
+            <div class="fossil-common">Early baleen whale</div>
+            <div class="fossil-meta">
+              <span class="badge-age">🕰 ~33 Ma (early Rupelian)</span>
+              <span class="badge-year">📅 Described: 2024 (Roden et al., Paläontologische Zeitschrift)</span>
+            </div>
+            <div class="fossil-note">
+              A cheek tooth from the Alzey Formation represents the first cetacean (whale)
+              ever found in the Oligocene of the SW German Mainz Basin.
+              Most similar to early toothed baleen whales (mysticetes).
+              Described in 2024 by researchers from Mainz University.
+            </div>
+          </li>
+          <li class="fossil-entry">
+            <div class="fossil-name">Sharks (Carcharocles, Striatolamia, Otodus)</div>
+            <div class="fossil-common">Oligocene marine sharks</div>
+            <div class="fossil-meta">
+              <span class="badge-age">🕰 ~28–33 Ma</span>
+              <span class="badge-year">📅 Collected since 19th century; still found by amateur collectors</span>
+            </div>
+            <div class="fossil-note">
+              Shark teeth are among the most common fossils in the Mainz Basin sands.
+              They include relatives of the giant Megalodon. Shark teeth survive because
+              they are made of dense enameloid — more resistant than bone.
+            </div>
+          </li>
+          <li class="fossil-entry">
+            <div class="fossil-name">Marine molluscs (Glycymeris, Crassostrea, Turritella)</div>
+            <div class="fossil-common">Cockles, oysters, turret snails</div>
+            <div class="fossil-meta">
+              <span class="badge-age">🕰 ~28–35 Ma</span>
+              <span class="badge-year">📅 Described: 1800s–present (Beyrich, Philippi et al.)</span>
+            </div>
+            <div class="fossil-note">
+              Thousands of marine shell species are known from the Mainz Basin.
+              Many species were first described by Heinrich Ernst Beyrich (1815–1896),
+              who coined the term "Oligocene" based partly on fossils from this region.
+              The fauna tells us the sea had variable salinity.
+            </div>
+          </li>
+        </ul>
+
+        <div class="pop-student-note">
+          <strong>🎓 Student note:</strong> Heinrich Ernst Beyrich studied the Mainz Basin fossils
+          so thoroughly that he defined the Oligocene epoch — meaning this region is part of the
+          foundation of the entire geological timescale. The sea that deposited these fossils
+          stretched from Mainz all the way to Scandinavia.
+        </div>
+      </div>`, { maxWidth: 400 });
+
+  // ── SITE 5: Eppelsheim / Dinotheriensande ──────────────────────────────────
+  L.marker([49.892, 8.162], { icon: siteIcon('miocene', 'E') })
+    .addTo(map)
+    .bindPopup(`
+      <div class="fossil-popup">
+        <div class="pop-title" style="border-color:#f97316">🦣 Eppelsheim — Dinotheriensande (Miocene Giants)</div>
+        <div class="pop-rock-badge" style="background:#f97316">Late Miocene · ~9.5 Ma · Vallesian · Eppelsheim Formation</div>
+
+        <div class="pop-rock-info">
+          <strong>Rock type:</strong> Dinotheriensande — coarse fluvial sands and gravels of the ancient Proto-Rhine River<br>
+          <strong>Depositional environment:</strong> Broad subtropical river floodplain and channels; warm, humid climate<br>
+          <strong>Study history:</strong> ~200 years of palaeontological research; benchmark for Neogene vertebrate palaeontology worldwide<br>
+          <strong>Location:</strong> Eppelsheim, Rheinhessen (~45 km SW of Hohemark); material at Naturhistorisches Museum Mainz &amp; Senckenberg Frankfurt<br>
+          <strong>Note:</strong> These sands represent the oldest known sediments of the Rhine river system
+        </div>
+
+        <ul class="fossil-list">
+          <li class="fossil-entry">
+            <div class="fossil-name">Deinotherium giganteum</div>
+            <div class="fossil-common">Giant elephant-like proboscidean ("terrible beast")</div>
+            <div class="fossil-meta">
+              <span class="badge-age">🕰 ~9.5 Ma (Late Miocene)</span>
+              <span class="badge-year">📅 Mandible described: 1829 (J.J. Kaup) · Skull found: 1836 (A. von Klipstein)</span>
+            </div>
+            <div class="fossil-note">
+              The largest land mammal known from Europe — estimated at 4–5 m tall.
+              Unlike elephants, its tusks curved downward from the lower jaw (possibly for
+              stripping bark). The mandible was found in sands near Eppelsheim and described
+              by <strong>Johann Jakob Kaup</strong> (1803–1873), curator at the Grand Ducal Museum in Darmstadt,
+              in 1829. The skull was found in 1836 by <strong>August von Klipstein</strong>
+              (geologist, Gießen University). Type locality = Eppelsheim.
+            </div>
+          </li>
+          <li class="fossil-entry">
+            <div class="fossil-name">Mastodon (Gomphotherium, Tetralophodon)</div>
+            <div class="fossil-common">Mastodons — relatives of elephants</div>
+            <div class="fossil-meta">
+              <span class="badge-age">🕰 ~9.5 Ma</span>
+              <span class="badge-year">📅 Known since early 1800s excavations</span>
+            </div>
+            <div class="fossil-note">
+              Multiple species of proboscideans lived alongside Deinotherium in the
+              subtropical Eppelsheim landscape. These are distinct from true elephants
+              (Elephantidae) — mastodons have simpler, cone-shaped molars.
+            </div>
+          </li>
+          <li class="fossil-entry">
+            <div class="fossil-name">Hipparion (three-toed horse)</div>
+            <div class="fossil-common">Three-toed Miocene horse</div>
+            <div class="fossil-meta">
+              <span class="badge-age">🕰 ~9.5 Ma</span>
+              <span class="badge-year">📅 Described: mid-19th century from Eppelsheim material</span>
+            </div>
+            <div class="fossil-note">
+              Smaller than modern horses and still had three toes (though the side toes were
+              reduced). The arrival of Hipparion in Europe ~11 Ma is used as a key
+              biostratigraphic marker (the "Hipparion datum").
+            </div>
+          </li>
+        </ul>
+
+        <div class="pop-student-note">
+          <strong>🎓 Student note:</strong> When Deinotherium walked the Eppelsheim floodplain,
+          the climate was warmer than today (no ice ages yet). The Proto-Rhine was flowing
+          through a broad valley with subtropical forests. The coarse sands that buried
+          these giants are the oldest part of the Rhine river system — the same river
+          you can see at Mainz and Wiesbaden today.
+        </div>
+      </div>`, { maxWidth: 400 });
+
+  // ── SITE 6: Limburg / Lower Lahn Devonian ──────────────────────────────────
+  L.marker([50.393, 8.067], { icon: siteIcon('devonian', 'Li') })
+    .addTo(map)
+    .bindPopup(`
+      <div class="fossil-popup">
+        <div class="pop-title" style="border-color:#5b9bd5">🐚 Limburg / Lower Lahn — Devonian Limestone</div>
+        <div class="pop-rock-badge" style="background:#5b9bd5">Middle Devonian · ~380–390 Ma · Eifelian–Givetian</div>
+
+        <div class="pop-rock-info">
+          <strong>Rock type:</strong> Dark grey to pale Devonian limestone (Kalk); some reddish nodular limestone (Cephalopodenkalk)<br>
+          <strong>Depositional environment:</strong> Open marine to reef-slope environment in Devonian tropical sea<br>
+          <strong>Note:</strong> The Limburg Cathedral (Dom) was built partly from local Devonian limestone<br>
+          <strong>Location:</strong> Limburg an der Lahn (~42 km NW of Hohemark); lower Lahn valley
+        </div>
+
+        <ul class="fossil-list">
+          <li class="fossil-entry">
+            <div class="fossil-name">Cephalopods (Manticoceras, Goniatites)</div>
+            <div class="fossil-common">Devonian ammonite relatives (goniatites)</div>
+            <div class="fossil-meta">
+              <span class="badge-age">🕰 ~385–370 Ma (Frasnian–Famennian)</span>
+              <span class="badge-year">📅 Described: 19th century by A.E.H. Beyrich, F.A. Roemer</span>
+            </div>
+            <div class="fossil-note">
+              Goniatites are extinct cephalopods — relatives of modern nautilus and ancestors of
+              ammonites. Their coiled shells with simple lobed suture lines are found in the
+              red-nodular Cephalopodenkalk ("cephalopod limestone") that outcrops along the lower Lahn.
+              Excellent biostratigraphic index fossils for the Late Devonian.
+            </div>
+          </li>
+          <li class="fossil-entry">
+            <div class="fossil-name">Trilobites (Phacops, Harpes)</div>
+            <div class="fossil-common">Marine arthropods — "woodlice of the sea"</div>
+            <div class="fossil-meta">
+              <span class="badge-age">🕰 ~380–390 Ma</span>
+              <span class="badge-year">📅 Collected since the 1800s; Rhenish Massif well-known</span>
+            </div>
+            <div class="fossil-note">
+              Trilobites are one of the most iconic Paleozoic fossils. Phacops had a distinctive
+              "helmet" head with large compound eyes. They went extinct in the end-Devonian
+              mass extinction (~359 Ma). More commonly found to the west (Hunsrück) but
+              recorded from Lahn valley limestone exposures.
+            </div>
+          </li>
+        </ul>
+
+        <div class="pop-student-note">
+          <strong>🎓 Student note:</strong> The Devonian sea that covered the Lahn valley
+          was part of a vast tropical ocean. Goniatites swimming in these waters were ancestors
+          of the ammonites that would later fill the Jurassic seas.
+          The red colour of some Cephalopodenkalk comes from iron oxide — evidence of
+          slightly deeper, well-oxygenated water above the reef.
+        </div>
+      </div>`, { maxWidth: 400 });
+
+  // ── Labels for sites ────────────────────────────────────────────────────────
+  function addLabel(latlng, text, color) {
+    L.marker(latlng, {
+      icon: L.divIcon({
+        html: `<div style="
+          background:${color};color:white;
+          padding:2px 7px;border-radius:10px;
+          font-size:11px;font-weight:bold;
+          white-space:nowrap;
+          box-shadow:0 1px 4px rgba(0,0,0,0.4);
+          font-family:Georgia,serif;
+        ">${text}</div>`,
+        className: '',
+        iconAnchor: [0, -18]
+      }),
+      interactive: false,
+      zIndexOffset: -100
+    }).addTo(map);
+  }
+
+  addLabel([49.92, 8.79], 'Messel Pit', '#a855f7');
+  addLabel([50.22, 8.37], 'Taunus (Devonian)', '#5b9bd5');
+  addLabel([50.50, 8.25], 'Weilburg/Lahn', '#5b9bd5');
+  addLabel([49.75, 8.08], 'Mainz Basin', '#22c55e');
+  addLabel([49.87, 8.14], 'Eppelsheim', '#f97316');
+  addLabel([50.37, 8.04], 'Limburg/Lahn', '#5b9bd5');
+  addLabel([50.20, 8.50], 'Hohemark (centre)', '#d4a853');
+
+  // ── Scale bar ───────────────────────────────────────────────────────────────
+  L.control.scale({ imperial: false, metric: true }).addTo(map);
+
+</script>
+</body>
+</html>

@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evidence for Evolution – Grade 8 Interactive Worksheet</title>
+<style>
+  :root {
+    --fossil: #b5835a;
+    --anatomy: #5a9e6f;
+    --vestigial: #7b6db5;
+    --embryo: #c46b8a;
+    --dna: #4a90c4;
+    --direct: #d4903a;
+    --bg: #f8f6f0;
+    --card: #ffffff;
+    --text: #2c2c2c;
+    --correct: #2e7d32;
+    --wrong: #c62828;
+    --border: #ddd;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  /* ── HEADER ── */
+  .page-header {
+    background: linear-gradient(135deg, #1a3a5c 0%, #2e6b9e 100%);
+    color: white;
+    padding: 32px 24px 24px;
+    text-align: center;
+  }
+  .page-header h1 { font-size: 2rem; letter-spacing: 1px; margin-bottom: 6px; }
+  .page-header p  { font-size: 1rem; opacity: .85; }
+
+  /* ── PROGRESS BAR ── */
+  .progress-wrap {
+    background: #1a3a5c;
+    padding: 10px 24px 16px;
+    text-align: center;
+  }
+  .progress-label { color: rgba(255,255,255,.8); font-size: .85rem; margin-bottom: 6px; }
+  .progress-bar-outer {
+    background: rgba(255,255,255,.2);
+    border-radius: 20px;
+    height: 12px;
+    max-width: 600px;
+    margin: 0 auto;
+    overflow: hidden;
+  }
+  .progress-bar-inner {
+    background: #7ed4a0;
+    height: 100%;
+    border-radius: 20px;
+    width: 0%;
+    transition: width .5s ease;
+  }
+  #progress-text { color: rgba(255,255,255,.9); font-size: .85rem; margin-top: 5px; }
+
+  /* ── INTRO ── */
+  .intro-box {
+    max-width: 800px;
+    margin: 28px auto 0;
+    background: var(--card);
+    border-radius: 12px;
+    padding: 22px 28px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.08);
+    border-left: 5px solid #2e6b9e;
+  }
+  .intro-box h2 { color: #1a3a5c; margin-bottom: 8px; }
+  .intro-box p  { color: #444; font-size: .95rem; }
+
+  /* ── STATIONS ── */
+  .stations-container {
+    max-width: 860px;
+    margin: 28px auto 60px;
+    padding: 0 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .station-card {
+    background: var(--card);
+    border-radius: 14px;
+    box-shadow: 0 3px 12px rgba(0,0,0,.09);
+    overflow: hidden;
+  }
+
+  .station-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 24px;
+    color: white;
+  }
+  .station-icon { font-size: 2rem; line-height: 1; }
+  .station-header h2 { font-size: 1.25rem; }
+  .station-badge {
+    margin-left: auto;
+    background: rgba(255,255,255,.25);
+    border-radius: 20px;
+    padding: 3px 12px;
+    font-size: .8rem;
+    white-space: nowrap;
+  }
+
+  .station-body { padding: 22px 26px; }
+
+  .reading-block {
+    background: #f5f5f5;
+    border-radius: 8px;
+    padding: 16px 18px;
+    margin-bottom: 22px;
+    font-size: .95rem;
+    border-left: 4px solid currentColor;
+  }
+  .reading-block strong { font-weight: 700; }
+
+  .question-block { margin-bottom: 20px; }
+  .question-block label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-size: .95rem;
+  }
+  .question-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    color: white;
+    font-size: .75rem;
+    font-weight: 700;
+    margin-right: 8px;
+    flex-shrink: 0;
+  }
+
+  /* Multiple choice */
+  .mc-options { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
+  .mc-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 14px;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all .2s;
+    font-size: .92rem;
+    background: white;
+    text-align: left;
+    width: 100%;
+  }
+  .mc-option:hover { border-color: #aaa; background: #fafafa; }
+  .mc-option.correct { border-color: var(--correct); background: #e8f5e9; color: #1b5e20; }
+  .mc-option.wrong   { border-color: var(--wrong);   background: #ffebee; color: #b71c1c; }
+  .mc-option.disabled { cursor: default; }
+  .mc-letter {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    border: 2px solid currentColor;
+    display: flex; align-items: center; justify-content: center;
+    font-size: .75rem; font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* Short answer */
+  .short-answer {
+    width: 100%;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: .92rem;
+    font-family: inherit;
+    resize: vertical;
+    min-height: 80px;
+    transition: border-color .2s;
+  }
+  .short-answer:focus { outline: none; border-color: #2e6b9e; }
+
+  /* True/False */
+  .tf-options { display: flex; gap: 12px; margin-top: 4px; }
+  .tf-btn {
+    flex: 1;
+    padding: 10px;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: .95rem;
+    font-weight: 600;
+    background: white;
+    transition: all .2s;
+  }
+  .tf-btn:hover { background: #f0f0f0; }
+  .tf-btn.correct { border-color: var(--correct); background: #e8f5e9; color: var(--correct); }
+  .tf-btn.wrong   { border-color: var(--wrong);   background: #ffebee; color: var(--wrong); }
+
+  /* Feedback */
+  .feedback {
+    display: none;
+    margin-top: 8px;
+    padding: 9px 13px;
+    border-radius: 7px;
+    font-size: .88rem;
+    font-weight: 600;
+  }
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: #e8f5e9; color: #1b5e20; border: 1px solid #a5d6a7; }
+  .feedback.wrong-fb   { background: #ffebee; color: #b71c1c; border: 1px solid #ef9a9a; }
+
+  /* DNA activity */
+  .dna-table { border-collapse: collapse; width: 100%; margin: 14px 0; font-family: monospace; font-size: 1rem; }
+  .dna-table th, .dna-table td {
+    border: 2px solid #ddd;
+    padding: 9px 12px;
+    text-align: center;
+  }
+  .dna-table th { background: #f0f0f0; font-weight: 700; }
+  .dna-a  { background: #ffcdd2; font-weight: 700; }
+  .dna-b  { background: #f8bbd0; font-weight: 700; }
+  .dna-c  { background: #fce4ec; font-weight: 700; }
+  .match  { background: #c8e6c9 !important; border-color: #66bb6a !important; }
+  .no-match { background: #ffcdd2 !important; }
+
+  /* Drag and drop */
+  .drag-container { display: flex; gap: 16px; flex-wrap: wrap; margin: 10px 0; }
+  .drag-bank {
+    flex: 1; min-width: 200px;
+    background: #f5f5f5;
+    border-radius: 8px;
+    padding: 12px;
+    min-height: 80px;
+    border: 2px dashed #ccc;
+  }
+  .drag-bank h4 { font-size: .85rem; color: #666; margin-bottom: 8px; }
+  .drag-item {
+    display: inline-block;
+    background: white;
+    border: 2px solid #ccc;
+    border-radius: 20px;
+    padding: 5px 14px;
+    margin: 4px;
+    cursor: grab;
+    font-size: .88rem;
+    transition: all .2s;
+    user-select: none;
+  }
+  .drag-item:hover { border-color: #888; box-shadow: 0 2px 6px rgba(0,0,0,.1); }
+  .drag-item.dragging { opacity: .5; }
+  .drop-zone {
+    min-height: 50px;
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    padding: 8px;
+    margin-top: 6px;
+    background: #fafafa;
+    transition: background .2s;
+  }
+  .drop-zone.over { background: #e3f2fd; border-color: #2196f3; }
+  .drop-zone-label { font-size: .82rem; color: #888; margin-bottom: 6px; font-weight: 600; }
+  .drop-columns { display: flex; gap: 12px; margin-top: 10px; }
+  .drop-col { flex: 1; }
+
+  /* Check button */
+  .check-btn {
+    margin-top: 14px;
+    padding: 10px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: .95rem;
+    font-weight: 700;
+    color: white;
+    cursor: pointer;
+    transition: opacity .2s, transform .1s;
+  }
+  .check-btn:hover  { opacity: .9; }
+  .check-btn:active { transform: scale(.97); }
+
+  /* Station colours */
+  .s-fossil    { background: linear-gradient(135deg, #b5835a, #d4a373); }
+  .s-anatomy   { background: linear-gradient(135deg, #5a9e6f, #7ab893); }
+  .s-vestigial { background: linear-gradient(135deg, #7b6db5, #a695d6); }
+  .s-embryo    { background: linear-gradient(135deg, #c46b8a, #e09ab5); }
+  .s-dna       { background: linear-gradient(135deg, #4a90c4, #6fb3e0); }
+  .s-direct    { background: linear-gradient(135deg, #d4903a, #e8b46a); }
+
+  .rb-fossil    { color: var(--fossil);    border-left-color: var(--fossil); }
+  .rb-anatomy   { color: var(--anatomy);   border-left-color: var(--anatomy); }
+  .rb-vestigial { color: var(--vestigial); border-left-color: var(--vestigial); }
+  .rb-embryo    { color: var(--embryo);    border-left-color: var(--embryo); }
+  .rb-dna       { color: var(--dna);       border-left-color: var(--dna); }
+  .rb-direct    { color: var(--direct);    border-left-color: var(--direct); }
+
+  .qn-fossil    { background: var(--fossil); }
+  .qn-anatomy   { background: var(--anatomy); }
+  .qn-vestigial { background: var(--vestigial); }
+  .qn-embryo    { background: var(--embryo); }
+  .qn-dna       { background: var(--dna); }
+  .qn-direct    { background: var(--direct); }
+
+  .btn-fossil    { background: var(--fossil); }
+  .btn-anatomy   { background: var(--anatomy); }
+  .btn-vestigial { background: var(--vestigial); }
+  .btn-embryo    { background: var(--embryo); }
+  .btn-dna       { background: var(--dna); }
+  .btn-direct    { background: var(--direct); }
+
+  .divider { border: none; border-top: 2px dashed #e0e0e0; margin: 22px 0; }
+
+  /* Vocab box */
+  .vocab-box {
+    background: linear-gradient(135deg, #e8f4fd, #dff0ff);
+    border: 2px solid #b3d9f5;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 22px;
+  }
+  .vocab-box h4 { color: #1a3a5c; margin-bottom: 8px; font-size: .9rem; text-transform: uppercase; letter-spacing: .5px; }
+  .vocab-item { display: inline-block; margin: 4px 8px 4px 0; }
+  .vocab-term { font-weight: 700; color: #1a3a5c; }
+  .vocab-def  { color: #444; font-size: .88rem; }
+
+  /* Summary score */
+  .score-card {
+    max-width: 860px;
+    margin: 0 auto 60px;
+    padding: 0 16px;
+  }
+  .score-inner {
+    background: linear-gradient(135deg, #1a3a5c, #2e6b9e);
+    color: white;
+    border-radius: 14px;
+    padding: 28px 32px;
+    text-align: center;
+  }
+  .score-inner h2 { font-size: 1.5rem; margin-bottom: 10px; }
+  .score-num { font-size: 3rem; font-weight: 700; margin: 10px 0; }
+  .score-inner p { opacity: .85; font-size: .95rem; }
+
+  @media (max-width: 600px) {
+    .page-header h1 { font-size: 1.4rem; }
+    .station-header  { flex-wrap: wrap; }
+    .drop-columns    { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1>🔬 Evidence for Evolution</h1>
+  <p>Grade 8 Science · Station Worksheet · Answer the questions as you move through each station!</p>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-label">Your Progress</div>
+  <div class="progress-bar-outer"><div class="progress-bar-inner" id="prog-bar"></div></div>
+  <div id="progress-text">0 of 17 questions answered</div>
+</div>
+
+<div class="intro-box" style="margin: 28px auto 0; max-width:860px; margin-left:auto; margin-right:auto; padding: 0 16px;">
+  <div style="background:white; border-radius:12px; padding:20px 24px; box-shadow:0 2px 8px rgba(0,0,0,.08); border-left:5px solid #2e6b9e;">
+    <h2 style="color:#1a3a5c; margin-bottom:8px;">📋 How to Use This Worksheet</h2>
+    <p style="color:#444; font-size:.95rem;">Read each station's passage carefully, then answer the questions below it. Click answer choices to check your work instantly — short answer questions are for your own reflection. Work through all 6 stations to complete the worksheet!</p>
+  </div>
+</div>
+
+<div class="stations-container">
+
+  <!-- ══════════════════════════════════════════
+       STATION 1 – FOSSILS
+  ══════════════════════════════════════════ -->
+  <div class="station-card">
+    <div class="station-header s-fossil">
+      <div class="station-icon">🦴</div>
+      <h2>Station 1 · Fossils</h2>
+      <span class="station-badge">Evidence Type #1</span>
+    </div>
+    <div class="station-body">
+
+      <div class="vocab-box">
+        <h4>🔑 Key Terms</h4>
+        <div><span class="vocab-term">Fossil</span> <span class="vocab-def">— preserved remains or traces of ancient organisms</span></div>
+        <div><span class="vocab-term">Transition fossil</span> <span class="vocab-def">— a fossil of a species that existed <em>between</em> an ancient and a modern form, showing gradual change</span></div>
+      </div>
+
+      <div class="reading-block rb-fossil">
+        <p>Fossils are the most obvious form of evidence for evolution. Without them, we would have virtually no clues about the species that existed in the past. On his journey, Darwin found fossils of ancient forms of modern species. From their similarities he determined their relationships, but their differences convinced him that species have changed.</p>
+        <br>
+        <p>Technically, the discovery of a single fossil doesn't prove that an ancient species is related to a modern one, no matter how similar they are. If scientists can find a <strong>set of fossils from various time periods</strong> that show gradual changes, their argument is much more convincing. Scientists search for <strong>transition fossils</strong> — fossils of species that existed <em>between</em> an ancient and modern form — in order to strengthen the case for evolution.</p>
+      </div>
+
+      <!-- Q1 -->
+      <div class="question-block">
+        <label><span class="question-num qn-fossil">1</span> Why are transition fossils especially important to the case for evolution?</label>
+        <div class="mc-options">
+          <button class="mc-option" onclick="checkMC(this, false, 'q1')">
+            <span class="mc-letter">A</span> They are the oldest fossils ever found.
+          </button>
+          <button class="mc-option" onclick="checkMC(this, true, 'q1')">
+            <span class="mc-letter">B</span> They show the gradual changes between an ancient species and a modern one.
+          </button>
+          <button class="mc-option" onclick="checkMC(this, false, 'q1')">
+            <span class="mc-letter">C</span> They prove that two unrelated species look exactly the same.
+          </button>
+          <button class="mc-option" onclick="checkMC(this, false, 'q1')">
+            <span class="mc-letter">D</span> They are only found on Darwin's islands.
+          </button>
+        </div>
+        <div class="feedback" id="fb-q1"></div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="question-block">
+        <label><span class="question-num qn-fossil">2</span> True or False: Finding a single fossil of an ancient species is enough to prove it is related to a modern species.</label>
+        <div class="tf-options">
+          <button class="tf-btn" onclick="checkTF(this, false, 'q2')">✔ True</button>
+          <button class="tf-btn" onclick="checkTF(this, true, 'q2')">✘ False</button>
+        </div>
+        <div class="feedback" id="fb-q2"></div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="question-block">
+        <label><span class="question-num qn-fossil">3</span> 💬 In your own words, explain why Darwin thought ancient fossils were related to modern species, AND why he thought the species had changed. (Short answer)</label>
+        <textarea class="short-answer" placeholder="Type your answer here…" onInput="trackShortAnswer('q3')"></textarea>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       STATION 2 – ANATOMY
+  ══════════════════════════════════════════ -->
+  <div class="station-card">
+    <div class="station-header s-anatomy">
+      <div class="station-icon">🦾</div>
+      <h2>Station 2 · Anatomy</h2>
+      <span class="station-badge">Evidence Type #2</span>
+    </div>
+    <div class="station-body">
+
+      <div class="vocab-box">
+        <h4>🔑 Key Terms</h4>
+        <div><span class="vocab-term">Anatomy</span> <span class="vocab-def">— the study of body structure</span></div>
+        <div><span class="vocab-term">Homologous structures</span> <span class="vocab-def">— similar structures in different species that suggest a common ancestor</span></div>
+        <div><span class="vocab-term">Analogous structures</span> <span class="vocab-def">— structures with the same function but NOT inherited from a common ancestor</span></div>
+      </div>
+
+      <div class="reading-block rb-anatomy">
+        <p>Scientists examine <strong>anatomy</strong>, or body structure, to determine relationships between species. Body structure is determined by DNA, so species with similar anatomies also have similar DNA — and individuals with more similar DNA are more closely related.</p>
+        <br>
+        <p><strong>Homologous structures</strong> are structures that are similar across species even though they may be used for different purposes (walking, flying, swimming, etc.). For example, a human arm, a horse leg, a cat paw, a bat wing, a bird wing, and a whale flipper all share the same basic bone structure: one solid upper arm bone, two forearm bones, and several small "finger" bones. Scientists believe they all share a common ancestor that had this same arrangement.</p>
+        <br>
+        <p><strong>Analogous structures</strong> are a common trap! Just because two species look alike doesn't mean they're related. Analogous structures do the same job and may look similar, but were NOT inherited from the same ancestor. For example, bird wings and insect wings are both used for flying — but they are so different in structure that scientists do NOT consider them evidence of a shared ancestor.</p>
+      </div>
+
+      <!-- Q4 -->
+      <div class="question-block">
+        <label><span class="question-num qn-anatomy">4</span> A human arm and a whale flipper have very similar bone arrangements even though they are used for very different things. This is an example of…</label>
+        <div class="mc-options">
+          <button class="mc-option" onclick="checkMC(this, false, 'q4')">
+            <span class="mc-letter">A</span> Analogous structures — they do the same job.
+          </button>
+          <button class="mc-option" onclick="checkMC(this, true, 'q4')">
+            <span class="mc-letter">B</span> Homologous structures — they share a similar bone arrangement suggesting a common ancestor.
+          </button>
+          <button class="mc-option" onclick="checkMC(this, false, 'q4')">
+            <span class="mc-letter">C</span> Vestigial structures — one of them has no purpose.
+          </button>
+          <button class="mc-option" onclick="checkMC(this, false, 'q4')">
+            <span class="mc-letter">D</span> Transition fossils — they show gradual change over time.
+          </button>
+        </div>
+        <div class="feedback" id="fb-q4"></div>
+      </div>
+
+      <!-- Q5 – Sort activity -->
+      <div class="question-block">
+        <label><span class="question-num qn-anatomy">5</span> 🗂 Sort these examples into <strong>Homologous</strong> or <strong>Analogous</strong> structures. Drag each card to the correct column!</label>
+        <div class="drag-bank">
+          <h4>Drag from here:</h4>
+          <span class="drag-item" draggable="true" id="di1" ondragstart="dragStart(event)">🦅 Bird wing &amp; 🦇 Bat wing</span>
+          <span class="drag-item" draggable="true" id="di2" ondragstart="dragStart(event)">🦈 Shark fin &amp; 🐬 Dolphin flipper</span>
+          <span class="drag-item" draggable="true" id="di3" ondragstart="dragStart(event)">🖐 Human hand &amp; 🐱 Cat paw</span>
+          <span class="drag-item" draggable="true" id="di4" ondragstart="dragStart(event)">🦋 Butterfly wing &amp; 🐦 Sparrow wing</span>
+        </div>
+        <div class="drop-columns">
+          <div class="drop-col">
+            <div class="drop-zone-label">🟢 HOMOLOGOUS</div>
+            <div class="drop-zone" id="drop-homo"
+              ondragover="dragOver(event)"
+              ondragleave="dragLeave(event)"
+              ondrop="dropItem(event, 'homo')">
+              <span style="color:#bbb; font-size:.85rem">Drop here…</span>
+            </div>
+          </div>
+          <div class="drop-col">
+            <div class="drop-zone-label">🟡 ANALOGOUS</div>
+            <div class="drop-zone" id="drop-ana"
+              ondragover="dragOver(event)"
+              ondragleave="dragLeave(event)"
+              ondrop="dropItem(event, 'ana')">
+              <span style="color:#bbb; font-size:.85rem">Drop here…</span>
+            </div>
+          </div>
+        </div>
+        <button class="check-btn btn-anatomy" onclick="checkDragDrop()" style="margin-top:12px">✔ Check My Sorting</button>
+        <div class="feedback" id="fb-q5"></div>
+      </div>
+
+      <!-- Q6 -->
+      <div class="question-block">
+        <label><span class="question-num qn-anatomy">6</span> 💬 Why would it be a mistake to conclude that insects and birds share a common ancestor just because they both have wings? (Short answer)</label>
+        <textarea class="short-answer" placeholder="Think about the difference between homologous and analogous structures…" onInput="trackShortAnswer('q6')"></textarea>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       STATION 3 – VESTIGIAL STRUCTURES
+  ══════════════════════════════════════════ -->
+  <div class="station-card">
+    <div class="station-header s-vestigial">
+      <div class="station-icon">🐋</div>
+      <h2>Station 3 · Vestigial Structures</h2>
+      <span class="station-badge">Evidence Type #3</span>
+    </div>
+    <div class="station-body">
+
+      <div class="vocab-box">
+        <h4>🔑 Key Term</h4>
+        <div><span class="vocab-term">Vestigial structure</span> <span class="vocab-def">— a body part that appears to have no current purpose but likely had a function in the past</span></div>
+      </div>
+
+      <div class="reading-block rb-vestigial">
+        <p><strong>Vestigial structures</strong> are parts of the body that seem to have no purpose at all. Scientists suspect that vestigial structures are evidence that these parts <em>did</em> serve a purpose in the past.</p>
+        <br>
+        <p>For example, whales have a <strong>pelvis (hip) bone</strong> near where their hind limbs would be. It is thought that this bone provides evidence that the whale evolved from a species which had hind limbs and may have even walked on land. Perhaps after this species moved into the water, it no longer needed hind legs. These structures gradually shrank over generations until they almost disappeared — but not completely. Today the whale's vestigial pelvis remains to tell their story.</p>
+      </div>
+
+      <!-- Q7 -->
+      <div class="question-block">
+        <label><span class="question-num qn-vestigial">7</span> What does a vestigial structure tell us about the evolutionary history of a species?</label>
+        <div class="mc-options">
+          <button class="mc-option" onclick="checkMC(this, false, 'q7')">
+            <span class="mc-letter">A</span> The species developed that structure very recently and hasn't used it yet.
+          </button>
+          <button class="mc-option" onclick="checkMC(this, false, 'q7')">
+            <span class="mc-letter">C</span> The structure will grow larger and more useful in the future.
+          </button>
+          <button class="mc-option" onclick="checkMC(this, true, 'q7')">
+            <span class="mc-letter">B</span> The structure likely had a function in an ancestor's past and has been reduced over time.
+          </button>
+          <button class="mc-option" onclick="checkMC(this, false, 'q7')">
+            <span class="mc-letter">D</span> The structure is evidence that the species has never changed.
+          </button>
+        </div>
+        <div class="feedback" id="fb-q7"></div>
+      </div>
+
+      <!-- Q8 -->
+      <div class="question-block">
+        <label><span class="question-num qn-vestigial">8</span> True or False: The whale's pelvis bone suggests that whales once lived on land.</label>
+        <div class="tf-options">
+          <button class="tf-btn" onclick="checkTF(this, true, 'q8')">✔ True</button>
+          <button class="tf-btn" onclick="checkTF(this, false, 'q8')">✘ False</button>
+        </div>
+        <div class="feedback" id="fb-q8"></div>
+      </div>
+
+      <!-- Q9 -->
+      <div class="question-block">
+        <label><span class="question-num qn-vestigial">9</span> 💬 Humans have a "coccyx" (tailbone) at the base of their spine — a tiny set of bones that serves little purpose today. Based on what you learned about vestigial structures, what might this suggest about our evolutionary past? (Short answer)</label>
+        <textarea class="short-answer" placeholder="Apply what you know about vestigial structures to a new example…" onInput="trackShortAnswer('q9')"></textarea>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       STATION 4 – EMBRYOLOGY
+  ══════════════════════════════════════════ -->
+  <div class="station-card">
+    <div class="station-header s-embryo">
+      <div class="station-icon">🥚</div>
+      <h2>Station 4 · Embryology</h2>
+      <span class="station-badge">Evidence Type #4</span>
+    </div>
+    <div class="station-body">
+
+      <div class="vocab-box">
+        <h4>🔑 Key Term</h4>
+        <div><span class="vocab-term">Embryo</span> <span class="vocab-def">— an organism in its earliest stage of development, before birth or hatching</span></div>
+      </div>
+
+      <div class="reading-block rb-embryo">
+        <p>Another way scientists use anatomy as evidence is by comparing <strong>embryos</strong> — organisms in their earliest stage of development. DNA determines most of an organism's body structure. Therefore, more similar anatomy indicates similar DNA, which suggests close relationships.</p>
+        <br>
+        <p>Sometimes the embryos of two species look very similar even when their adult forms are quite different. For example, at an early stage of development, the embryos of a rabbit, chicken, human, cow, salamander, and fish all look remarkably alike. Scientists believe these similarities provide evidence that these very different species share a common ancestor far back in their evolutionary history.</p>
+      </div>
+
+      <!-- Q10 -->
+      <div class="question-block">
+        <label><span class="question-num qn-embryo">10</span> Why is it significant that a human embryo and a fish embryo look very similar early in development?</label>
+        <div class="mc-options">
+          <button class="mc-option" onclick="checkMC(this, false, 'q10')">
+            <span class="mc-letter">A</span> It means humans and fish will eventually become the same species.
+          </button>
+          <button class="mc-option" onclick="checkMC(this, true, 'q10')">
+            <span class="mc-letter">B</span> It suggests that humans and fish may share a common ancestor far back in their history.
+          </button>
+          <button class="mc-option" onclick="checkMC(this, false, 'q10')">
+            <span class="mc-letter">C</span> It proves that embryos never change as they develop.
+          </button>
+          <button class="mc-option" onclick="checkMC(this, false, 'q10')">
+            <span class="mc-letter">D</span> It shows that scientists cannot tell these species apart.
+          </button>
+        </div>
+        <div class="feedback" id="fb-q10"></div>
+      </div>
+
+      <!-- Q11 -->
+      <div class="question-block">
+        <label><span class="question-num qn-embryo">11</span> The similarity between embryos of different species is best explained by…</label>
+        <div class="mc-options">
+          <button class="mc-option" onclick="checkMC(this, false, 'q11')">
+            <span class="mc-letter">A</span> The embryos living in the same environment.
+          </button>
+          <button class="mc-option" onclick="checkMC(this, false, 'q11')">
+            <span class="mc-letter">B</span> Scientists mixing up the embryos by accident.
+          </button>
+          <button class="mc-option" onclick="checkMC(this, true, 'q11')">
+            <span class="mc-letter">C</span> Similar DNA inherited from a shared common ancestor.
+          </button>
+          <button class="mc-option" onclick="checkMC(this, false, 'q11')">
+            <span class="mc-letter">D</span> All animals choosing to develop the same way.
+          </button>
+        </div>
+        <div class="feedback" id="fb-q11"></div>
+      </div>
+
+      <!-- Q12 -->
+      <div class="question-block">
+        <label><span class="question-num qn-embryo">12</span> 💬 How does embryology connect to the idea that DNA determines body structure? Explain the logical chain: DNA → anatomy → relationships. (Short answer)</label>
+        <textarea class="short-answer" placeholder="Try writing it as a step-by-step chain of reasoning…" onInput="trackShortAnswer('q12')"></textarea>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       STATION 5 – DNA
+  ══════════════════════════════════════════ -->
+  <div class="station-card">
+    <div class="station-header s-dna">
+      <div class="station-icon">🧬</div>
+      <h2>Station 5 · DNA Comparison</h2>
+      <span class="station-badge">Evidence Type #5</span>
+    </div>
+    <div class="station-body">
+
+      <div class="vocab-box">
+        <h4>🔑 Key Terms</h4>
+        <div><span class="vocab-term">DNA sequencing</span> <span class="vocab-def">— reading the order of genetic "letters" (nucleotides: A, T, C, G) inside a cell</span></div>
+        <div><span class="vocab-term">Nucleotide</span> <span class="vocab-def">— a single genetic "letter" that makes up DNA</span></div>
+      </div>
+
+      <div class="reading-block rb-dna">
+        <p>Modern technology allows us to look inside the cells of organisms and <strong>sequence their DNA</strong>. The more nucleotides, or genetic "letters," shared by two individuals, the more closely they are thought to be related.</p>
+        <br>
+        <p>Compare the DNA sequences below. Count how many positions match between each pair of individuals to figure out who is most closely related!</p>
+      </div>
+
+      <!-- Interactive DNA table -->
+      <table class="dna-table" id="dna-tbl">
+        <thead>
+          <tr>
+            <th>Individual</th>
+            <th>Pos 1</th><th>Pos 2</th><th>Pos 3</th><th>Pos 4</th>
+            <th>Pos 5</th><th>Pos 6</th><th>Pos 7</th><th>Pos 8</th>
+            <th>Pos 9</th><th>Pos 10</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="dna-a">Person A</td>
+            <td data-row="A" data-col="1">A</td><td data-row="A" data-col="2">T</td>
+            <td data-row="A" data-col="3">C</td><td data-row="A" data-col="4">C</td>
+            <td data-row="A" data-col="5">G</td><td data-row="A" data-col="6">A</td>
+            <td data-row="A" data-col="7">T</td><td data-row="A" data-col="8">C</td>
+            <td data-row="A" data-col="9">A</td><td data-row="A" data-col="10">G</td>
+          </tr>
+          <tr>
+            <td class="dna-b">Person B</td>
+            <td data-row="B" data-col="1">G</td><td data-row="B" data-col="2">T</td>
+            <td data-row="B" data-col="3">T</td><td data-row="B" data-col="4">A</td>
+            <td data-row="B" data-col="5">G</td><td data-row="B" data-col="6">A</td>
+            <td data-row="B" data-col="7">A</td><td data-row="B" data-col="8">C</td>
+            <td data-row="B" data-col="9">G</td><td data-row="B" data-col="10">A</td>
+          </tr>
+          <tr>
+            <td class="dna-c">Person C</td>
+            <td data-row="C" data-col="1">A</td><td data-row="C" data-col="2">T</td>
+            <td data-row="C" data-col="3">C</td><td data-row="C" data-col="4">G</td>
+            <td data-row="C" data-col="5">G</td><td data-row="C" data-col="6">A</td>
+            <td data-row="C" data-col="7">T</td><td data-row="C" data-col="8">A</td>
+            <td data-row="C" data-col="9">A</td><td data-row="C" data-col="10">G</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <button class="check-btn btn-dna" onclick="highlightDNA()" style="margin-bottom:12px">🔎 Highlight Matches</button>
+      <div id="dna-result" style="font-weight:600; margin-bottom:16px; color:#1a3a5c;"></div>
+
+      <!-- Q13 -->
+      <div class="question-block">
+        <label><span class="question-num qn-dna">13</span> After comparing the DNA sequences above, which two individuals are most closely related?</label>
+        <div class="mc-options">
+          <button class="mc-option" onclick="checkMC(this, true, 'q13')">
+            <span class="mc-letter">A</span> Person A and Person C — they share the most matching nucleotide positions.
+          </button>
+          <button class="mc-option" onclick="checkMC(this, false, 'q13')">
+            <span class="mc-letter">B</span> Person A and Person B — they share the most matching nucleotide positions.
+          </button>
+          <button class="mc-option" onclick="checkMC(this, false, 'q13')">
+            <span class="mc-letter">C</span> Person B and Person C — they are both in the second and third rows.
+          </button>
+          <button class="mc-option" onclick="checkMC(this, false, 'q13')">
+            <span class="mc-letter">D</span> All three are equally related.
+          </button>
+        </div>
+        <div class="feedback" id="fb-q13"></div>
+      </div>
+
+      <!-- Q14 -->
+      <div class="question-block">
+        <label><span class="question-num qn-dna">14</span> True or False: Two species with 95% matching DNA are likely more closely related than two species with only 40% matching DNA.</label>
+        <div class="tf-options">
+          <button class="tf-btn" onclick="checkTF(this, true, 'q14')">✔ True</button>
+          <button class="tf-btn" onclick="checkTF(this, false, 'q14')">✘ False</button>
+        </div>
+        <div class="feedback" id="fb-q14"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       STATION 6 – DIRECT EVIDENCE
+  ══════════════════════════════════════════ -->
+  <div class="station-card">
+    <div class="station-header s-direct">
+      <div class="station-icon">🐕</div>
+      <h2>Station 6 · Direct Evidence</h2>
+      <span class="station-badge">Evidence Type #6</span>
+    </div>
+    <div class="station-body">
+
+      <div class="vocab-box">
+        <h4>🔑 Key Term</h4>
+        <div><span class="vocab-term">Microevolution</span> <span class="vocab-def">— small changes in a species over a short period of time, observable directly</span></div>
+        <div><span class="vocab-term">Natural selection</span> <span class="vocab-def">— the process by which individuals with more favorable traits survive and pass their genes on</span></div>
+      </div>
+
+      <div class="reading-block rb-direct">
+        <p>Finally, we are able to directly observe <strong>microevolution</strong>, or small changes in a species over a short period of time! As new dog breeds, more drought-resistant crops, and more infectious viruses continue to develop, scientists have no choice but to accept that change within a species <em>is</em> possible.</p>
+        <br>
+        <p>As environments change, <strong>natural selection</strong> continues to work: it eliminates individuals with less favorable traits and allows the "fittest" to survive and pass on their genes to the next generation. Over many generations, this process leads to gradual change — evolution in action!</p>
+      </div>
+
+      <!-- Q15 -->
+      <div class="question-block">
+        <label><span class="question-num qn-direct">15</span> Which of the following is the BEST real-world example of microevolution?</label>
+        <div class="mc-options">
+          <button class="mc-option" onclick="checkMC(this, false, 'q15')">
+            <span class="mc-letter">A</span> A human learning to ride a bicycle.
+          </button>
+          <button class="mc-option" onclick="checkMC(this, false, 'q15')">
+            <span class="mc-letter">B</span> A farmer choosing the largest tomatoes to eat.
+          </button>
+          <button class="mc-option" onclick="checkMC(this, true, 'q15')">
+            <span class="mc-letter">C</span> Bacteria becoming resistant to antibiotics over several generations.
+          </button>
+          <button class="mc-option" onclick="checkMC(this, false, 'q15')">
+            <span class="mc-letter">D</span> A dog learning a new trick after training.
+          </button>
+        </div>
+        <div class="feedback" id="fb-q15"></div>
+      </div>
+
+      <!-- Q16 -->
+      <div class="question-block">
+        <label><span class="question-num qn-direct">16</span> Natural selection "eliminates individuals with less favorable traits." This means that…</label>
+        <div class="mc-options">
+          <button class="mc-option" onclick="checkMC(this, false, 'q16')">
+            <span class="mc-letter">A</span> A scientist decides which animals survive.
+          </button>
+          <button class="mc-option" onclick="checkMC(this, true, 'q16')">
+            <span class="mc-letter">B</span> Individuals with traits that help them survive are more likely to reproduce and pass on those traits.
+          </button>
+          <button class="mc-option" onclick="checkMC(this, false, 'q16')">
+            <span class="mc-letter">C</span> All individuals in a population change at the exact same time.
+          </button>
+          <button class="mc-option" onclick="checkMC(this, false, 'q16')">
+            <span class="mc-letter">D</span> Species only change if humans breed them deliberately.
+          </button>
+        </div>
+        <div class="feedback" id="fb-q16"></div>
+      </div>
+
+      <!-- Q17 -->
+      <div class="question-block">
+        <label><span class="question-num qn-direct">17</span> 💬 SYNTHESIS — You've now studied six types of evidence for evolution: fossils, homologous structures, analogous structures, vestigial structures, embryology, DNA, and direct evidence. Which type of evidence do YOU find most convincing, and why? (Short answer)</label>
+        <textarea class="short-answer" style="min-height: 110px;" placeholder="Pick your favourite type of evidence and defend your choice with at least two reasons…" onInput="trackShortAnswer('q17')"></textarea>
+      </div>
+
+    </div>
+  </div>
+
+</div><!-- /stations-container -->
+
+<!-- ══════════ SCORE CARD ══════════ -->
+<div class="score-card">
+  <div class="score-inner">
+    <h2>📊 Your Score</h2>
+    <div class="score-num" id="score-display">0 / 11</div>
+    <p>Auto-graded questions (multiple choice &amp; true/false) · Short answers are for your own reflection!</p>
+    <div style="margin-top:16px; font-size:.9rem; opacity:.75;" id="score-msg">Answer more questions to see your score grow!</div>
+  </div>
+</div>
+
+<script>
+// ─── State ───────────────────────────────────────────────
+const totalAuto = 11;   // MC + TF questions
+const totalQ    = 17;   // all questions
+let answered    = {};   // { qId: true }
+let correct     = 0;
+let shortAnswerDone = {};
+
+const correctFeedbacks = [
+  "✅ Correct! Great work!",
+  "✅ Exactly right!",
+  "✅ Spot on!",
+  "✅ Nice thinking — that's correct!",
+  "✅ You've got it!"
+];
+const wrongFeedbacks = [
+  "❌ Not quite — re-read the passage and try to find the key idea.",
+  "❌ Incorrect — look back at the text for a hint.",
+  "❌ Not this time — check the reading again!",
+];
+
+function rnd(arr) { return arr[Math.floor(Math.random()*arr.length)]; }
+
+// ─── Multiple Choice ─────────────────────────────────────
+function checkMC(btn, isCorrect, qId) {
+  if (answered[qId]) return;
+  answered[qId] = true;
+
+  const opts = btn.closest('.mc-options').querySelectorAll('.mc-option');
+  opts.forEach(o => o.classList.add('disabled'));
+
+  const fb = document.getElementById('fb-' + qId);
+
+  if (isCorrect) {
+    btn.classList.add('correct');
+    correct++;
+    fb.textContent = rnd(correctFeedbacks);
+    fb.className = 'feedback show correct-fb';
+  } else {
+    btn.classList.add('wrong');
+    // reveal correct
+    opts.forEach(o => { if (o.onclick.toString().includes('true')) o.classList.add('correct'); });
+    fb.textContent = rnd(wrongFeedbacks);
+    fb.className = 'feedback show wrong-fb';
+  }
+  updateScore();
+  updateProgress();
+}
+
+// ─── True / False ────────────────────────────────────────
+function checkTF(btn, isCorrect, qId) {
+  if (answered[qId]) return;
+  answered[qId] = true;
+
+  const btns = btn.closest('.tf-options').querySelectorAll('.tf-btn');
+  btns.forEach(b => b.onclick = null);
+
+  const fb = document.getElementById('fb-' + qId);
+
+  if (isCorrect) {
+    btn.classList.add('correct');
+    correct++;
+    fb.textContent = rnd(correctFeedbacks);
+    fb.className = 'feedback show correct-fb';
+  } else {
+    btn.classList.add('wrong');
+    btns.forEach(b => { if (b !== btn) b.classList.add('correct'); });
+    fb.textContent = rnd(wrongFeedbacks);
+    fb.className = 'feedback show wrong-fb';
+  }
+  updateScore();
+  updateProgress();
+}
+
+// ─── Short Answer tracking ───────────────────────────────
+function trackShortAnswer(qId) {
+  if (!shortAnswerDone[qId]) {
+    shortAnswerDone[qId] = true;
+    updateProgress();
+  }
+}
+
+// ─── Drag and Drop ───────────────────────────────────────
+// Correct answers: homo → di1 (Bird+Bat), di3 (Human+Cat); ana → di2 (Shark+Dolphin), di4 (Butterfly+Sparrow)
+// Wait — let me reconsider:
+// Bird wing & Bat wing → both vertebrates, same bone structure → HOMOLOGOUS
+// Shark fin & Dolphin flipper → shark is fish, dolphin is mammal — shark fin is cartilage/different structure, dolphin flipper is bone → ANALOGOUS (same function, different ancestry)
+// Human hand & Cat paw → HOMOLOGOUS (both mammals, same bone structure)
+// Butterfly wing & Sparrow wing → ANALOGOUS (insect vs vertebrate, completely different structure)
+const homoCorrect = new Set(['di1','di3']);
+const anaCorrect  = new Set(['di2','di4']);
+
+let draggingId = null;
+
+function dragStart(e) {
+  draggingId = e.target.id;
+  e.target.classList.add('dragging');
+  setTimeout(() => e.target.classList.remove('dragging'), 0);
+}
+function dragOver(e)  { e.preventDefault(); e.currentTarget.classList.add('over'); }
+function dragLeave(e) { e.currentTarget.classList.remove('over'); }
+
+function dropItem(e, zone) {
+  e.preventDefault();
+  e.currentTarget.classList.remove('over');
+  if (!draggingId) return;
+  const el = document.getElementById(draggingId);
+  if (!el) return;
+  // Remove placeholder text if present
+  const placeholder = e.currentTarget.querySelector('span');
+  if (placeholder) placeholder.remove();
+  e.currentTarget.appendChild(el);
+  draggingId = null;
+}
+
+function checkDragDrop() {
+  if (answered['q5']) return;
+
+  const homoZone = document.getElementById('drop-homo');
+  const anaZone  = document.getElementById('drop-ana');
+
+  const homoItems = [...homoZone.querySelectorAll('.drag-item')].map(e => e.id);
+  const anaItems  = [...anaZone.querySelectorAll('.drag-item')].map(e => e.id);
+
+  const homoOk = homoItems.length === 2 && homoItems.every(id => homoCorrect.has(id));
+  const anaOk  = anaItems.length === 2  && anaItems.every(id => anaCorrect.has(id));
+  const allPlaced = homoItems.length + anaItems.length === 4;
+
+  if (!allPlaced) {
+    const fb = document.getElementById('fb-q5');
+    fb.textContent = '⚠️ Make sure all 4 cards are placed before checking!';
+    fb.className = 'feedback show wrong-fb';
+    return;
+  }
+
+  answered['q5'] = true;
+  const fb = document.getElementById('fb-q5');
+
+  if (homoOk && anaOk) {
+    correct++;
+    fb.textContent = '✅ Perfect! Bird+Bat and Human+Cat are homologous (same bone structure from a shared ancestor). Shark+Dolphin and Butterfly+Sparrow are analogous (same function, different ancestry).';
+    fb.className = 'feedback show correct-fb';
+  } else {
+    fb.textContent = '❌ Not quite. Homologous: Bird wing & Bat wing, Human hand & Cat paw — they share the same basic vertebrate bone structure. Analogous: Shark fin & Dolphin flipper, Butterfly wing & Sparrow wing — same function but very different structures from unrelated ancestors.';
+    fb.className = 'feedback show wrong-fb';
+  }
+  updateScore();
+  updateProgress();
+}
+
+// ─── DNA Highlight ───────────────────────────────────────
+function highlightDNA() {
+  const seqA = ['A','T','C','C','G','A','T','C','A','G'];
+  const seqB = ['G','T','T','A','G','A','A','C','G','A'];
+  const seqC = ['A','T','C','G','G','A','T','A','A','G'];
+
+  let acMatch = 0, abMatch = 0, bcMatch = 0;
+
+  for (let i = 1; i <= 10; i++) {
+    const cellA = document.querySelector(`[data-row="A"][data-col="${i}"]`);
+    const cellB = document.querySelector(`[data-row="B"][data-col="${i}"]`);
+    const cellC = document.querySelector(`[data-row="C"][data-col="${i}"]`);
+    // reset
+    [cellA, cellB, cellC].forEach(c => c.classList.remove('match','no-match'));
+
+    const ac = seqA[i-1] === seqC[i-1];
+    const ab = seqA[i-1] === seqB[i-1];
+    const bc = seqB[i-1] === seqC[i-1];
+
+    if (ac) { acMatch++; cellA.classList.add('match'); cellC.classList.add('match'); }
+    if (ab && !ac) { abMatch++; }
+    if (bc && !ac) { bcMatch++; }
+  }
+  // recount properly
+  abMatch = 0; bcMatch = 0;
+  for (let i = 0; i < 10; i++) {
+    if (seqA[i] === seqB[i]) abMatch++;
+    if (seqB[i] === seqC[i]) bcMatch++;
+  }
+
+  document.getElementById('dna-result').innerHTML =
+    `🔍 <strong>A vs C:</strong> ${acMatch}/10 matches &nbsp;|&nbsp; ` +
+    `<strong>A vs B:</strong> ${abMatch}/10 matches &nbsp;|&nbsp; ` +
+    `<strong>B vs C:</strong> ${bcMatch}/10 matches &nbsp;→&nbsp; ` +
+    `<span style="color:var(--correct)">A &amp; C are most closely related!</span>`;
+}
+
+// ─── Progress & Score ────────────────────────────────────
+function updateScore() {
+  document.getElementById('score-display').textContent = `${correct} / ${totalAuto}`;
+  const pct = Math.round(correct / totalAuto * 100);
+  const msg = pct === 100
+    ? "🎉 Perfect score on auto-graded questions!"
+    : pct >= 70
+    ? "👍 Good work — keep it up!"
+    : pct >= 40
+    ? "📖 Keep reading carefully — you're getting there!"
+    : "💪 Keep going — you'll get it!";
+  document.getElementById('score-msg').textContent = msg;
+}
+
+function updateProgress() {
+  const autoCount = Object.keys(answered).filter(k => k !== 'q5_check').length;
+  const shortCount = Object.keys(shortAnswerDone).length;
+  const total = autoCount + shortCount;
+  const pct = Math.min(100, Math.round(total / totalQ * 100));
+  document.getElementById('prog-bar').style.width = pct + '%';
+  document.getElementById('progress-text').textContent = `${total} of ${totalQ} questions answered`;
+}
+</script>
+</body>
+</html>
