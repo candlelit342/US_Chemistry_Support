@@ -179,6 +179,9 @@ input[type=range]{width:100%;accent-color:var(--accent);cursor:pointer;margin:.3
 .rb-ptable tbody tr.active td{background:rgba(126,168,248,.1)}
 .rb-ctrl-btn{padding:.42rem .85rem;border-radius:6px;border:1px solid rgba(126,168,248,.3);background:rgba(126,168,248,.1);color:var(--accent);cursor:pointer;font-size:.78rem;font-family:inherit;transition:background .15s}
 .rb-ctrl-btn:hover{background:rgba(126,168,248,.22)}
+.rb-view-btn{padding:.3rem .72rem;border-radius:5px;border:1px solid rgba(126,168,248,.22);background:transparent;color:var(--muted);cursor:pointer;font-size:.76rem;font-family:inherit;transition:all .15s}
+.rb-view-btn.on{background:rgba(126,168,248,.13);color:var(--accent);border-color:rgba(126,168,248,.42)}
+.rb-view-btn:hover:not(.on){color:var(--text);border-color:rgba(126,168,248,.35)}
 .rb-ctrl-btn.rb-stop{background:rgba(240,124,124,.08);color:var(--red);border-color:rgba(240,124,124,.3)}
 .rb-ctrl-btn.rb-stop:hover{background:rgba(240,124,124,.18)}
 /* ── STAGE 7 PIANO ── */
@@ -489,17 +492,17 @@ input[type=range]{width:100%;accent-color:var(--accent);cursor:pointer;margin:.3
   <div class="ctrl-row">
     <div class="ctrl"><label>X Axis</label>
       <select id="xAx" onchange="drawScatter()">
-        <option value="on">Octave Nominal (¢ above nominal)</option>
-        <option value="sq">Superquint (¢ above nominal)</option>
-        <option value="i7">I-7 (¢ above nominal)</option>
-        <option value="i8">I-8 (¢ above nominal)</option>
+        <option value="on">Octave Nominal (cent above nominal)</option>
+        <option value="sq">Superquint (cent above nominal)</option>
+        <option value="i7">I-7 (cent above nominal)</option>
+        <option value="i8">I-8 (cent above nominal)</option>
       </select></div>
     <div class="ctrl"><label>Y Axis</label>
       <select id="yAx" onchange="drawScatter()">
-        <option value="sq">Superquint (¢ above nominal)</option>
-        <option value="on">Octave Nominal (¢ above nominal)</option>
-        <option value="i7">I-7 (¢ above nominal)</option>
-        <option value="i8">I-8 (¢ above nominal)</option>
+        <option value="sq">Superquint (cent above nominal)</option>
+        <option value="on">Octave Nominal (cent above nominal)</option>
+        <option value="i7">I-7 (cent above nominal)</option>
+        <option value="i8">I-8 (cent above nominal)</option>
       </select></div>
     <div class="ctrl"><label>Colour by</label>
       <select id="colBy" onchange="drawScatter()">
@@ -529,21 +532,21 @@ input[type=range]{width:100%;accent-color:var(--accent);cursor:pointer;margin:.3
       They removed <strong style="color:var(--accent2)">1.4 tonnes of metal</strong> on the tuning machine.
       The result confirmed Hibbert's finding directly:
       <em>all upper partials moved together along the regression lines</em> — independent tuning was impossible.
-      The hum ended up 53¢ flat; the octave nominal 71¢ sharp; the sound was worse than before.
+      The hum ended up 53 cent flat; the octave nominal 71 cent sharp; the sound was worse than before.
     </p>
     <div class="phrase-highlight">"…explains previous failed attempts by bellfounders to tune upper partials independently."</div>
     <table class="case-table">
       <thead><tr><th>Partial</th><th>Ideal (target)</th><th>As cast</th><th>As tuned</th><th>Net change</th></tr></thead>
       <tbody>
-        <tr><td>Hum</td><td>0¢</td><td>+50¢</td><td class="moved">−53¢</td><td class="moved">−103¢</td></tr>
-        <tr><td>Prime</td><td>0¢</td><td>+88¢</td><td class="moved">−41¢</td><td class="moved">−129¢</td></tr>
-        <tr><td>Tierce</td><td>0¢</td><td>+16¢</td><td class="moved">−21¢</td><td class="moved">−37¢</td></tr>
-        <tr><td>Quint</td><td>0¢</td><td>+99¢</td><td class="moved">−21¢</td><td class="moved">−120¢</td></tr>
+        <tr><td>Hum</td><td>0 cent</td><td>+50 cent</td><td class="moved">−53 cent</td><td class="moved">−103 cent</td></tr>
+        <tr><td>Prime</td><td>0 cent</td><td>+88 cent</td><td class="moved">−41 cent</td><td class="moved">−129 cent</td></tr>
+        <tr><td>Tierce</td><td>0 cent</td><td>+16 cent</td><td class="moved">−21 cent</td><td class="moved">−37 cent</td></tr>
+        <tr><td>Quint</td><td>0 cent</td><td>+99 cent</td><td class="moved">−21 cent</td><td class="moved">−120 cent</td></tr>
         <tr><td>Nominal</td><td>datum</td><td>datum</td><td>datum</td><td>—</td></tr>
-        <tr><td>Superquint</td><td>0¢</td><td>−20¢</td><td class="sharper">+4¢</td><td class="sharper">+24¢</td></tr>
-        <tr><td>Octave Nominal</td><td>0¢</td><td>+34¢</td><td class="sharper">+71¢</td><td class="sharper">+37¢</td></tr>
-        <tr><td>I-7</td><td>0¢</td><td>−9¢</td><td class="sharper">+39¢</td><td class="sharper">+48¢</td></tr>
-        <tr><td>I-8</td><td>—</td><td>−44¢</td><td class="sharper">+24¢</td><td class="sharper">+68¢</td></tr>
+        <tr><td>Superquint</td><td>0 cent</td><td>−20 cent</td><td class="sharper">+4 cent</td><td class="sharper">+24 cent</td></tr>
+        <tr><td>Octave Nominal</td><td>0 cent</td><td>+34 cent</td><td class="sharper">+71 cent</td><td class="sharper">+37 cent</td></tr>
+        <tr><td>I-7</td><td>0 cent</td><td>−9 cent</td><td class="sharper">+39 cent</td><td class="sharper">+48 cent</td></tr>
+        <tr><td>I-8</td><td>—</td><td>−44 cent</td><td class="sharper">+24 cent</td><td class="sharper">+68 cent</td></tr>
       </tbody>
     </table>
   </div>
@@ -584,7 +587,7 @@ input[type=range]{width:100%;accent-color:var(--accent);cursor:pointer;margin:.3
       <h4>Bell Wall Thickness (Spread)</h4>
       <p>Thick walls → compressed (narrow) upper partials → pitch flattens. Thin → expanded → sharpens.</p>
       <input type="range" id="sld-spread" min="-2.5" max="2.5" step="0.05" value="0" oninput="updateLab()">
-      <div>ON = <span class="sl-val" id="lbl-on">1200</span> ¢ &nbsp; SQ = <span class="sl-val" id="lbl-sq">702</span> ¢</div>
+      <div>ON = <span class="sl-val" id="lbl-on">1200</span> cent &nbsp; SQ = <span class="sl-val" id="lbl-sq">702</span> cent</div>
     </div>
     <div class="sl-card">
       <h4>Nominal Frequency</h4>
@@ -593,16 +596,16 @@ input[type=range]{width:100%;accent-color:var(--accent);cursor:pointer;margin:.3
       <div>f = <span class="sl-val" id="lbl-hz">735</span> Hz ≈ <span class="sl-val" id="lbl-note">—</span></div>
     </div>
     <div class="sl-card">
-      <h4>Prime Deviation (¢)</h4>
-      <p>Deviation from reference position (~1200 ¢ below nominal). Smaller contribution than upper partials.</p>
+      <h4>Prime Deviation (cent)</h4>
+      <p>Deviation from reference position (~1200 cent below nominal). Smaller contribution than upper partials.</p>
       <input type="range" id="sld-prime" min="-250" max="250" step="5" value="0" oninput="updateLab()">
-      <div>Δprime = <span class="sl-val" id="lbl-prime">0</span> ¢</div>
+      <div>Δprime = <span class="sl-val" id="lbl-prime">0</span> cent</div>
     </div>
     <div class="sl-card">
-      <h4>Tierce Deviation (¢)</h4>
-      <p>Deviation from reference (~900 ¢ below nominal). Moderate contribution; tierce cannot be tuned independently of upper partials.</p>
+      <h4>Tierce Deviation (cent)</h4>
+      <p>Deviation from reference (~900 cent below nominal). Moderate contribution; tierce cannot be tuned independently of upper partials.</p>
       <input type="range" id="sld-tierce" min="-250" max="250" step="5" value="0" oninput="updateLab()">
-      <div>Δtierce = <span class="sl-val" id="lbl-tierce">0</span> ¢</div>
+      <div>Δtierce = <span class="sl-val" id="lbl-tierce">0</span> cent</div>
     </div>
   </div>
 
@@ -610,9 +613,9 @@ input[type=range]{width:100%;accent-color:var(--accent);cursor:pointer;margin:.3
     <div class="pitch-label">Predicted pitch shift (cents)</div>
     <div class="pitch-num" id="pnum">0.0</div>
     <div class="bar-wrap"><div class="bar-center"></div><div class="bar-fill" id="bfill"></div></div>
-    <div class="bar-legend"><span>−50 ¢ flat</span><span>in tune</span><span>+50 ¢ sharp</span></div>
+    <div class="bar-legend"><span>−50 cent flat</span><span>in tune</span><span>+50 cent sharp</span></div>
     <div style="font-size:.75rem;color:var(--muted);margin-top:.6rem">
-      Human JND for pitch ≈ <strong style="color:var(--yellow)">±10 ¢</strong> — shifts larger than this are reliably perceived
+      Human JND for pitch ≈ <strong style="color:var(--yellow)">±10 cent</strong> — shifts larger than this are reliably perceived
     </div>
     <div class="btns">
       <button class="btn btn-p" onclick="playBell()">▶ Play Bell</button>
@@ -625,8 +628,8 @@ input[type=range]{width:100%;accent-color:var(--accent);cursor:pointer;margin:.3
     💡 <strong>The Hibbert model:</strong>
     <code>s = (Δprime × 0.036) + (Δtierce × 0.085) + (ΔON × 456.7 × f⁻¹·¹)</code><br><br>
     The octave-nominal term dominates, accounting for ~60% of pitch-shift variance at 1000 Hz.
-    At nominal = 300 Hz, a ±150¢ spread change shifts pitch by ±40¢ — over a third of a semitone.
-    At nominal = 2000 Hz, the same change produces only ±10¢.
+    At nominal = 300 Hz, a ±150 cent spread change shifts pitch by ±40 cent — over a third of a semitone.
+    At nominal = 2000 Hz, the same change produces only ±10 cent.
     <strong>This frequency dependence is why the dominance region (Stage 2) matters so much.</strong>
     <br><br>
     <span class="phrase-highlight">"…showed that partial amplitude does not significantly affect the strike pitch."</span>
@@ -758,7 +761,7 @@ input[type=range]{width:100%;accent-color:var(--accent);cursor:pointer;margin:.3
     <p>Stage 1 showed <em>typical</em> partial intervals. Here you can explore <strong>real documented bells</strong> — from a 17th-century Flemish carillon to a 20th-century German showpiece — and hear how their actual partial frequencies compare.
     <br><br>
     <span style="color:var(--green)">●</span> = exact Hz measurements from Hibbert's research &nbsp;·&nbsp; <span style="color:var(--muted)">○</span> = estimated from documented cents or tradition averages.
-    The <strong>vs ideal</strong> column shows deviation from perfect true-harmonic positions: green ≤ 15¢, amber ≤ 40¢, red &gt; 40¢.</p>
+    The <strong>vs ideal</strong> column shows deviation from perfect true-harmonic positions: green ≤ 15 cent, amber ≤ 40 cent, red &gt; 40 cent.</p>
     <div class="phrase-highlight">"The real test of a bell is not whether it meets an ideal specification, but whether the partials work together to produce a clear, pleasing virtual pitch."</div>
   </div>
 
@@ -771,14 +774,23 @@ input[type=range]{width:100%;accent-color:var(--accent);cursor:pointer;margin:.3
       <p id="bell-desc" style="font-size:.83rem;color:var(--muted);margin-top:.65rem;line-height:1.7"></p>
     </div>
 
-    <!-- Full-width FFT spectrum -->
+    <!-- Full-width frequency display: FFT / waterfall toggle -->
     <div class="card" style="padding:1.2rem;margin-bottom:1rem">
-      <div style="font-size:.82rem;font-weight:500;color:var(--text);margin-bottom:.5rem">
-        Estimated frequency spectrum <span style="color:var(--muted);font-weight:400;font-size:.76rem">(log scale · click a peak to hear that partial)</span>
+      <div style="display:flex;align-items:center;gap:.9rem;margin-bottom:.55rem;flex-wrap:wrap">
+        <span style="font-size:.82rem;font-weight:500;color:var(--text)">Frequency spectrum</span>
+        <div style="display:flex;gap:.35rem">
+          <button id="rb-view-fft-btn" class="rb-view-btn on" onclick="rbSetView('fft')">FFT spectrum</button>
+          <button id="rb-view-wf-btn" class="rb-view-btn" onclick="rbSetView('wf')">3D time decay</button>
+        </div>
+        <span id="rb-view-note-fft" style="font-size:.72rem;color:var(--muted);font-style:italic">log scale · click a peak to hear that partial</span>
+        <span id="rb-view-note-wf"  style="font-size:.72rem;color:var(--muted);font-style:italic;display:none">perspective decay plot · prime = 1× · decay rates are indicative</span>
       </div>
-      <div class="rb-fft-wrap">
+      <div id="rb-fft-wrap" class="rb-fft-wrap">
         <canvas id="rb-fft-canvas" class="rb-fft-canvas" width="1400" height="420"></canvas>
         <div class="rb-fft-note">Partial positions are measured; amplitudes are indicative</div>
+      </div>
+      <div id="rb-wf-wrap" style="display:none">
+        <canvas id="rb-wf-canvas" class="rb-fft-canvas" width="1400" height="500"></canvas>
       </div>
       <div id="rb-note" style="min-height:1.5rem;font-size:.78rem;color:var(--accent2);text-align:center;line-height:1.4;padding-top:.3rem"></div>
     </div>
@@ -791,7 +803,7 @@ input[type=range]{width:100%;accent-color:var(--accent);cursor:pointer;margin:.3
           Partial data <span style="color:var(--muted);font-weight:400;font-size:.76rem">(click row or ▶ to hear)</span>
         </div>
         <table class="rb-ptable">
-          <thead><tr><th></th><th>Partial</th><th>Hz</th><th>¢ from nom.</th><th>vs ideal</th><th>▶</th></tr></thead>
+          <thead><tr><th></th><th>Partial</th><th>Hz</th><th>cent from nom.</th><th>vs ideal</th><th>▶</th></tr></thead>
           <tbody id="rb-tbody"></tbody>
         </table>
       </div>
@@ -938,7 +950,7 @@ function buildPartialTable(){
     const nomHz=DEMO_NOM*Math.pow(2,p.cents/1200);
     const tr=document.createElement('tr');
     tr.innerHTML=`<td><span class="partial-row-name">${p.name}</span></td>
-      <td style="font-family:monospace;color:var(--muted)">${p.cents>=0?'+':''}${p.cents} ¢</td>
+      <td style="font-family:monospace;color:var(--muted)">${p.cents>=0?'+':''}${p.cents} cent</td>
       <td style="font-family:monospace;color:var(--accent2)">${nomHz.toFixed(0)} Hz (${hzToNote(nomHz)})</td>
       <td><span class="partial-role">${p.role}</span></td>
       <td><div class="play-dot" onclick="playPartial(${i},event)">▶</div></td>`;
@@ -974,19 +986,19 @@ const BX_ZONES={
   crown:{
     label:'Crown', col:'#7ea8f8',
     partials:[{name:'Hum',idx:0}],
-    desc:'The top of the bell vibrates in the <strong style="color:var(--text)">hum mode</strong> — the slowest, deepest rocking of the whole casting. Removing metal from inside the crown raises the hum frequency. In true-harmonic tuning the hum must sit at exactly −2400 ¢ from the nominal (two full octaves below). Most tuning lathes address the hum here, cutting from the inner crown surface.',
+    desc:'The top of the bell vibrates in the <strong style="color:var(--text)">hum mode</strong> — the slowest, deepest rocking of the whole casting. Removing metal from inside the crown raises the hum frequency. In true-harmonic tuning the hum must sit at exactly −2400 cent from the nominal (two full octaves below). Most tuning lathes address the hum here, cutting from the inner crown surface.',
     nodal:'Nodal lines: 4 around the circumference (lowest-order rim mode). No nodal circle — the crown itself is a region of maximum displacement for the hum.'
   },
   shoulder:{
     label:'Shoulder / Upper body', col:'#93c5fd',
     partials:[{name:'Prime',idx:1}],
-    desc:'The prime is a <strong style="color:var(--text)">Group II partial</strong> — it belongs to a different family of vibration modes from the rim partials. It has a nodal circle at roughly <strong style="color:#93c5fd">30% up from the lip</strong> (shown as N₂). Metal removal in the shoulder and upper-waist region shifts the prime, while leaving the nominal and upper partials relatively undisturbed. True-harmonic tuning requires prime = −1200 ¢ (one octave below nominal).',
+    desc:'The prime is a <strong style="color:var(--text)">Group II partial</strong> — it belongs to a different family of vibration modes from the rim partials. It has a nodal circle at roughly <strong style="color:#93c5fd">30% up from the lip</strong> (shown as N₂). Metal removal in the shoulder and upper-waist region shifts the prime, while leaving the nominal and upper partials relatively undisturbed. True-harmonic tuning requires prime = −1200 cent (one octave below nominal).',
     nodal:'Nodal circle N₂: ≈ 0.30 from lip (lower shoulder). 4 nodal lines. Because the prime is not strongly excited by a clapper strike at the soundbow (its antinode is up in the shoulder region), it is quieter than the rim partials in a struck bell.'
   },
   body:{
     label:'Body / Waist', col:'#6ee7a0',
     partials:[{name:'Tierce',idx:2},{name:'Quint',idx:3}],
-    desc:'The tierce and quint are set primarily by the <strong style="color:var(--text)">curvature and thickness of the waist</strong>. Both have nodal circles near 54% up from the lip (shown as N₃). The tierce (−900 ¢, minor third above prime) gives Western bells their characteristic minor-chord quality — it is the most identifiable colour of a bell\'s sound. Adjusting the body profile is how founders historically corrected tierce and quint without greatly disturbing the nominal.',
+    desc:'The tierce and quint are set primarily by the <strong style="color:var(--text)">curvature and thickness of the waist</strong>. Both have nodal circles near 54% up from the lip (shown as N₃). The tierce (−900 cent, minor third above prime) gives Western bells their characteristic minor-chord quality — it is the most identifiable colour of a bell\'s sound. Adjusting the body profile is how founders historically corrected tierce and quint without greatly disturbing the nominal.',
     nodal:'Nodal circle N₃: ≈ 0.54 from lip (mid-body). Tierce: 6 nodal lines. Quint: also 6 nodal lines but a different vibration group, which is why they respond somewhat independently to profile changes.'
   },
   soundbow:{
@@ -1046,7 +1058,7 @@ function bxSelect(k){
       tag.className='bx-ptag';
       tag.style.cssText=`background:${pp.col}22;border-color:${pp.col}66;color:${pp.col}`;
       const cSign=pp.cents>=0?'+':'';
-      tag.innerHTML=`▶ ${pp.name} <span style="opacity:.7">${cSign}${pp.cents}¢</span>`;
+      tag.innerHTML=`▶ ${pp.name} <span style="opacity:.7">${cSign}${pp.cents}cent</span>`;
       tag.onclick=()=>playPartial(p.idx);
       tags.appendChild(tag);
     });
@@ -1078,7 +1090,7 @@ function playPartial(i,e){
     b.style.transform=j===i?'scaleY(1.15)':'scaleY(1)';
   });
   const el=document.getElementById('s1note');
-  el.textContent=`♪ ${p.name}: ${hz.toFixed(0)} Hz (${hzToNote(hz)}) — ${p.cents>=0?'+':''}${p.cents}¢ relative to nominal`;
+  el.textContent=`♪ ${p.name}: ${hz.toFixed(0)} Hz (${hzToNote(hz)}) — ${p.cents>=0?'+':''}${p.cents}cent relative to nominal`;
   clearTimeout(el._t);el._t=setTimeout(()=>{el.textContent='';document.querySelectorAll('.partial-table tbody tr').forEach(r=>r.classList.remove('active'));document.querySelectorAll('.spec-bar').forEach((b,j)=>{b.style.background=PARTIALS[j].col+'55';b.style.transform='scaleY(1)'})},4000);
 }
 
@@ -1199,7 +1211,7 @@ const NAMED_BELLS=[
 ];
 NAMED_BELLS.forEach(b=>{b.sq=.5855*b.on;b.i7=1.415*b.on;b.i8=1.75*b.on});
 
-const AXIS={on:'Octave Nominal (¢ above nominal)',sq:'Superquint (¢ above nominal)',i7:'I-7 (¢ above nominal)',i8:'I-8 (¢ above nominal)'};
+const AXIS={on:'Octave Nominal (cent above nominal)',sq:'Superquint (cent above nominal)',i7:'I-7 (cent above nominal)',i8:'I-8 (cent above nominal)'};
 let scChart=null,scChartBuilt=false;
 
 function drawScatter(){
@@ -1229,7 +1241,7 @@ function drawScatter(){
       if(di===namedIdx){
         const nb=NAMED_BELLS[pi];
         const el=document.getElementById('s3note');
-        el.textContent=`★ ${nb.name} — ON=${nb.on}¢ (${nb.note})`;
+        el.textContent=`★ ${nb.name} — ON=${nb.on}cent (${nb.note})`;
         clearTimeout(el._t);el._t=setTimeout(()=>el.textContent='',7000);
         playBellFromPoint(nb);
       } else if(di<namedIdx){
@@ -1250,8 +1262,8 @@ function drawScatter(){
           return '';
         },
         label:ctx=>{
-          if(ctx.datasetIndex===namedIdx){const nb=NAMED_BELLS[ctx.dataIndex];return`ON=${nb.on}¢  SQ=${nb.sq.toFixed(0)}¢  (documented)`}
-          return`ON=${ctx.parsed.x.toFixed(0)}¢  SQ=${ctx.parsed.y.toFixed(0)}¢`
+          if(ctx.datasetIndex===namedIdx){const nb=NAMED_BELLS[ctx.dataIndex];return`ON=${nb.on}cent  SQ=${nb.sq.toFixed(0)}cent  (documented)`}
+          return`ON=${ctx.parsed.x.toFixed(0)}cent  SQ=${ctx.parsed.y.toFixed(0)}cent`
         },
         afterLabel:ctx=>{
           if(ctx.datasetIndex===namedIdx){const nb=NAMED_BELLS[ctx.dataIndex];return nb.note}
@@ -1273,7 +1285,7 @@ function playBellFromPoint(bell){
   [[nom*.25,.45,8],[nom*.5,.8,6],[nom*.595,.6,3.5],[nom*.749,.4,3],[nom,1,2.2],[nom*sq_r,.55,1.8],[nom*on_r,.48,1.3]].forEach(([f,a,d])=>tone(ctx,f,a,d,t));
   const el=document.getElementById('s3note');
   const label=bell.name||bell.trad||'';
-  el.textContent=`♪ ${label} — nominal ≈ ${nom.toFixed(0)} Hz, ON=${bell.on.toFixed(0)}¢, SQ=${bell.sq.toFixed(0)}¢`;
+  el.textContent=`♪ ${label} — nominal ≈ ${nom.toFixed(0)} Hz, ON=${bell.on.toFixed(0)}cent, SQ=${bell.sq.toFixed(0)}cent`;
   clearTimeout(el._t);el._t=setTimeout(()=>el.textContent='',4000);
 }
 
@@ -1340,7 +1352,7 @@ function drawStretch(){
   const p=PEALS[selPeal],labels=p.data.map(d=>d[0].toFixed(0)+' Hz'),actual=p.data.map(d=>d[1]),model=p.data.map(d=>d[2]);
   const n=actual.length,ma=actual.reduce((a,b)=>a+b,0)/n,sst=actual.reduce((s,v)=>s+(v-ma)**2,0),ssr=actual.reduce((s,v,i)=>s+(v-model[i])**2,0),r2=1-ssr/sst,rms=Math.sqrt(ssr/n);
   document.getElementById('sr2').textContent=r2.toFixed(3);
-  document.getElementById('srms').textContent='±'+rms.toFixed(1)+' ¢';
+  document.getElementById('srms').textContent='±'+rms.toFixed(1)+' cent';
   document.getElementById('snb').textContent=p.nb;
   if(strChart)strChart.destroy();
   strChart=new Chart(document.getElementById('stretchChart'),{type:'line',data:{labels,datasets:[
@@ -1349,7 +1361,7 @@ function drawStretch(){
   ]},options:{responsive:true,
     onClick:(evt,elems)=>{if(!elems.length)return;const di=elems[0].datasetIndex,pi=elems[0].index,[nomHz,actual,model]=p.data[pi],offset=di===0?actual:model,lbl=di===0?'Actual foundry tuning':'Model prediction';playStretchPoint(nomHz,offset,lbl)},
     plugins:{title:{display:true,text:`${p.name} — ${p.nb} bells, ${p.yr}`,color:'#dde3f0',font:{size:13,weight:'normal'},padding:{bottom:12}},legend:{labels:{color:'#8090b0',font:{size:11},padding:12}}},
-    scales:{x:{title:{display:true,text:'Nominal Frequency (Hz)',color:'#8090b0'},grid:{color:'#1e2540'},ticks:{color:'#8090b0',maxRotation:40}},y:{title:{display:true,text:'Tuning offset from equal temperament (¢)',color:'#8090b0'},grid:{color:'#1e2540'},ticks:{color:'#8090b0'}}}}});
+    scales:{x:{title:{display:true,text:'Nominal Frequency (Hz)',color:'#8090b0'},grid:{color:'#1e2540'},ticks:{color:'#8090b0',maxRotation:40}},y:{title:{display:true,text:'Tuning offset from equal temperament (cent)',color:'#8090b0'},grid:{color:'#1e2540'},ticks:{color:'#8090b0'}}}}});
 }
 
 function playStretchPoint(nomHz,offset,label){
@@ -1361,7 +1373,7 @@ function playStretchPoint(nomHz,offset,label){
   bellAt(f,t0);bellAt(f*Math.pow(2,playOffset/1200),t0+1.1);
   const sign=offset>=0?'+':'',dir=offset>0?'sharper':offset<0?'flatter':'same pitch';
   const el=document.getElementById('s5note');
-  el.textContent=offset===0?`♪ ${nomHz.toFixed(0)} Hz — equal temperament and ${label} agree here`:`♪ ${nomHz.toFixed(0)} Hz — Equal temperament → ${label} (${sign}${offset}¢ ${dir}; ×5 amplified)`;
+  el.textContent=offset===0?`♪ ${nomHz.toFixed(0)} Hz — equal temperament and ${label} agree here`:`♪ ${nomHz.toFixed(0)} Hz — Equal temperament → ${label} (${sign}${offset}cent ${dir}; ×5 amplified)`;
   clearTimeout(el._t);el._t=setTimeout(()=>el.textContent='',5500);
 }
 
@@ -1436,7 +1448,7 @@ const REAL_BELLS=[
     weight:'c. 3 tonnes',note:'Ab4',nomHz:409.5,
     tradition:'English large tenor, true-harmonic',
     source:'Hibbert (2008) — exact Hz values',exact:true,
-    desc:'A large true-harmonic Taylor tenor with nominal at 409.5 Hz — well below the 500–1600 Hz dominance region. Upper partials generate a prominent secondary strike pitch roughly a perfect fourth above the primary. Listen for it with "Upper partials only". True-harmonic: hum and prime are within 1¢ of exact double-octave positions.',
+    desc:'A large true-harmonic Taylor tenor with nominal at 409.5 Hz — well below the 500–1600 Hz dominance region. Upper partials generate a prominent secondary strike pitch roughly a perfect fourth above the primary. Listen for it with "Upper partials only". True-harmonic: hum and prime are within 1 cent of exact double-octave positions.',
     p:[
       {n:'Hum',      hz:102.5, src:true},
       {n:'Prime',    hz:205.5, src:true},
@@ -1454,7 +1466,7 @@ const REAL_BELLS=[
     weight:'305 kg (6 cwt)',note:'C♯5',nomHz:1078.5,
     tradition:'English medium, true-harmonic',
     source:'Hibbert (2008) — exact Hz values',exact:true,
-    desc:'A textbook example of modern English true-harmonic tuning. Hum (270 Hz) and prime (540 Hz) are within 2¢ of exact octave positions below the nominal (1078.5 Hz). The bell sits at the heart of the dominance region, so the virtual pitch is completely unambiguous. SQ and ON values are estimated from regression.',
+    desc:'A textbook example of modern English true-harmonic tuning. Hum (270 Hz) and prime (540 Hz) are within 2 cent of exact octave positions below the nominal (1078.5 Hz). The bell sits at the heart of the dominance region, so the virtual pitch is completely unambiguous. SQ and ON values are estimated from regression.',
     p:[
       {n:'Hum',      hz:270.0,  src:true},
       {n:'Prime',    hz:540.0,  src:true},
@@ -1472,7 +1484,7 @@ const REAL_BELLS=[
     weight:'c.300 kg',note:'E5',nomHz:660,
     tradition:'English old-style (pre-true-harmonic)',
     source:'Hibbert (2008) — derived from Rudhall statistical averages',exact:false,
-    desc:'Before true-harmonic tuning became universal (~1900), bells were cast with hum and prime noticeably sharp of the true octave. Hibbert found Rudhall hum notes average 99¢ sharp of ideal, prime 73¢ flat. The resulting beat between the hum/prime and the virtual pitch gives old-style bells their characteristic "woolly" or "churchy" quality. All values estimated from tradition averages.',
+    desc:'Before true-harmonic tuning became universal (~1900), bells were cast with hum and prime noticeably sharp of the true octave. Hibbert found Rudhall hum notes average 99 cent sharp of ideal, prime 73 cent flat. The resulting beat between the hum/prime and the virtual pitch gives old-style bells their characteristic "woolly" or "churchy" quality. All values estimated from tradition averages.',
     p:[
       {n:'Hum',      hz:167,  src:false},
       {n:'Prime',    hz:321,  src:false},
@@ -1490,7 +1502,7 @@ const REAL_BELLS=[
     weight:'unknown',note:'≈F♯4',nomHz:720,
     tradition:'English steel bell — historically poor tone',
     source:'Hibbert (2008) — cents values from steel-bell study; nominal estimated',exact:false,
-    desc:'19th-century steel bells combined two problems: hum and prime flat of ideal (the opposite of old bronze bells) while upper partials were very sharp. Note ON at +1328¢ versus the ideal 1200¢ — 128¢ sharp. The resulting clash between over-spaced upper partials and under-spaced lower partials produced a tone widely described as "harsh", "clangorous" and "metallic".',
+    desc:'19th-century steel bells combined two problems: hum and prime flat of ideal (the opposite of old bronze bells) while upper partials were very sharp. Note ON at +1328 cent versus the ideal 1200 cent — 128 cent sharp. The resulting clash between over-spaced upper partials and under-spaced lower partials produced a tone widely described as "harsh", "clangorous" and "metallic".',
     p:[
       {n:'Hum',      hz:214,  src:false},
       {n:'Prime',    hz:371,  src:false},
@@ -1508,7 +1520,8 @@ const REAL_BELLS=[
     weight:'c.50 kg',note:'B4',nomHz:494,
     tradition:'Flemish carillon — historic true-harmonic',
     source:'Hibbert (2008) — derived from Hemony statistical data',exact:false,
-    desc:'The Hemony brothers achieved near-perfect true-harmonic tuning in the 17th century — without electronic measuring equipment. Hibbert\'s analysis of surviving Hemony bells found hum and prime averaged within ±0.4¢ of the ideal octave positions: a remarkable feat of empirical craftsmanship. ON at 1217¢ is typical for Dutch-tradition carillon bells. All values derived from tradition averages.',
+    audio:'https://archive.org/download/TheWesterkerkwestertorenCarillonBellTowerMp3Ringtones/C0.mp3',
+    desc:'The Hemony brothers achieved near-perfect true-harmonic tuning in the 17th century — without electronic measuring equipment. Hibbert\'s analysis of surviving Hemony bells found hum and prime averaged within ±0.4 cent of the ideal octave positions: a remarkable feat of empirical craftsmanship. ON at 1217 cent is typical for Dutch-tradition carillon bells. All values derived from tradition averages.',
     p:[
       {n:'Hum',      hz:123.5, src:false},
       {n:'Prime',    hz:247,   src:false},
@@ -1545,7 +1558,7 @@ const REAL_BELLS=[
     tradition:'German carillon; thick-walled profile, Perner foundry',
     source:'Siebert, Blankenhorn & Schweizerhof (2006), Univ. Karlsruhe — experimental modal analysis, Table 5',
     exact:true,
-    desc:'A small carillon bell lent to the University of Karlsruhe by founder Rudolf Perner (Passau, Bavaria) for experimental modal analysis. The outer and inner surfaces were measured by laser tracker and cement cast (~1000 nodes each side); 240-node impulse-hammer acceleration measurements yielded the frequency response function directly. All partial Hz values are from that measured transfer function (Table 5 of Siebert et al. 2006). The prime and superquint each exhibited beat pairs (spinning modes) from slight casting asymmetry — values here are the mean of each pair. The quint lies at −360¢ from nominal, considerably sharper than the ideal −500¢; this is characteristic of the thicker wall-to-diameter ratio of carillon bells. Citation: Siebert A., Blankenhorn G., Schweizerhof K. — "Investigating the vibration behavior and sound of church bells considering ornaments and reliefs using LS-DYNA", Institut für Mechanik, Universität Karlsruhe, 2006.',
+    desc:'A small carillon bell lent to the University of Karlsruhe by founder Rudolf Perner (Passau, Bavaria) for experimental modal analysis. The outer and inner surfaces were measured by laser tracker and cement cast (~1000 nodes each side); 240-node impulse-hammer acceleration measurements yielded the frequency response function directly. All partial Hz values are from that measured transfer function (Table 5 of Siebert et al. 2006). The prime and superquint each exhibited beat pairs (spinning modes) from slight casting asymmetry — values here are the mean of each pair. The quint lies at −360 cent from nominal, considerably sharper than the ideal −500 cent; this is characteristic of the thicker wall-to-diameter ratio of carillon bells. Citation: Siebert A., Blankenhorn G., Schweizerhof K. — "Investigating the vibration behavior and sound of church bells considering ornaments and reliefs using LS-DYNA", Institut für Mechanik, Universität Karlsruhe, 2006.',
     p:[
       {n:'Hum',    hz:999,    src:true},
       {n:'Prime',  hz:1815.5, src:true},
@@ -1556,13 +1569,53 @@ const REAL_BELLS=[
     ]
   },
   {
+    short:'Westminster Abbey tenor',
+    name:'Tenor bell — Westminster Abbey, London',
+    founder:'Whitechapel Bellfoundry (tuned J. Slater, 1971)',date:1971,
+    weight:'1544 kg (30 cwt 1 qtr)',note:'D5',nomHz:587.5,
+    tradition:'English true-harmonic — premier tuning case study',
+    source:'Hibbert W.A. (2022), "The tuning of Westminster Abbey tenor", hibberts.co.uk — recording 15 Aug 2019, Wavanal FFT analysis; cross-referenced against Whitechapel foundry tuning records 1971',
+    exact:true,
+    desc:'Possibly the most precisely documented change-ringing tenor in existence. In 1971 John Slater of Whitechapel Bellfoundry removed 16% of the bell\'s weight across 19 cuts, attempting to bring all upper partials into exact musical intervals. The result is a textbook true-harmonic bell: prime at −1198 cent, tierce at −904 cent, quint at −498 cent. Yet the attempt to fix the upper partials failed — superquint landed exactly at +699 cent (ideal fifth), so the octave nominal fell 54 cent sharp at +1254 cent rather than the ideal 1200 cent. Hibbert recorded the bell on 15 August 2019 and analysed it with his Wavanal FFT software, confirming the frequencies match the 1971 foundry figures to within ±2 Hz. His conclusion: the rim partials above the nominal cannot be tuned independently — changing any one moves all others predictably.',
+    p:[
+      {n:'Hum',      hz:147.1,  src:true},
+      {n:'Prime',    hz:294.1,  src:true},
+      {n:'Tierce',   hz:348.5,  src:true},
+      {n:'Quint',    hz:440.6,  src:true},
+      {n:'Nominal',  hz:587.5,  src:true},
+      {n:'SQ',       hz:879.7,  src:true},
+      {n:'Oct. Nom.',hz:1212.5, src:true},
+    ]
+  },
+  {
+    short:'Gloriosa — Frankfurt Dom',
+    name:'Gloriosa — Kaiserdom St. Bartholomäus, Frankfurt am Main',
+    founder:'J.G. Große, Dresden',date:1877,
+    weight:'11,950 kg',note:'E2 (e° +1/16 semitone)',nomHz:82.7,
+    tradition:'19th-century German single-bell casting; modelled acoustically on the Erfurt Gloriosa (Gerhard van Wou, 1497)',
+    source:'Wikipedia: Gloriosa (Frankfurter Dom); dom-frankfurt.de. Nominal e° +1/16 confirmed. All other partial Hz values are ideal true-harmonic estimates derived from the nominal — no published spectral analysis found.',
+    exact:false,
+    audio:'https://media.frankfurt.de/amt21/gloriosaausklingend_1-2.mp3',
+    desc:'The largest bell in the Frankfurt Kaiserdom and the third-heaviest bronze bell in Germany. Cast in 1877 by Hermann Große of Dresden (opus 891), using 5 tonnes of bronze salvaged from bells destroyed in the 1867 cathedral fire and 13 tonnes of captured French cannon metal — a gift from Kaiser Wilhelm I, whose name the bell bears in its inscription. At 11,950 kg and 2,585 mm diameter, the Gloriosa has a confirmed nominal (Schlagton) of e° +1/16 semitone, approximately 82.7 Hz — one of the deepest nominally documented bells in Germany. Große modelled it on the famous 1497 Gloriosa of Gerhard van Wou in the Erfurt Cathedral, whose tonal properties he studied exhaustively. The bell survived the Second World War: confiscated in 1942 for the Reichsstelle für Metalle, it remained intact on the Hamburg Glockenfriedhof and was returned to Frankfurt in October 1947. In 1987 casting defects were repaired by welding at Lachenmeyer, which serendipitously extended the ring time by 60 seconds. The Gloriosa rings only four times a year as part of the Großes Stadtgeläut, and alone on the death of a bishop or pope. Note: partial Hz values shown here are ideal true-harmonic estimates derived from the confirmed nominal. The actual 1877 tuning may differ — no published spectral analysis of this bell has been found.',
+    p:[
+      {n:'Hum',      hz:20.7,  src:false},
+      {n:'Prime',    hz:41.4,  src:false},
+      {n:'Tierce',   hz:49.2,  src:false},
+      {n:'Quint',    hz:62.0,  src:false},
+      {n:'Nominal',  hz:82.7,  src:false},
+      {n:'SQ',       hz:123.9, src:false},
+      {n:'Oct. Nom.',hz:165.4, src:false},
+    ]
+  },
+  {
     short:'Berlin Freedom Bell',
     name:'Berlin Freedom Bell — as tuned (G&J 1950)',
     founder:'Gillett & Johnston',date:1950,
     weight:'c.9.6 tonnes',note:'≈G♯2 (estimated)',nomHz:195,
     tradition:'German — over-tuned case study',
     source:'Hibbert (2008) — exact cents from case study; nominal estimated',exact:false,
-    desc:'A famous case study in misguided tuning. Removing 1.4 tonnes of metal to lower the pitch flattened the lower partials well below ideal (hum 53¢ flat, prime 41¢ flat) while simultaneously driving upper partials sharp — ON ended at 1271¢ rather than improving toward the ideal 1200¢. Hibbert shows this is why "over-tuning" is counterproductive: grinding metal changes all partials at once, not independently.',
+    audio:'https://archive.org/download/Freiheitsglocke/Freiheitsglocke.mp3',
+    desc:'A famous case study in misguided tuning. Removing 1.4 tonnes of metal to lower the pitch flattened the lower partials well below ideal (hum 53 cent flat, prime 41 cent flat) while simultaneously driving upper partials sharp — ON ended at 1271 cent rather than improving toward the ideal 1200 cent. Hibbert shows this is why "over-tuning" is counterproductive: grinding metal changes all partials at once, not independently.',
     p:[
       {n:'Hum',      hz:52.5,  src:false},
       {n:'Prime',    hz:95.8,  src:false},
@@ -1580,7 +1633,7 @@ const RB_AMPS={'Hum':.45,'Prime':.80,'Tierce':.60,'Quint':.30,'Nominal':1.0,'SQ'
 const RB_DECAY={'Hum':8,'Prime':6.5,'Tierce':4,'Quint':3.2,'Nominal':2.5,'SQ':1.8,'Oct. Nom.':1.3};
 const RB_IDEAL={'Hum':-2400,'Prime':-1200,'Tierce':-900,'Quint':-500,'Nominal':0,'SQ':702,'Oct. Nom.':1200};
 
-let rb7Built=false,rbCurBell=0,rbBuildN=0;
+let rb7Built=false,rbCurBell=0,rbBuildN=0,rbWFActive=false;
 
 function initRealBells(){
   rb7Built=true;
@@ -1617,6 +1670,224 @@ function initRealBells(){
   }
 }
 
+/* ---- view toggle ---- */
+function rbSetView(v){
+  rbWFActive=(v==='wf');
+  document.getElementById('rb-fft-wrap').style.display=rbWFActive?'none':'';
+  document.getElementById('rb-wf-wrap').style.display=rbWFActive?'':'none';
+  document.getElementById('rb-view-fft-btn').classList.toggle('on',!rbWFActive);
+  document.getElementById('rb-view-wf-btn').classList.toggle('on',rbWFActive);
+  document.getElementById('rb-view-note-fft').style.display=rbWFActive?'none':'';
+  document.getElementById('rb-view-note-wf').style.display=rbWFActive?'':'none';
+  if(rbWFActive) drawWaterfall(REAL_BELLS[rbCurBell]);
+}
+
+/* ---- 3-D time-decay waterfall ---- */
+/* Perspective: time goes to lower-left (matching Rossing/Hibbert style).
+   Each partial drawn as an isolated fin; Gaussian width SIG in relative-freq units.
+   Painter's algorithm: TMAX → 0 (back to front). */
+function drawWaterfall(b){
+  const canvas=document.getElementById('rb-wf-canvas');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width, H=canvas.height;
+
+  ctx.fillStyle='#070b16';
+  ctx.fillRect(0,0,W,H);
+
+  // --- layout ---
+  // Front face (t=0): frequency axis along the bottom, amplitude axis on left
+  const PAD_L=112;   // space for y-axis label + time ticks
+  const PAD_R=28;
+  const PAD_T=80;    // space for partial name labels
+  const PAD_B=44;
+
+  const X_FL=PAD_L;              // screen-x of f_min at t=0
+  const X_FR=W-PAD_R;            // screen-x of f_max at t=0
+  const DW=X_FR-X_FL;            // frequency-axis pixel width
+  const Y_ZERO=PAD_T+100;        // screen-y of zero-amplitude level at t=0  (≈ 180)
+  const AS=88;                   // pixels per unit amplitude (upward = smaller y)
+
+  // --- frequency axis ---
+  const FM=0.30, FX=5.8;
+
+  // --- perspective per second of time: shifts LEFT and DOWN ---
+  const TMAX=50;
+  const NS=180;          // render slices
+  const DX=1.82;         // px per second → leftward
+  const DY=5.10;         // px per second → downward
+
+  // --- Gaussian peak width ---
+  const SIG=0.017;       // relative-freq units
+
+  // --- partial label offsets (to avoid collisions) ---
+  // Labels drawn above peak at t=0; shift some upward when neighbours are close
+  const LABEL_LIFT={Hum:0,Prime:0,'Minor Third':0,Tierce:0,Quint:0,
+                    Nominal:0,SQ:0,'Oct. Nom.':0};
+
+  // --- frequency reference ---
+  const primePar=b.p.find(p=>p.n==='Prime');
+  const nomPar  =b.p.find(p=>p.n==='Nominal');
+  const refHz=primePar?primePar.hz:(nomPar?nomPar.hz/2:b.nomHz/2);
+
+  // --- build partials in relative-freq space ---
+  const parts=b.p.map(p=>({
+    n:p.n, fr:p.hz/refHz, a:RB_AMPS[p.n]||0.5, tau:RB_DECAY[p.n]||3
+  })).filter(p=>p.fr>=FM&&p.fr<=FX);
+
+  // Sort by frequency descending so painter draws right→left (lower-freq fins in front)
+  const drawOrder=[...parts].sort((a,bb)=>bb.fr-a.fr);
+
+  // --- projection helpers ---
+  function fToX(f,t){return X_FL+(f-FM)/(FX-FM)*DW - t*DX;}
+  function yFloor(t)  {return Y_ZERO + t*DY;}
+  function yAmp(a,t)  {return yFloor(t) - a*AS;}
+
+  // --- time ticks to draw as floor lines ---
+  const TIME_TICKS=[0,1,2,5,10,20,50];
+
+  // ================================================================
+  // PAINTER'S LOOP: draw from t=TMAX back to t=0
+  // ================================================================
+  for(let step=NS;step>=0;step--){
+    const t=TMAX*step/NS;
+    const yF=yFloor(t);
+    if(yF>H+10) continue;
+
+    // draw floor lines only at major time ticks
+    const isTick=TIME_TICKS.some(tt=>Math.abs(t-tt)<TMAX/(2*NS));
+    if(isTick){
+      const xL=fToX(FM,t), xR=fToX(FX,t);
+      ctx.beginPath();ctx.moveTo(xL,yF);ctx.lineTo(xR,yF);
+      ctx.strokeStyle='rgba(55,78,135,0.48)';ctx.lineWidth=0.8;ctx.stroke();
+    }
+
+    // draw each partial's Gaussian fin slice (right-to-left)
+    drawOrder.forEach(p=>{
+      const amp=p.a*Math.exp(-t/p.tau);
+      if(amp<0.005) return;
+
+      // sample Gaussian only within ±3.5σ of the peak
+      const df=3.5*SIG;
+      const fL=Math.max(FM, p.fr-df);
+      const fR=Math.min(FX, p.fr+df);
+      const NL=48;
+
+      ctx.beginPath();
+      ctx.moveTo(fToX(fL,t), yF);
+      for(let i=0;i<=NL;i++){
+        const f=fL+(fR-fL)*i/NL;
+        const d=(f-p.fr)/SIG;
+        ctx.lineTo(fToX(f,t), yAmp(amp*Math.exp(-0.5*d*d), t));
+      }
+      ctx.lineTo(fToX(fR,t), yF);
+      ctx.closePath();
+
+      const frac=1-step/NS;                   // 0 at back, 1 at front
+      ctx.fillStyle=`rgba(210,68,52,${0.48+0.40*frac})`;
+      ctx.fill();
+    });
+  }
+
+  // ================================================================
+  // BOX OUTLINE (front face + perspective edges)
+  // ================================================================
+  const boxClr='rgba(70,90,155,0.60)';
+  ctx.strokeStyle=boxClr; ctx.lineWidth=1;
+
+  // front bottom edge (frequency axis at t=0)
+  const yF0=yFloor(0);
+  ctx.beginPath();ctx.moveTo(fToX(FM,0),yF0);ctx.lineTo(fToX(FX,0),yF0);ctx.stroke();
+
+  // left perspective edge (f=FM, t: 0→TMAX)
+  ctx.beginPath();ctx.moveTo(fToX(FM,0),yF0);ctx.lineTo(fToX(FM,TMAX),yFloor(TMAX));ctx.stroke();
+  // right perspective edge (f=FX)
+  ctx.beginPath();ctx.moveTo(fToX(FX,0),yF0);ctx.lineTo(fToX(FX,TMAX),yFloor(TMAX));ctx.stroke();
+  // back bottom edge
+  ctx.beginPath();ctx.moveTo(fToX(FM,TMAX),yFloor(TMAX));ctx.lineTo(fToX(FX,TMAX),yFloor(TMAX));ctx.stroke();
+
+  // front left vertical (amplitude axis)
+  const yTop=yAmp(1.0,0)-12;
+  ctx.beginPath();ctx.moveTo(fToX(FM,0),yF0);ctx.lineTo(fToX(FM,0),yTop);ctx.stroke();
+  // top horizontal cap
+  ctx.beginPath();ctx.moveTo(fToX(FM,0),yTop);ctx.lineTo(fToX(FX,0),yTop);
+  ctx.strokeStyle='rgba(70,90,155,0.25)';ctx.stroke();
+
+  // ================================================================
+  // AXES LABELS
+  // ================================================================
+
+  // frequency ticks (along t=0 floor)
+  const fTicks=[0.5,1,1.5,2,3,4,5];
+  ctx.fillStyle='rgba(132,152,200,0.90)';
+  ctx.font='13px monospace';
+  ctx.textAlign='center';
+  fTicks.forEach(ft=>{
+    if(ft<FM||ft>FX)return;
+    const x=fToX(ft,0);
+    ctx.beginPath();ctx.moveTo(x,yF0);ctx.lineTo(x,yF0+6);
+    ctx.strokeStyle='rgba(110,135,200,0.45)';ctx.lineWidth=1;ctx.stroke();
+    ctx.fillText(ft+'×',x,yF0+20);
+  });
+
+  // frequency axis label
+  ctx.font='13px sans-serif';
+  ctx.fillStyle='rgba(145,162,210,0.82)';
+  ctx.textAlign='center';
+  ctx.fillText('Relative frequency  (prime = 1×)', X_FL+DW/2, H-6);
+
+  // Y-axis label (rotated, left of front face)
+  ctx.save();
+  ctx.translate(16, Y_ZERO-AS*0.45);
+  ctx.rotate(-Math.PI/2);
+  ctx.textAlign='center';
+  ctx.font='12px sans-serif';
+  ctx.fillStyle='rgba(145,162,210,0.75)';
+  ctx.fillText('Relative sound level',0,0);
+  ctx.restore();
+
+  // time ticks along left perspective edge
+  ctx.font='11px monospace';
+  ctx.fillStyle='rgba(115,135,195,0.90)';
+  TIME_TICKS.forEach(tt=>{
+    if(tt>TMAX)return;
+    const xl=fToX(FM,tt), yl=yFloor(tt);
+    if(yl<0||yl>H) return;
+    ctx.textAlign='right';
+    ctx.fillText(tt+'s', xl-7, yl+4);
+    ctx.beginPath();ctx.moveTo(xl,yl);ctx.lineTo(xl-4,yl);
+    ctx.strokeStyle='rgba(100,122,185,0.45)';ctx.lineWidth=0.8;ctx.stroke();
+  });
+
+  // "Time (sec)" label, diagonal along the left edge
+  ctx.save();
+  const tx0=fToX(FM,2)-36,  ty0=yFloor(2);
+  const tx1=fToX(FM,20)-36, ty1=yFloor(20);
+  ctx.translate((tx0+tx1)/2,(ty0+ty1)/2);
+  ctx.rotate(Math.atan2(ty1-ty0,tx1-tx0));
+  ctx.textAlign='center';
+  ctx.font='12px sans-serif';
+  ctx.fillStyle='rgba(145,162,210,0.75)';
+  ctx.fillText('Time (sec)',0,-12);
+  ctx.restore();
+
+  // partial name labels above each fin at t=0
+  ctx.font='11.5px sans-serif';
+  ctx.textAlign='center';
+  parts.forEach(p=>{
+    const x=fToX(p.fr,0);
+    const yLbl=yAmp(p.a,0)-(LABEL_LIFT[p.n]||0)-12;
+    ctx.fillStyle='rgba(232,172,152,0.93)';
+    ctx.fillText(p.n, x, yLbl);
+  });
+
+  // caption
+  ctx.font='10px sans-serif';
+  ctx.textAlign='right';
+  ctx.fillStyle='rgba(90,105,148,0.82)';
+  ctx.fillText('Partial positions: measured  ·  Decay rates: indicative', W-8, H-5);
+}
+
 function rbSelectBell(i){
   rbCurBell=i; rbBuildN=0;
   const b=REAL_BELLS[i];
@@ -1629,9 +1900,11 @@ function rbSelectBell(i){
     <span class="bm-lbl">Note</span><span class="bm-val" style="color:var(--accent2);font-weight:600">${b.note} &mdash; nominal ${b.nomHz} Hz</span>
     <span class="bm-lbl">Tradition</span><span class="bm-val">${b.tradition}</span>
     <span class="bm-lbl">Source</span><span class="bm-val" style="font-size:.76rem;color:var(--muted)">${b.source}</span>
+    ${b.audio?`<span class="bm-lbl">Recording</span><span class="bm-val"><a href="${b.audio}" target="_blank" rel="noopener" style="color:var(--accent2);text-decoration:none">&#9654; Official recording (MP3)</a> &nbsp;<span style="font-size:.72rem;color:var(--muted)">— right-click to save</span></span>`:''}
   </div>`;
   document.getElementById('bell-desc').textContent=b.desc;
   rbDrawFFT(b);
+  if(rbWFActive) drawWaterfall(b);
   rbBuildTable(b);
   rbBuildPiano(b);
   document.getElementById('rb-build-label').textContent='Click "Add next partial" to begin — each click layers in one more partial.';
@@ -1801,7 +2074,7 @@ function rbBuildTable(b){
     const cents=Math.round(1200*Math.log2(pt.hz/b.nomHz));
     const ideal=RB_IDEAL[pt.n];
     const dev=ideal!==undefined?cents-ideal:null;
-    const devStr=dev===null?'—':(dev>0?`+${dev}¢`:`${dev}¢`);
+    const devStr=dev===null?'—':(dev>0?`+${dev}cent`:`${dev}cent`);
     const devCol=dev===null?'var(--muted)':Math.abs(dev)<=15?'var(--green)':Math.abs(dev)<=40?'var(--accent2)':'var(--red)';
     const srcDot=pt.src
       ?`<span style="color:var(--green);font-size:.85em" title="Exact Hz from source">●</span>`
@@ -1811,7 +2084,7 @@ function rbBuildTable(b){
     tr.innerHTML=`<td>${srcDot}</td>
       <td><span style="color:${col};font-weight:600">${pt.n}</span></td>
       <td style="font-family:monospace">${pt.hz<100?pt.hz.toFixed(1):pt.hz.toFixed(pt.hz<1000?1:0)}</td>
-      <td style="font-family:monospace;color:var(--muted)">${cents>=0?'+':''}${cents}¢</td>
+      <td style="font-family:monospace;color:var(--muted)">${cents>=0?'+':''}${cents}cent</td>
       <td style="font-family:monospace;font-weight:600;color:${devCol}">${devStr}</td>
       <td><div class="play-dot" onclick="event.stopPropagation();rbPlayPartial(${i})">▶</div></td>`;
     tr.onclick=()=>rbPlayPartial(i);
@@ -1958,7 +2231,7 @@ function rbPlayPartial(i){
   const cents=Math.round(1200*Math.log2(pt.hz/b.nomHz));
   const note=document.getElementById('rb-note');
   const hz=pt.hz;
-  note.textContent=`♪ ${pt.n}: ${hz<100?hz.toFixed(1):hz.toFixed(hz<1000?1:0)} Hz (${hzToNote(Math.max(hz,40))}) — ${cents>=0?'+':''}${cents}¢ from nominal${hz<80?' · very low — headphones recommended':''}`;
+  note.textContent=`♪ ${pt.n}: ${hz<100?hz.toFixed(1):hz.toFixed(hz<1000?1:0)} Hz (${hzToNote(Math.max(hz,40))}) — ${cents>=0?'+':''}${cents}cent from nominal${hz<80?' · very low — headphones recommended':''}`;
   clearTimeout(note._t);
   note._t=setTimeout(()=>{note.textContent='';rbClearHighlight()},4500);
 }
