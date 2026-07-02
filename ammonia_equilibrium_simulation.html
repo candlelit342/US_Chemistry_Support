@@ -291,7 +291,7 @@
   // negligible at every simulated temperature. Reverse (decomposition) doesn't need that
   // catalytic alignment, so it stays kinetically accessible on its own, growing with T.
   const ORIENT_F_CAT = 0.45;   // forward, catalyst inserted
-  const ORIENT_F_UNCAT = 0.03; // forward, catalyst removed — synthesis is essentially blocked
+  const ORIENT_F_UNCAT = 0.001; // forward, catalyst removed — synthesis is essentially blocked
   const ORIENT_R = 0.75;       // reverse, same with or without catalyst
   const SPEED_SCALE = 0.15;
   const MASS = { N2: 14, H2: 1, NH3: 8.5 };
@@ -300,7 +300,7 @@
   const INK = '#232323';
   const SEARCH_R = 70; // radius to find "nearby" extra H2 for forward reaction
   const REACT_COOLDOWN = 20; // frames
-  const MAX_PARTICLES = 960;
+  const MAX_PARTICLES = 1440;
   const BOX = { w: 620, h: 400, margin: 12 };
   const REF_TEMP = 298; // fixed comparison temperature for the Maxwell-Boltzmann diagram
   const MB_XMAX = 480;  // energy axis range for the MB diagram (relative units)
@@ -368,8 +368,8 @@
 
   function initParticles(){
     particles = [];
-    for (let i=0;i<80;i++) particles.push(makeParticle('N2'));
-    for (let i=0;i<240;i++) particles.push(makeParticle('H2'));
+    for (let i=0;i<160;i++) particles.push(makeParticle('N2'));
+    for (let i=0;i<480;i++) particles.push(makeParticle('H2'));
   }
 
   function addParticles(type, n){
@@ -894,7 +894,7 @@
     const cH2 = particles.filter(p=>p.type==='H2').length;
     const cNH3 = particles.filter(p=>p.type==='NH3').length;
 
-    const windowSec = 2.0;
+    const windowSec = 3.5; // wider averaging window with more molecules gives a much steadier, more readable rate signal
     while (forwardEvents.length && state.elapsed - forwardEvents[0] > 30) forwardEvents.shift();
     while (reverseEvents.length && state.elapsed - reverseEvents[0] > 30) reverseEvents.shift();
     const rf = forwardEvents.filter(ts => state.elapsed - ts <= windowSec).length / windowSec;
@@ -1018,7 +1018,7 @@
     chartData.t.length=0; chartData.N2.length=0; chartData.H2.length=0;
     chartData.NH3.length=0; chartData.rateF.length=0; chartData.rateR.length=0;
     drawCharts();
-    explain('Simulation reset to 80 N₂ and 240 H₂ molecules. Press a control to see what happens.');
+    explain('Simulation reset to 160 N₂ and 480 H₂ molecules. Press a control to see what happens.');
   });
 
   /* ============== MAIN LOOP ============== */
