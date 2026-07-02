@@ -1,498 +1,178 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Downloads — HTML File Index</title>
-  <style>
-    :root {
-      --body-bg: #f8fafc;
-      --header-bg: #1e293b;
-      --card-bg: #ffffff;
-      --border: #e2e8f0;
-      --text: #1e293b;
-      --muted: #94a3b8;
-      --link: #1d4ed8;
-      --link-hover: #1e40af;
-    }
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body {
-      font-family: -apple-system, 'Segoe UI', Arial, sans-serif;
-      background: var(--body-bg);
-      color: var(--text);
-      min-height: 100vh;
-    }
+<meta charset="UTF-8">
+<title>Learner's Guide to the Element Symbols and their Locations in the PT</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Poiret+One&family=Prata&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --gold:#c9a227;
+    --gold-dark:#a3821e;
+    --cream:#fbf6ea;
+    --ink:#2b2620;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    min-height:100vh;
+    background: radial-gradient(circle at 50% 0%, #fffef8 0%, #f3ead9 45%, #e9dcc0 100%);
+    font-family:'Poiret One','Georgia',serif;
+    color:var(--ink);
+  }
+  .wrap{max-width:900px;margin:0 auto;padding:14px 16px 60px;}
 
-    /* ── Header ── */
-    header {
-      background: var(--header-bg);
-      color: #f1f5f9;
-      padding: 20px 32px 16px;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.3);
-      display: flex;
-      align-items: center;
-      gap: 24px;
-      flex-wrap: wrap;
-    }
-    header h1 { font-size: 1.15rem; color: #f1f5f9; font-weight: 700; }
-    header p  { font-size: 12px; color: #94a3b8; margin-top: 3px; }
-    .search-wrap { margin-left: auto; }
-    #search {
-      background: #334155; border: 1px solid #475569; color: #f1f5f9;
-      padding: 7px 14px; border-radius: 20px; font-size: 13px;
-      outline: none; width: 220px; font-family: inherit;
-    }
-    #search::placeholder { color: #64748b; }
-    #search:focus { border-color: #93c5fd; }
+  header{
+    text-align:center;
+    padding:6px 0 16px;
+    border-bottom:3px double var(--gold);
+    margin-bottom:24px;
+  }
+  h1{
+    font-family:'Cinzel Decorative',serif;
+    font-size:clamp(22px,4.2vw,36px);
+    margin:4px 0;
+    background:linear-gradient(180deg,#e9c766,var(--gold-dark));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    letter-spacing:1px;
+    line-height:1.3;
+  }
+  .subtitle{font-size:14px;color:#6b5f47;letter-spacing:1px;margin-top:6px;}
 
-    /* ── Jump nav ── */
-    nav {
-      background: #fff;
-      border-bottom: 1px solid var(--border);
-      padding: 8px 32px;
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      font-size: 12px;
-    }
-    nav a {
-      color: #475569; text-decoration: none;
-      padding: 3px 10px; border-radius: 12px;
-      border: 1px solid #e2e8f0;
-      transition: all 0.15s;
-    }
-    nav a:hover { background: #f1f5f9; color: #1d4ed8; border-color: #bfdbfe; }
+  h2.section{
+    font-family:'Cinzel Decorative',serif;
+    font-size:18px;
+    color:var(--gold-dark);
+    border-bottom:2px solid var(--gold);
+    padding-bottom:6px;
+    margin:34px 0 14px;
+    letter-spacing:1px;
+  }
 
-    /* ── Main ── */
-    main { max-width: 960px; margin: 28px auto; padding: 0 24px 60px; }
+  .card-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+    gap:14px;
+  }
+  a.card{
+    display:block;
+    background:var(--cream);
+    border:2px solid var(--gold);
+    border-radius:10px;
+    padding:14px 16px;
+    text-decoration:none;
+    color:var(--ink);
+    box-shadow:0 2px 4px rgba(0,0,0,.08);
+    transition:transform .12s ease, box-shadow .12s ease;
+  }
+  a.card:hover{
+    transform:translateY(-2px);
+    box-shadow:0 6px 14px rgba(0,0,0,.16);
+    border-color:var(--gold-dark);
+  }
+  .card-title{
+    font-family:'Prata','Georgia',serif;
+    font-size:16px;
+    font-weight:700;
+    color:var(--gold-dark);
+    margin-bottom:4px;
+  }
+  .card-desc{
+    font-size:13px;
+    color:#6b5f47;
+    line-height:1.5;
+  }
 
-    /* ── Sections ── */
-    section {
-      margin-bottom: 28px;
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-    }
-    section h2 {
-      background: var(--bg);
-      border-left: 5px solid var(--accent);
-      padding: 11px 18px;
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--accent);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .sec-icon { font-size: 16px; }
-    .count { font-weight: 400; font-size: 12px; color: var(--muted); margin-left: 4px; }
-
-    ul { list-style: none; }
-    li {
-      display: flex;
-      align-items: baseline;
-      gap: 10px;
-      padding: 9px 18px;
-      border-bottom: 1px solid #f1f5f9;
-      transition: background 0.12s;
-    }
-    li:last-child { border-bottom: none; }
-    li:hover { background: #f8fafc; }
-    li.hidden { display: none; }
-
-    li a {
-      color: var(--link);
-      text-decoration: none;
-      font-size: 13.5px;
-      font-weight: 500;
-      flex-shrink: 0;
-      max-width: 480px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    li a:hover { color: var(--link-hover); text-decoration: underline; }
-
-    .fname {
-      font-size: 11px;
-      color: #94a3b8;
-      font-family: 'SF Mono', 'Consolas', monospace;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      min-width: 0;
-    }
-
-    /* ── No results ── */
-    #no-results {
-      display: none;
-      text-align: center;
-      padding: 48px;
-      color: #94a3b8;
-      font-size: 14px;
-    }
-
-    footer {
-      text-align: center;
-      font-size: 11px;
-      color: #94a3b8;
-      padding: 16px;
-    }
-  </style>
+  footer{
+    text-align:center;
+    font-size:12px;
+    color:#8a7d5f;
+    margin-top:40px;
+    letter-spacing:.5px;
+  }
+</style>
 </head>
 <body>
 
-<header>
-  <div>
-    <h1>📁 Downloads — HTML File Index</h1>
-    <p>66 files &nbsp;·&nbsp; 7 categories &nbsp;·&nbsp; Click any title to open</p>
+<div class="wrap">
+  <header>
+    <h1>Learner's Guide to the Element Symbols and their Locations in the PT</h1>
+    <div class="subtitle">A collection of Art Deco Periodic Table Tetris games — pick a game below to start playing</div>
+  </header>
+
+  <h2 class="section">Single Period Games</h2>
+  <div class="card-grid">
+    <a class="card" href="period-1-drop.html">
+      <div class="card-title">Period 1 Drop</div>
+      <div class="card-desc">Just two elements — Hydrogen and Helium. The perfect starting point.</div>
+    </a>
+    <a class="card" href="period-2-drop.html">
+      <div class="card-title">Period 2 Drop</div>
+      <div class="card-desc">Lithium through Neon — 8 elements across the second row.</div>
+    </a>
+    <a class="card" href="period-3-drop.html">
+      <div class="card-title">Period 3 Drop</div>
+      <div class="card-desc">Sodium through Argon — 8 elements across the third row.</div>
+    </a>
+    <a class="card" href="period-4-drop.html">
+      <div class="card-title">Period 4 Drop</div>
+      <div class="card-desc">Potassium through Krypton — the first row with transition metals.</div>
+    </a>
+    <a class="card" href="period-5-drop.html">
+      <div class="card-title">Period 5 Drop</div>
+      <div class="card-desc">Rubidium through Xenon — 18 elements across the fifth row.</div>
+    </a>
+    <a class="card" href="period-6-drop.html">
+      <div class="card-title">Period 6 Drop</div>
+      <div class="card-desc">Caesium through Radon — 32 elements, including the Lanthanide gap.</div>
+    </a>
+    <a class="card" href="periodic-table-tetris.html">
+      <div class="card-title">Period 7 Drop</div>
+      <div class="card-desc">Francium through Oganesson — the final row, including the Actinide gap.</div>
+    </a>
   </div>
-  <div class="search-wrap">
-    <input id="search" type="search" placeholder="🔍 Filter files…" oninput="filterFiles(this.value)" autocomplete="off"/>
+
+  <h2 class="section">f-Block Series</h2>
+  <div class="card-grid">
+    <a class="card" href="f-block-1-lanthanides-drop.html">
+      <div class="card-title">f-Block Part 1: The Lanthanide Series</div>
+      <div class="card-desc">Cerium through Lutetium — 14 elements, with the Actinide Series shown as reference.</div>
+    </a>
+    <a class="card" href="f-block-2-actinides-drop.html">
+      <div class="card-title">f-Block Part 2: The Actinide Series</div>
+      <div class="card-desc">Thorium through Lawrencium — 14 elements, with the Lanthanide Series shown as reference.</div>
+    </a>
   </div>
-</header>
 
-<nav>
-  <a href="#haber">⚗️ Haber-Bosch</a>
-  <a href="#contact">🧪 Contact Process</a>
-  <a href="#redox">⚡ Redox</a>
-  <a href="#atomic">⚛️ Atomic Structure</a>
-  <a href="#maps">🗺️ Maps</a>
-  <a href="#evolution">🦎 Evolution</a>
-  <a href="#other">📄 Other</a>
-</nav>
+  <h2 class="section">Multi-Period &amp; Complete Table Games</h2>
+  <div class="card-grid">
+    <a class="card" href="periods-1-2-3-drop.html">
+      <div class="card-title">Periods 1-3 Drop</div>
+      <div class="card-desc">Period 1, then Period 2, then Period 3 — 18 elements, one row at a time.</div>
+    </a>
+    <a class="card" href="periods-1-2-3-random-drop.html">
+      <div class="card-title">Periods 1-3: The Expert's Version</div>
+      <div class="card-desc">The same 18 elements, but shuffled together and dropped in random order.</div>
+    </a>
+    <a class="card" href="periods-1-7-drop.html">
+      <div class="card-title">Periods 1-7 Drop</div>
+      <div class="card-desc">Every main period in sequence, for advanced students — with an escalating score bonus.</div>
+    </a>
+    <a class="card" href="complete-periodic-table-drop.html">
+      <div class="card-title">Learn the Complete Periodic Table!</div>
+      <div class="card-desc">All 118 elements — every period plus the Lanthanide and Actinide Series, in sequence.</div>
+    </a>
+    <a class="card" href="complete-periodic-table-random-drop.html">
+      <div class="card-title">Random Element Drop! Expert Edition</div>
+      <div class="card-desc">All 118 elements shuffled together, falling in completely random order across the whole table.</div>
+    </a>
+  </div>
 
-<main>
+  <footer>Periodic Table Tetris — an Art Deco learning game series</footer>
+</div>
 
-  <section id="haber" style="--accent:#6d28d9;--bg:#ede9fe">
-    <h2><span class="sec-icon">⚗️</span>Haber-Bosch Process / Ammonia <span class="count">(4)</span></h2>
-    <ul>
-        <li>
-          <a href="haber_bosch_germany_map%20v2.html" title="haber_bosch_germany_map v2.html">Haber-Bosch Process: Ammonia Production in Germany</a>
-          <span class="fname">haber_bosch_germany_map v2.html</span>
-        </li>
-        <li>
-          <a href="haber_bosch_simulator.html" title="haber_bosch_simulator.html">Haber-Bosch Process Simulator</a>
-          <span class="fname">haber_bosch_simulator.html</span>
-        </li>
-        <li>
-          <a href="haber_bosch_worksheet_interactive%20v1.html" title="haber_bosch_worksheet_interactive v1.html">Haber-Bosch Process — Interactive Worksheet (v1)</a>
-          <span class="fname">haber_bosch_worksheet_interactive v1.html</span>
-        </li>
-        <li>
-          <a href="haber_bosch_worksheet_interactive%20v2.html" title="haber_bosch_worksheet_interactive v2.html">Haber-Bosch Process — Interactive Worksheet (v2)</a>
-          <span class="fname">haber_bosch_worksheet_interactive v2.html</span>
-        </li>
-    </ul>
-  </section>
-
-  <section id="contact" style="--accent:#0369a1;--bg:#e0f2fe">
-    <h2><span class="sec-icon">🧪</span>Contact Process / Sulphuric Acid <span class="count">(11)</span></h2>
-    <ul>
-        <li>
-          <a href="contact_process%20v2.html" title="contact_process v2.html">Contact Process – Interactive Flowsheet (v2)</a>
-          <span class="fname">contact_process v2.html</span>
-        </li>
-        <li>
-          <a href="contact_process_v3.html" title="contact_process_v3.html">Contact Process – Interactive Flowsheet (v3)</a>
-          <span class="fname">contact_process_v3.html</span>
-        </li>
-        <li>
-          <a href="contact_process_v3%202.html" title="contact_process_v3 2.html">Contact Process – Interactive Flowsheet (v3 copy)</a>
-          <span class="fname">contact_process_v3 2.html</span>
-        </li>
-        <li>
-          <a href="contact_process_v4.html" title="contact_process_v4.html">Contact Process – Interactive Flowsheet (v4)</a>
-          <span class="fname">contact_process_v4.html</span>
-        </li>
-        <li>
-          <a href="contact_process_v5.html" title="contact_process_v5.html">Contact Process – Interactive Flowsheet (v5)</a>
-          <span class="fname">contact_process_v5.html</span>
-        </li>
-        <li>
-          <a href="contact_process_v5%20%281%29.html" title="contact_process_v5 (1).html">Contact Process – Interactive Flowsheet (v5 copy)</a>
-          <span class="fname">contact_process_v5 (1).html</span>
-        </li>
-        <li>
-          <a href="contact_process_monsanto.html" title="contact_process_monsanto.html">Contact Process – Monsanto Single-Absorption Plant</a>
-          <span class="fname">contact_process_monsanto.html</span>
-        </li>
-        <li>
-          <a href="contact_process_worksheet.html" title="contact_process_worksheet.html">Contact Process – Interactive Student Worksheet</a>
-          <span class="fname">contact_process_worksheet.html</span>
-        </li>
-        <li>
-          <a href="contact_process_worksheet%20%281%29.html" title="contact_process_worksheet (1).html">Contact Process – Interactive Student Worksheet (copy)</a>
-          <span class="fname">contact_process_worksheet (1).html</span>
-        </li>
-        <li>
-          <a href="contact_process_v5_worksheet.html" title="contact_process_v5_worksheet.html">Contact Process v5 — Student Worksheet</a>
-          <span class="fname">contact_process_v5_worksheet.html</span>
-        </li>
-        <li>
-          <a href="contact_process_answers.html" title="contact_process_answers.html">Contact Process Worksheet — Answer Key & Mark Scheme</a>
-          <span class="fname">contact_process_answers.html</span>
-        </li>
-    </ul>
-  </section>
-
-  <section id="redox" style="--accent:#b45309;--bg:#fef3c7">
-    <h2><span class="sec-icon">⚡</span>Oxidation Numbers & Redox <span class="count">(11)</span></h2>
-    <ul>
-        <li>
-          <a href="Oxidation_Numbers_Activity.html" title="Oxidation_Numbers_Activity.html">Oxidation Numbers — Interactive Learning Activity</a>
-          <span class="fname">Oxidation_Numbers_Activity.html</span>
-        </li>
-        <li>
-          <a href="Oxidation_Numbers_Activity%20%281%29.html" title="Oxidation_Numbers_Activity (1).html">Oxidation Numbers — Interactive Learning Activity (copy 1)</a>
-          <span class="fname">Oxidation_Numbers_Activity (1).html</span>
-        </li>
-        <li>
-          <a href="Oxidation_Numbers_Activity%20%282%29.html" title="Oxidation_Numbers_Activity (2).html">Oxidation Numbers — Interactive Learning Activity (copy 2)</a>
-          <span class="fname">Oxidation_Numbers_Activity (2).html</span>
-        </li>
-        <li>
-          <a href="Redox_Exercise9A_Interactive_v1.html" title="Redox_Exercise9A_Interactive_v1.html">Exercise 9-A — Redox Processes (v1)</a>
-          <span class="fname">Redox_Exercise9A_Interactive_v1.html</span>
-        </li>
-        <li>
-          <a href="Redox_Exercise9A_Interactive_Textbook%20Examples%20and%20Questions%20IBID2.html" title="Redox_Exercise9A_Interactive_Textbook Examples and Questions IBID2.html">Exercise 9-A — Redox Processes (IBID Textbook Examples)</a>
-          <span class="fname">Redox_Exercise9A_Interactive_Textbook Examples and Questions IBID2.html</span>
-        </li>
-        <li>
-          <a href="oxidation_numbers_Practice_test.html" title="oxidation_numbers_Practice_test.html">Chemistry Test – Oxidation Numbers & Redox Processes</a>
-          <span class="fname">oxidation_numbers_Practice_test.html</span>
-        </li>
-        <li>
-          <a href="oxidation_numbers_Practice_test%20%281%29.html" title="oxidation_numbers_Practice_test (1).html">Chemistry Test – Oxidation Numbers & Redox Processes (copy)</a>
-          <span class="fname">oxidation_numbers_Practice_test (1).html</span>
-        </li>
-        <li>
-          <a href="oxidation_numbers_worksheet%20with%20cheat-sheets_v2.html" title="oxidation_numbers_worksheet with cheat-sheets_v2.html">Chemistry Test v2 – Oxidation Numbers & Redox Processes</a>
-          <span class="fname">oxidation_numbers_worksheet with cheat-sheets_v2.html</span>
-        </li>
-        <li>
-          <a href="oxidation_numbers_test_v3H.html" title="oxidation_numbers_test_v3H.html">Redox Through History — Chemistry Test v3</a>
-          <span class="fname">oxidation_numbers_test_v3H.html</span>
-        </li>
-        <li>
-          <a href="oxidation_numbers_test_v4_great_reactions.html" title="oxidation_numbers_test_v4_great_reactions.html">The Greatest Redox Reactions in History — Chemistry Test v4</a>
-          <span class="fname">oxidation_numbers_test_v4_great_reactions.html</span>
-        </li>
-        <li>
-          <a href="oxidation_numbers_test_v4_great_reactions%20%281%29.html" title="oxidation_numbers_test_v4_great_reactions (1).html">The Greatest Redox Reactions in History — Chemistry Test v4 (copy)</a>
-          <span class="fname">oxidation_numbers_test_v4_great_reactions (1).html</span>
-        </li>
-    </ul>
-  </section>
-
-  <section id="atomic" style="--accent:#0f766e;--bg:#ccfbf1">
-    <h2><span class="sec-icon">⚛️</span>Atomic & Electronic Structure <span class="count">(2)</span></h2>
-    <ul>
-        <li>
-          <a href="Resource%20-%20electronic_structure.html" title="Resource - electronic_structure.html">Electronic Structure &amp; Evidence — IB Chemistry HL</a>
-          <span class="fname">Resource - electronic_structure.html</span>
-        </li>
-        <li>
-          <a href="Cambridge%20electron_configurations_quiz.html" title="Cambridge electron_configurations_quiz.html">Chapter 3: Electron Configurations – Interactive Quiz</a>
-          <span class="fname">Cambridge electron_configurations_quiz.html</span>
-        </li>
-    </ul>
-  </section>
-
-  <section id="maps" style="--accent:#15803d;--bg:#dcfce7">
-    <h2><span class="sec-icon">🗺️</span>Maps & Geography (Germany / Chemistry) <span class="count">(11)</span></h2>
-    <ul>
-        <li>
-          <a href="Explore%20the%20largest%20chemical%20industries%20along%20the%20Rhine%20and%20Main_map.html" title="Explore the largest chemical industries along the Rhine and Main_map.html">Rhine &amp; Main Rivers — Chemical Industry Interactive Map</a>
-          <span class="fname">Explore the largest chemical industries along the Rhine and Main_map.html</span>
-        </li>
-        <li>
-          <a href="Map%20of%20Germany%27s_Rivers_with%20locations%20of%20chemical_works.html" title="Map of Germany's_Rivers_with locations of chemical_works.html">Germany's Rivers — Chemical Industry Interactive Map</a>
-          <span class="fname">Map of Germany's_Rivers_with locations of chemical_works.html</span>
-        </li>
-        <li>
-          <a href="All_Rivers_chemical_map%20copy.html" title="All_Rivers_chemical_map copy.html">Germany's Rivers — Chemical Industry Interactive Map (copy)</a>
-          <span class="fname">All_Rivers_chemical_map copy.html</span>
-        </li>
-        <li>
-          <a href="Historical%20development%20of%20the%20chemical%20industries%20in%20Germany_chemical_map.html" title="Historical development of the chemical industries in Germany_chemical_map.html">Germany's Rivers — Chemical Industry Map (Historical)</a>
-          <span class="fname">Historical development of the chemical industries in Germany_chemical_map.html</span>
-        </li>
-        <li>
-          <a href="Map%20of%20Germany%27s_River_Canalization_Projects_History.html" title="Map of Germany's_River_Canalization_Projects_History.html">Germany's Rivers — Canalization History</a>
-          <span class="fname">Map of Germany's_River_Canalization_Projects_History.html</span>
-        </li>
-        <li>
-          <a href="taunus_fossil_map.html" title="taunus_fossil_map.html">Taunus Region Fossil Map</a>
-          <span class="fname">taunus_fossil_map.html</span>
-        </li>
-        <li>
-          <a href="taunus_fossil_map%202.html" title="taunus_fossil_map 2.html">Taunus Region Fossil Map (copy 2)</a>
-          <span class="fname">taunus_fossil_map 2.html</span>
-        </li>
-        <li>
-          <a href="taunus_fossil_map%20%281%29.html" title="taunus_fossil_map (1).html">Taunus Region Fossil Map (copy 1)</a>
-          <span class="fname">taunus_fossil_map (1).html</span>
-        </li>
-        <li>
-          <a href="taunus_fossil_map%20%282%29.html" title="taunus_fossil_map (2).html">Taunus Region Fossil Map (copy 2b)</a>
-          <span class="fname">taunus_fossil_map (2).html</span>
-        </li>
-        <li>
-          <a href="Student%20Activity%20%28Resource%29%20frankfurt_industries_1920s.html" title="Student Activity (Resource) frankfurt_industries_1920s.html">Frankfurt · Taunus · Wiesbaden — Industrie &amp; Güterverkehr 1920–1935</a>
-          <span class="fname">Student Activity (Resource) frankfurt_industries_1920s.html</span>
-        </li>
-        <li>
-          <a href="Student%20Activity%20%28Resource%29%20frankfurt_industries_1920s%20%281%29.html" title="Student Activity (Resource) frankfurt_industries_1920s (1).html">Frankfurt · Taunus · Wiesbaden — Industrie &amp; Güterverkehr 1920–1935 (copy)</a>
-          <span class="fname">Student Activity (Resource) frankfurt_industries_1920s (1).html</span>
-        </li>
-    </ul>
-  </section>
-
-  <section id="evolution" style="--accent:#7e22ce;--bg:#f3e8ff">
-    <h2><span class="sec-icon">🦎</span>Evolution & Embryology <span class="count">(21)</span></h2>
-    <ul>
-        <li>
-          <a href="Evolution_Flashcards.html" title="Evolution_Flashcards.html">Evolution Key Terms — Flip Cards</a>
-          <span class="fname">Evolution_Flashcards.html</span>
-        </li>
-        <li>
-          <a href="Evolution_Flashcards%20copy.html" title="Evolution_Flashcards copy.html">Evolution Key Terms — Flip Cards (copy)</a>
-          <span class="fname">Evolution_Flashcards copy.html</span>
-        </li>
-        <li>
-          <a href="Evolution_Flashcards%20%281%29.html" title="Evolution_Flashcards (1).html">Evolution Key Terms — Flip Cards (copy 1)</a>
-          <span class="fname">Evolution_Flashcards (1).html</span>
-        </li>
-        <li>
-          <a href="Evolution_Flashcards%20%282%29.html" title="Evolution_Flashcards (2).html">Evolution Key Terms — Flip Cards (copy 2)</a>
-          <span class="fname">Evolution_Flashcards (2).html</span>
-        </li>
-        <li>
-          <a href="Evolution_Flashcards%20%283%29.html" title="Evolution_Flashcards (3).html">Evolution Key Terms — Flip Cards (copy 3)</a>
-          <span class="fname">Evolution_Flashcards (3).html</span>
-        </li>
-        <li>
-          <a href="Evolution_Vocabulary_Worksheet.html" title="Evolution_Vocabulary_Worksheet.html">Evolution Evidence — Vocabulary Worksheet</a>
-          <span class="fname">Evolution_Vocabulary_Worksheet.html</span>
-        </li>
-        <li>
-          <a href="Evolution_Vocabulary_Worksheet%20%281%29.html" title="Evolution_Vocabulary_Worksheet (1).html">Evolution Evidence — Vocabulary Worksheet (copy 1)</a>
-          <span class="fname">Evolution_Vocabulary_Worksheet (1).html</span>
-        </li>
-        <li>
-          <a href="Evolution_Vocabulary_Worksheet%20%282%29.html" title="Evolution_Vocabulary_Worksheet (2).html">Evolution Evidence — Vocabulary Worksheet (copy 2)</a>
-          <span class="fname">Evolution_Vocabulary_Worksheet (2).html</span>
-        </li>
-        <li>
-          <a href="Evolution_Evidence_Test_Prep%20v1.html" title="Evolution_Evidence_Test_Prep v1.html">Evidence for Evolution — Test Preparation</a>
-          <span class="fname">Evolution_Evidence_Test_Prep v1.html</span>
-        </li>
-        <li>
-          <a href="Evolution_Evidence_Test_Prep%20v1%20copy.html" title="Evolution_Evidence_Test_Prep v1 copy.html">Evidence for Evolution — Test Preparation (copy)</a>
-          <span class="fname">Evolution_Evidence_Test_Prep v1 copy.html</span>
-        </li>
-        <li>
-          <a href="Evolution_Evidence_Test_Prep%20v1%20%281%29.html" title="Evolution_Evidence_Test_Prep v1 (1).html">Evidence for Evolution — Test Preparation (copy 1)</a>
-          <span class="fname">Evolution_Evidence_Test_Prep v1 (1).html</span>
-        </li>
-        <li>
-          <a href="Evolution_Practice_Interactive%20v2.html" title="Evolution_Practice_Interactive v2.html">Evidence for Evolution — Practice Interactive (v2)</a>
-          <span class="fname">Evolution_Practice_Interactive v2.html</span>
-        </li>
-        <li>
-          <a href="Evolution_Practice_Interactive%20v2%20copy.html" title="Evolution_Practice_Interactive v2 copy.html">Evidence for Evolution — Practice Interactive (v2 copy)</a>
-          <span class="fname">Evolution_Practice_Interactive v2 copy.html</span>
-        </li>
-        <li>
-          <a href="Student%20Activity%20-%20evidence_for_evolution_worksheet1.html" title="Student Activity - evidence_for_evolution_worksheet1.html">Evidence for Evolution – Grade 8 Interactive Worksheet</a>
-          <span class="fname">Student Activity - evidence_for_evolution_worksheet1.html</span>
-        </li>
-        <li>
-          <a href="Student%20Activity%20-%20evidence_for_evolution_worksheet1%20%281%29.html" title="Student Activity - evidence_for_evolution_worksheet1 (1).html">Evidence for Evolution – Grade 8 Interactive Worksheet (copy)</a>
-          <span class="fname">Student Activity - evidence_for_evolution_worksheet1 (1).html</span>
-        </li>
-        <li>
-          <a href="Human_Embryological_Development.html" title="Human_Embryological_Development.html">Human Embryological Development — Evolutionary Stages</a>
-          <span class="fname">Human_Embryological_Development.html</span>
-        </li>
-        <li>
-          <a href="Human_Embryological_Development%20%281%29.html" title="Human_Embryological_Development (1).html">Human Embryological Development — Evolutionary Stages (copy 1)</a>
-          <span class="fname">Human_Embryological_Development (1).html</span>
-        </li>
-        <li>
-          <a href="Human_Embryological_Development%20%282%29.html" title="Human_Embryological_Development (2).html">Human Embryological Development — Evolutionary Stages (copy 2)</a>
-          <span class="fname">Human_Embryological_Development (2).html</span>
-        </li>
-        <li>
-          <a href="eye_evolution_worksheet.html" title="eye_evolution_worksheet.html">How Eyes Evolved – Grade 8 Interactive Worksheet</a>
-          <span class="fname">eye_evolution_worksheet.html</span>
-        </li>
-        <li>
-          <a href="evolution_self_reflection.html" title="evolution_self_reflection.html">Self-Reflection — Evidence for Evolution · FIS Science 8</a>
-          <span class="fname">evolution_self_reflection.html</span>
-        </li>
-        <li>
-          <a href="Student%20Activity%205%20%28Worksheet%20to%20accompany%20the%20interactive%20map%29%20taunus_fossil_worksheet_interactive.html" title="Student Activity 5 (Worksheet to accompany the interactive map) taunus_fossil_worksheet_interactive.html">Taunus Fossil Map — Interactive Self-Marking Worksheet</a>
-          <span class="fname">Student Activity 5 (Worksheet to accompany the interactive map) taunus_fossil_worksheet_interactive.html</span>
-        </li>
-    </ul>
-  </section>
-
-  <section id="other" style="--accent:#374151;--bg:#f9fafb">
-    <h2><span class="sec-icon">📄</span>Other Resources <span class="count">(6)</span></h2>
-    <ul>
-        <li>
-          <a href="34459.html" title="34459.html">Photosynthesis and Cellular Respiration: Check for Understanding</a>
-          <span class="fname">34459.html</span>
-        </li>
-        <li>
-          <a href="6583.html" title="6583.html">Christmas at the Royal Institution</a>
-          <span class="fname">6583.html</span>
-        </li>
-        <li>
-          <a href="energy-skate-park-basics_en.html" title="energy-skate-park-basics_en.html">Energy Skate Park: Basics (PhET Simulation)</a>
-          <span class="fname">energy-skate-park-basics_en.html</span>
-        </li>
-        <li>
-          <a href="filter-press-information.html" title="filter-press-information.html">What is a Filter Press and How Does it Work?</a>
-          <span class="fname">filter-press-information.html</span>
-        </li>
-        <li>
-          <a href="20260116-black-pepper-and-olive-oil-the-ingredients-that-super-charge-the-nutrients-you-get-from-food.html" title="20260116-black-pepper-and-olive-oil-the-ingredients-that-super-charge-the-nutrients-you-get-from-food.html">Black Pepper and Olive Oil: Super-charging Nutrients (article)</a>
-          <span class="fname">20260116-black-pepper-and-olive-oil-the-ingredients-that-super-charge-the-nutrients-you-get-from-food.html</span>
-        </li>
-        
-    </ul>
-  </section>
-  <div id="no-results">No files match your search.</div>
-</main>
-
-<footer>Generated 25 June 2026 · 66 HTML files in Downloads folder</footer>
-
-<script>
-  function filterFiles(q) {
-    q = q.toLowerCase().trim();
-    let anyVisible = false;
-    document.querySelectorAll('li').forEach(li => {
-      const text = li.textContent.toLowerCase();
-      const show = !q || text.includes(q);
-      li.classList.toggle('hidden', !show);
-      if (show) anyVisible = true;
-    });
-    // Hide/show empty sections
-    document.querySelectorAll('section').forEach(sec => {
-      const visible = sec.querySelectorAll('li:not(.hidden)').length > 0;
-      sec.style.display = visible ? '' : 'none';
-    });
-    document.getElementById('no-results').style.display = anyVisible ? 'none' : 'block';
-  }
-</script>
 </body>
 </html>
