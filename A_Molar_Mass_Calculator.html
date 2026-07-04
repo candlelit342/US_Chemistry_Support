@@ -58,13 +58,39 @@
   #cardName { font-size:34px; }
   #cardMass { font-size:30px; margin-top:6px; }
   #card small { font-size:15px; opacity:.55; display:block; }
-  @media print { #bar,#overlay { display:none !important; } }
+  /* ---------- molar-mass calculator ---------- */
+  #calcPanel { display:none; align-items:center; flex-wrap:wrap; gap:14px;
+               padding:2px 16px 10px; user-select:none; }
+  #calcPanel.show { display:flex; }
+  #calcFormula { font-family:'NWB'; font-size:40px; min-height:48px;
+                 flex:1; text-align:center; }
+  #calcTotalBox { display:flex; align-items:baseline; gap:10px;
+                  border:2.6px solid var(--ink);
+                  border-radius:255px 15px 225px 15px/15px 225px 15px 255px;
+                  padding:6px 22px; }
+  #calcTotalBox .lbl { font-size:13px; opacity:.65; }
+  #calcTotalBox .unit { font-size:16px; opacity:.7; }
+  #calcTotalV { font-family:'NWB'; font-size:84px; line-height:1; }
+  .cell .bg.hit { transition:fill .15s; }
+  .cell .bg.calcHit { opacity:.7; }
+  #calcOverlay { position:fixed; inset:0; background:rgba(30,30,30,.35);
+             display:none; align-items:center; justify-content:center; z-index:11; }
+  #calcOverlay.show { display:flex; }
+  #calcCard { background:#fff; border:3px solid var(--ink); text-align:center;
+          border-radius:255px 15px 225px 15px/15px 225px 15px 255px;
+          padding:30px 50px 26px; min-width:300px; }
+  #calcCard .lbl { font-size:15px; opacity:.6; }
+  #calcCardFormula { font-family:'NWB'; font-size:44px; margin:6px 0; }
+  #calcCardTotal { font-size:32px; margin-top:4px; }
+  #calcCard button { margin-top:18px; }
+  @media print { #bar,#overlay,#calcPanel,#calcOverlay { display:none !important; } }
 </style>
 </head>
 <body>
 <div id="bar">
   <button class="btn on" id="mInspect" title="Click an element to enlarge it">Inspect</button>
   <button class="btn" id="mMark" title="Click elements to colour them in">Highlight</button>
+  <button class="btn" id="mCalc" title="Click component atoms to add up a molar mass">Molar Mass</button>
   <span id="colors" style="display:flex;gap:6px;">
     <button class="swatch on" style="background:#ffd43b" data-c="#ffd43b"></button>
     <button class="swatch" style="background:#74c0fc" data-c="#74c0fc"></button>
@@ -80,6 +106,16 @@
   <button class="btn" id="clear">Clear</button>
   <span id="hint">click any element</span>
 </div>
+<div id="calcPanel">
+  <div id="calcTotalBox">
+    <span class="lbl">Total molar mass</span>
+    <span id="calcTotalV">0</span>
+    <span class="unit">g/mol</span>
+  </div>
+  <button class="btn" id="calcReset">Reset</button>
+  <button class="btn" id="calcFinish">Finished</button>
+  <span id="calcFormula"></span>
+</div>
 <div id="wrap"><svg id="pt" viewBox="0 0 297 190" xmlns="http://www.w3.org/2000/svg"></svg></div>
 <div id="attribution" style="text-align:center;font-size:12px;opacity:.55;padding:2px 16px 10px;">
   Periodic table adapted from UCLES (Cambridge International Examinations), including its element names, symbols, atomic numbers and relative atomic masses.
@@ -92,6 +128,15 @@
     <div id="cardName"></div>
     <div id="cardMass"><span id="cardMassV"></span>
       <small>relative atomic mass</small></div>
+  </div>
+</div>
+
+<div id="calcOverlay">
+  <div id="calcCard">
+    <div class="lbl">molar mass of</div>
+    <div id="calcCardFormula"></div>
+    <div id="calcCardTotal"><span id="calcCardTotalV"></span> g/mol</div>
+    <button class="btn" id="calcNew">New calculation</button>
   </div>
 </div>
 
@@ -197,7 +242,7 @@ function cell(x,y,e){
 }
 
 /* title, frame, group band */
-txt(297/2,14,"The Periodic Table of Elements",4.4,"ttl");
+txt(297/2,14,"The Periodic Table of Elements with a Molar Mass Calculator",3.4,"ttl");
 el("path",{d:roughRect(X0,Y_GROUP,18*CW,Y_BOT-Y_GROUP,0.7),class:"rough"});
 el("path",{d:roughLine(X0,Y_LABEL,X0+18*CW,Y_LABEL),class:"rough"});
 txt(297/2,Y_GROUP+4.3,"Group",2.6);
@@ -251,14 +296,24 @@ document.fonts.ready.then(fitNames); fitNames();
 const state={mode:"inspect",color:"#ffd43b"};
 const mI=document.getElementById("mInspect"),
       mM=document.getElementById("mMark"),
-      overlay=document.getElementById("overlay");
+      mC=document.getElementById("mCalc"),
+      overlay=document.getElementById("overlay"),
+      calcPanel=document.getElementById("calcPanel"),
+      calcFormulaEl=document.getElementById("calcFormula"),
+      calcTotalV=document.getElementById("calcTotalV"),
+      calcOverlay=document.getElementById("calcOverlay");
 function setMode(m){state.mode=m;
   mI.classList.toggle("on",m==="inspect");
   mM.classList.toggle("on",m==="mark");
+  mC.classList.toggle("on",m==="calc");
+  calcPanel.classList.toggle("show",m==="calc");
   document.getElementById("hint").textContent =
-    m==="inspect"?"click any element":"click elements to colour them";}
+    m==="inspect"?"click any element":
+    m==="mark"?"click elements to colour them":
+    "click component atoms to add up a molar mass";}
 mI.onclick=()=>setMode("inspect");
 mM.onclick=()=>setMode("mark");
+mC.onclick=()=>setMode("calc");
 document.querySelectorAll(".swatch").forEach(s=>s.onclick=()=>{
   document.querySelectorAll(".swatch").forEach(x=>x.classList.remove("on"));
   s.classList.add("on"); state.color=s.dataset.c; setMode("mark");});
@@ -267,6 +322,41 @@ document.querySelectorAll(".tog input").forEach(c=>c.onchange=()=>
 document.getElementById("clear").onclick=()=>{
   svg.querySelectorAll(".bg.marked").forEach(b=>{
     b.classList.remove("marked");b.style.fill="";});};
+
+/* ---------------------------------------------------------- molar mass calc */
+const SUB="₀₁₂₃₄₅₆₇₈₉";
+const toSub = n => String(n).split("").map(d=>SUB[d]).join("");
+const calc={total:0,order:[],counts:{}};
+function fmtMass(n){
+  const r=Math.round(n*100)/100;
+  return r.toFixed(2).replace(/0+$/,"").replace(/\.$/,"");}
+function calcFormulaHTML(){
+  return calc.order.map(sym=>{
+    const n=calc.counts[sym];
+    return sym+(n>1?`<sub>${toSub(n)}</sub>`:"");}).join("");}
+function calcRender(){
+  calcFormulaEl.innerHTML=calcFormulaHTML();
+  calcTotalV.textContent=fmtMass(calc.total);}
+function calcReset(){
+  calc.total=0; calc.order=[]; calc.counts={}; calcRender();
+  svg.querySelectorAll(".bg.calcHit").forEach(b=>{
+    b.classList.remove("calcHit");
+    if(!b.classList.contains("marked"))b.style.fill="";});}
+function calcAdd(e){
+  const m=parseFloat(e[3]);
+  if(isNaN(m)){alert(e[2]+" has no stable relative atomic mass to add.");return;}
+  const sym=e[1];
+  if(!(sym in calc.counts)){calc.counts[sym]=0; calc.order.push(sym);}
+  calc.counts[sym]++; calc.total+=m; calcRender();}
+document.getElementById("calcReset").onclick=calcReset;
+document.getElementById("calcFinish").onclick=()=>{
+  if(!calc.order.length)return;
+  document.getElementById("calcCardFormula").innerHTML=calcFormulaHTML();
+  document.getElementById("calcCardTotalV").textContent=fmtMass(calc.total);
+  calcOverlay.classList.add("show");};
+document.getElementById("calcNew").onclick=()=>{
+  calcOverlay.classList.remove("show"); calcReset();};
+calcOverlay.onclick=ev=>{if(ev.target===calcOverlay)calcOverlay.classList.remove("show");};
 
 svg.addEventListener("click",ev=>{
   const c=ev.target.closest(".cell"); if(!c)return;
@@ -277,6 +367,13 @@ svg.addEventListener("click",ev=>{
       bg.classList.remove("marked");bg.style.fill="";}
     else{bg.classList.add("marked");bg.style.fill=state.color;}
     return;}
+  if(state.mode==="calc"){
+    const before=calc.total;
+    calcAdd(e);
+    if(calc.total!==before){
+      const bg=c.querySelector(".bg");
+      bg.classList.add("calcHit"); bg.style.fill="#ffd43b";}
+    return;}
   document.getElementById("cardNum").textContent=e[0];
   document.getElementById("cardSym").textContent=e[1];
   document.getElementById("cardName").textContent=e[2];
@@ -286,7 +383,8 @@ function hex2rgb(h){const n=parseInt(h.slice(1),16);
   return`rgb(${n>>16&255}, ${n>>8&255}, ${n&255})`;}
 overlay.onclick=()=>overlay.classList.remove("show");
 document.addEventListener("keydown",e=>{
-  if(e.key==="Escape")overlay.classList.remove("show");});
+  if(e.key==="Escape"){overlay.classList.remove("show");
+    calcOverlay.classList.remove("show");}});
 </script>
 </body>
 </html>
