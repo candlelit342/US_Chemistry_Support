@@ -154,9 +154,14 @@
 </style>
 </head>
 <body>
+<svg id="swap-connector-overlay" style="position:fixed; top:0; left:0; width:100vw; height:100vh; pointer-events:none; z-index:9999; display:none;">
+  <polyline id="swap-connector-line" fill="none" stroke="#b02a2a" stroke-width="1" opacity="0.3"/>
+</svg>
 <div class="wrap">
+<h1 id="page-title" style="font-size:19px; font-weight:600; color:var(--text-primary); margin:0 0 12px; line-height:1.4; white-space:pre-line;">Exploring the effect of electrode identity, aqueous ion concentration and temperature on the EMF of a cell</h1>
 <h2 class="sr-only">Interactive galvanic cell experiment: choose any two metal electrodes from magnesium, aluminium, zinc, iron, lead, copper, silver and gold for the left and right half-cells, and independently adjust each solution's concentration from 0.01 to 1.00 M and each solution's own temperature from 10 to 50&deg;C, and read the resulting emf. A "more exotic metals" checkbox adds bismuth, tin, scandium, vanadium, chromium, manganese, nickel, uranium and plutonium to the electrode choices, with safety notes shown for the radioactive and fissile ones. Temperature shifts each electrode's standard potential according to its own empirical temperature coefficient, while the Nernst log term is evaluated at the fixed reference temperature of 298 K. A vintage mercury thermometer sits in each beaker and its column rises and falls with that beaker's own temperature slider, so only one variable changes at a time. Reversed wiring shows a negative digital reading and a needle pegged just past zero.</h2>
 
+<div style="background:#eaf3fc; border:1px solid #cfe3f7; border-radius:16px; padding:16px 18px; margin-bottom:1rem; box-sizing:border-box;">
 <div style="display:flex; align-items:center; gap:16px; margin-bottom:0.75rem; flex-wrap:wrap;">
   <label style="display:flex; align-items:center; gap:6px; font-size:13px; color:var(--text-secondary);">Left electrode
     <select id="left-select"></select>
@@ -194,6 +199,7 @@
 
 <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:1.25rem; flex-wrap:wrap;">
   <div id="cell-notation" style="font-size:14px; color:var(--text-secondary);">Zn | Zn&sup2;&#8314; (1.00 M) || Cu&sup2;&#8314; (1.00 M) | Cu</div>
+  <button id="reset-satp-btn" type="button" style="font-size:12px; padding:5px 10px;">Reset&nbsp;&nbsp;to&nbsp;&nbsp;SATP (25&#730;C, 298.15 K)</button>
   <div style="display:flex; align-items:center; gap:8px; cursor:pointer;" id="switch-wrap" role="switch" aria-checked="false" tabindex="0">
     <span style="font-size:14px; color:var(--text-secondary);" id="switch-label">Circuit open</span>
     <span id="switch-track" style="width:40px; height:22px; border-radius:12px; background:var(--surface-1); border:0.5px solid var(--border-strong); position:relative; transition:background 0.2s; display:inline-block;">
@@ -201,8 +207,12 @@
     </span>
   </div>
 </div>
+</div>
 
-<svg id="circuit-svg" viewBox="0 0 680 320" style="width:100%; height:auto; display:block;">
+<h3 style="text-align:left; font-size:14px; font-weight:600; color:var(--text-primary); margin:1.5rem 0 0.5rem;">The basic controls (above) for the IA style investigation using The Apparatus (below)</h3>
+<p style="margin:0 0 0.5rem 1.5rem; font-size:13.5px; color:var(--text-secondary); line-height:1.6;">Try changing the metals for other metals and see what you notice. What combination of metals give you the highest positive EMF for the cell?</p>
+
+<svg id="circuit-svg" viewBox="0 -40 680 360" style="width:100%; height:auto; display:block;">
   <defs>
     <pattern id="hatchLiquid" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
       <line x1="0" y1="0" x2="0" y2="6" stroke="#1a1a18" stroke-width="1"/>
@@ -220,6 +230,14 @@
   <path id="wire-black" d="M67,90 L67,4 L593,4 L593,22" fill="none" stroke="#111111" stroke-width="2.5"/>
   <path id="wire-red" d="M293,90 L293,16 L467,16 L467,22" fill="none" stroke="#d1352c" stroke-width="3.5" stroke-linecap="round"/>
 
+  <g id="line-switch" style="cursor:pointer;">
+    <rect id="switch-gap-cover" x="153" y="0" width="54" height="8" fill="#f4efdf"/>
+    <rect x="150" y="-14" width="60" height="26" fill="#ffffff" opacity="0" style="pointer-events:all;"/>
+    <circle cx="155" cy="4" r="2.5" fill="#111111"/>
+    <circle cx="205" cy="4" r="2.5" fill="#111111"/>
+    <line id="switch-lever" x1="155" y1="4" x2="205" y2="4" stroke="#111111" stroke-width="2" stroke-linecap="round"/>
+  </g>
+
   <g transform="translate(0,20)" font-family="Georgia, 'Times New Roman', serif">
     <path d="M24,140 L24,210 Q24,216 30,216 L150,216 Q156,216 156,210 L156,140 Z" fill="url(#hatchLiquid)"/>
     <path d="M20,90 L20,214 Q20,220 26,220 L154,220 Q160,220 160,214 L160,90" fill="none" stroke="#1a1a18" stroke-width="2.5"/>
@@ -232,7 +250,7 @@
     <rect x="60" y="70" width="14" height="130" fill="url(#hatchMetal)" stroke="#1a1a18" stroke-width="1"/>
     <path d="M24,134 Q29,140 34,140 L50,140 Q55,140 60,134" fill="none" stroke="#1a1a18" stroke-width="1"/>
     <path d="M74,134 Q80,140 86,140 L132,140 Q138,140 144,134" fill="none" stroke="#1a1a18" stroke-width="1"/>
-    <text id="left-electrode-label" x="67" y="65" text-anchor="middle" font-size="13" fill="#1a1a18">Zn</text>
+    <text id="left-electrode-label" x="90" y="65" text-anchor="middle" font-size="26" font-style="italic" font-weight="400" fill="#1a1a18">Zn</text>
     <text id="left-solution-label" x="90" y="232" text-anchor="middle" font-size="12" fill="#1a1a18">ZnSO&#8324;, 1.00 M</text>
     <text id="left-role-label" x="112" y="82" text-anchor="middle" font-size="10" fill="#1a1a18" font-style="italic">anode (&#8211;)</text>
     <text id="left-temp-reading" x="90" y="250" text-anchor="middle" font-size="15" font-style="italic" font-weight="600" fill="#1a1a18">25.0 &#176;C</text>
@@ -248,7 +266,7 @@
     <rect x="286" y="70" width="14" height="130" fill="url(#hatchMetal)" stroke="#1a1a18" stroke-width="1"/>
     <path d="M216,134 Q222,140 228,140 L278,140 Q284,140 286,134" fill="none" stroke="#1a1a18" stroke-width="1"/>
     <path d="M300,134 Q305,140 310,140 L326,140 Q331,140 336,134" fill="none" stroke="#1a1a18" stroke-width="1"/>
-    <text id="right-electrode-label" x="293" y="65" text-anchor="middle" font-size="13" fill="#1a1a18">Cu</text>
+    <text id="right-electrode-label" x="316" y="65" text-anchor="middle" font-size="26" font-style="italic" font-weight="400" fill="#1a1a18">Cu</text>
     <text id="right-solution-label" x="270" y="232" text-anchor="middle" font-size="12" fill="#1a1a18">CuSO&#8324;, 1.00 M</text>
     <text id="right-role-label" x="327" y="82" text-anchor="middle" font-size="10" fill="#1a1a18" font-style="italic">cathode (+)</text>
     <text id="right-temp-reading" x="270" y="250" text-anchor="middle" font-size="15" font-style="italic" font-weight="600" fill="#1a1a18">25.0 &#176;C</text>
@@ -295,18 +313,19 @@
   </g>
 
   <g transform="translate(380,20)">
-    <rect x="10" y="10" width="280" height="280" rx="14" fill="#2c2c2a" stroke="#2c2c2a"/>
-    <circle cx="26" cy="26" r="6" fill="#2c2c2a"/>
-    <circle cx="274" cy="26" r="6" fill="#2c2c2a"/>
-    <circle cx="26" cy="274" r="6" fill="#2c2c2a"/>
-    <circle cx="274" cy="274" r="6" fill="#2c2c2a"/>
+    <rect x="10" y="10" width="280" height="280" rx="14" fill="#3b2414" stroke="#2a1a0d"/>
+    <circle cx="26" cy="26" r="6" fill="#2a1a0d"/>
+    <circle cx="274" cy="26" r="6" fill="#2a1a0d"/>
+    <circle cx="26" cy="274" r="6" fill="#2a1a0d"/>
+    <circle cx="274" cy="274" r="6" fill="#2a1a0d"/>
     <rect x="26" y="26" width="248" height="248" rx="8" fill="#eceae3"/>
-    <text x="42" y="70" font-size="22" fill="#2c2c2a">V</text>
+    <text id="meter-v-label" x="42" y="70" font-size="22" fill="#2c2c2a" style="cursor:pointer;">V</text>
     <g id="ticks"></g>
     <path id="needle" fill="#3a3a38" stroke="#3a3a38" stroke-width="0.6" stroke-linejoin="round"/>
     <circle id="pivot" cx="230" cy="230" r="9" fill="#3a3a38"/>
-    <line x1="223" y1="230" x2="237" y2="230" stroke="#1a1a18" stroke-width="1.6"/>
+    <line id="pivot-screw-slot" x1="223" y1="230" x2="237" y2="230" stroke="#1a1a18" stroke-width="1.6"/>
     <text x="44" y="256" font-size="11" fill="#2c2c2a">&#937; &#8784; 0.15 &#8869;</text>
+    <text id="meter-face-readout" x="256" y="256" text-anchor="end" font-size="13" font-style="italic" font-family="'Century Gothic','Trebuchet MS','Futura',sans-serif" fill="#6b3a1f" style="transition:filter 0.2s, opacity 0.2s;">0.00 V</text>
     <g transform="translate(150,270)">
       <line x1="-46" y1="-6" x2="-46" y2="6" stroke="#2c2c2a" stroke-width="1.4"/>
       <line x1="-42" y1="-6" x2="-42" y2="6" stroke="#2c2c2a" stroke-width="1.4"/>
@@ -322,39 +341,38 @@
     <g>
       <rect x="78" y="2" width="18" height="8" rx="1" fill="#d1352c"/>
       <rect x="84" y="-6" width="6" height="8" fill="#d1352c"/>
-      <circle cx="87" cy="-6" r="7" fill="#d1352c" stroke="#7a1a15" stroke-width="1"/>
-      <line x1="82" y1="-6" x2="92" y2="-6" stroke="#7a1a15" stroke-width="1.4"/>
-      <text x="87" y="-20" text-anchor="middle" font-size="12" fill="#d1352c">+</text>
+      <circle id="red-terminal-circle" cx="87" cy="-6" r="7" fill="#d1352c" stroke="#7a1a15" stroke-width="1"/>
+      <text x="100" y="9" text-anchor="start" font-size="12" fill="#d1352c">+</text>
     </g>
 
     <g>
       <rect x="204" y="2" width="18" height="8" rx="1" fill="#111111"/>
       <rect x="210" y="-6" width="6" height="8" fill="#111111"/>
-      <circle cx="213" cy="-6" r="7" fill="#111111" stroke="#000000" stroke-width="1"/>
-      <line x1="208" y1="-6" x2="218" y2="-6" stroke="#444444" stroke-width="1.4"/>
-      <text x="213" y="-20" text-anchor="middle" font-size="12" fill="#111111">-</text>
+      <circle id="black-terminal-circle" cx="213" cy="-6" r="7" fill="#111111" stroke="#000000" stroke-width="1"/>
+      <text x="200" y="9" text-anchor="end" font-size="12" fill="#111111">-</text>
+    </g>
+
+    <g id="swap-leads-btn" style="cursor:pointer;">
+      <rect x="232" y="-18" width="64" height="20" rx="4" fill="var(--surface-2)" stroke="var(--border-strong)" stroke-width="0.75"/>
+      <text x="264" y="-5" text-anchor="middle" font-size="9" fill="var(--text-primary)" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">Swap leads</text>
     </g>
   </g>
 </svg>
 
 <div style="float:left; width:53%; box-sizing:border-box; text-align:left; padding-right:12px;">
-  <h1 id="page-title" style="font-size:19px; font-weight:600; color:var(--text-primary); margin:8px 0 0; line-height:1.4; white-space:pre-line;">Exploring the effect of electrode identity, aqueous ion concentration and temperature on the EMF of a cell</h1>
-  <a href="reduction_potentials_table.html" target="_blank" rel="noopener" style="display:inline-block; margin-top:10px; font-size:13px; padding:7px 12px; border-radius:8px; border:0.5px solid var(--border-strong); background:var(--surface-2); color:var(--text-primary); text-decoration:none;">Standard Reduction Potentials table</a>
-  <a href="galvanic_cell_cheat_sheet.html" target="_blank" rel="noopener" style="display:inline-block; margin-top:10px; margin-left:8px; font-size:13px; padding:7px 12px; border-radius:8px; border:0.5px solid var(--border-strong); background:var(--surface-2); color:var(--text-primary); text-decoration:none;">Open the Vocabulary Sheet</a>
-  <a href="VantHoff_Entropy_Nernst_Overlap_MindMap.svg" target="_blank" rel="noopener" style="display:inline-block; margin-top:10px; margin-left:8px; font-size:13px; padding:7px 12px; border-radius:8px; border:0.5px solid var(--border-strong); background:var(--surface-2); color:var(--text-primary); text-decoration:none;">&Delta;G and the associated ideas you are using here</a>
+  <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:10px;">
+    <a href="reactivity_series.html" target="_blank" rel="noopener" style="display:inline-block; font-size:13px; padding:7px 12px; border-radius:8px; border:0.5px solid var(--border-strong); background:var(--surface-2); color:var(--text-primary); text-decoration:none;">Reactivity Series</a>
+    <a href="reduction_potentials_table.html" target="_blank" rel="noopener" style="display:inline-block; font-size:13px; padding:7px 12px; border-radius:8px; border:0.5px solid var(--border-strong); background:var(--surface-2); color:var(--text-primary); text-decoration:none;">Standard Reduction Potentials table</a>
+    <a href="galvanic_cell_cheat_sheet.html" target="_blank" rel="noopener" style="display:inline-block; font-size:13px; padding:7px 12px; border-radius:8px; border:0.5px solid var(--border-strong); background:var(--surface-2); color:var(--text-primary); text-decoration:none;">Open the Vocabulary Sheet</a>
+    <a href="VantHoff_Entropy_Nernst_Overlap_MindMap.svg" target="_blank" rel="noopener" style="display:inline-block; font-size:13px; padding:7px 12px; border-radius:8px; border:0.5px solid var(--border-strong); background:var(--surface-2); color:var(--text-primary); text-decoration:none;">&Delta;G and the associated ideas you are using here</a>
+  </div>
 </div>
 
 <div style="width:41%; margin-left:57%; box-sizing:border-box; text-align:center;">
 
   <div style="font-size:22px; color:#2c2c2a; margin-top:4px; margin-bottom:4px;">E.M.F. / V</div>
 
-  <div style="font-size:12px; font-style:italic; color:var(--text-secondary); margin-bottom:12px;">High-resistance voltmeter (0&ndash;4 V, custom scale)</div>
-
-  <div style="display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:12px; flex-wrap:wrap;">
-    <span style="font-size:14px; color:var(--text-secondary);">Digital check:</span>
-    <span id="readout" style="font-size:22px; font-weight:500; filter:blur(7px); transition:filter 0.2s; user-select:none;">0.00 V</span>
-    <button id="reveal-btn" type="button">Show reading</button>
-  </div>
+  <div style="font-size:12px; font-style:italic; color:var(--text-secondary); margin-bottom:12px;">High-resistance voltmeter (0 &ndash; 4 V, custom scale)</div>
 
   <div style="display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:10px;">
     <span style="font-size:13px; color:#d1352c;">For advanced students</span>
@@ -376,6 +394,8 @@
     <span class="ex-label">About the voltmeter</span>
     <p style="font-size:13px; color:var(--text-secondary); font-style:italic; line-height:1.6; margin:0;">&ldquo;I received today a Weigel 0&ndash;30V voltmeter that I had purchased for my lab use. It's such a beautiful design, and in operation elegant, that I asked Claude to rescale it from 0&ndash;4V and estimated a correspondingly smaller uncertainty. There is most likely no corresponding model in their catalogue! So this is a custom voltmeter, but I'm acknowledging their design and dial face.&rdquo;</p>
   </div>
+
+  <div id="leads-swapped-note" style="display:none; margin-bottom:12px; font-size:12.5px; font-style:italic; color:var(--text-danger); background:var(--surface-1); border-left:3px solid var(--text-danger); border-radius:4px; padding:8px 10px; text-align:left;">Now the connecting leads have been swapped over, you need to read any positive readings from the meter now as negative, of course!</div>
 
 </div>
 
@@ -410,8 +430,10 @@
   Standard potentials and temperature coefficients (dE&deg;/dT) for magnesium, aluminium, zinc, iron, lead, copper and silver are literature values (Bratsch, 1989). Gold's E&deg; is derived via Hess's law from two Bratsch couples (Au&sup3;&#8314;/Au&#8314; and Au&#8314;/Au); its dE&deg;/dT remains an approximation, since Bratsch's table gives no coefficient for the Au&sup3;&#8314;/Au&#8314; couple. See the full table and sources below.
 </div>
 
-<div style="text-align:center; margin-top:10px;">
+<div style="display:flex; align-items:center; justify-content:center; gap:10px; margin-top:10px; flex-wrap:wrap;">
   <button id="sources-btn" type="button">Show all metals &amp; sources</button>
+  <button id="reveal-btn" type="button">Show reading</button>
+  <button id="error-btn" type="button">Introduce an instrument reading error</button>
 </div>
 
 <div id="sources-panel" style="display:none; margin-top:10px; background:var(--surface-2); border:0.5px solid var(--border); border-radius:var(--radius); padding:14px 16px; box-sizing:border-box;">
@@ -590,12 +612,50 @@
   pivot.setAttribute('cx', mgroupCx);
   pivot.setAttribute('cy', mgroupCy);
 
-  var readout=document.getElementById('readout');
   var switchWrap=document.getElementById('switch-wrap');
   var track=document.getElementById('switch-track');
   var thumb=document.getElementById('switch-thumb');
   var switchLabel=document.getElementById('switch-label');
   var revealBtn=document.getElementById('reveal-btn');
+  var wireBlack=document.getElementById('wire-black');
+  var wireRed=document.getElementById('wire-red');
+  var swapLeadsBtn=document.getElementById('swap-leads-btn');
+  var leadsSwapped=false;
+  var WIRE_BLACK_D='M67,90 L67,4 L593,4 L593,22';
+  var WIRE_BLACK_D_SWAPPED='M67,90 L67,4 L467,4 L467,22';
+  var WIRE_RED_D='M293,90 L293,16 L467,16 L467,22';
+  var WIRE_RED_D_SWAPPED='M293,90 L293,10 A6,6 0 0 1 293,-2 L593,-2 L593,22';
+  var leadsSwappedNote=document.getElementById('leads-swapped-note');
+  var connectorOverlay=document.getElementById('swap-connector-overlay');
+  var connectorLine=document.getElementById('swap-connector-line');
+  function updateConnectorLine(){
+    if(!leadsSwapped){ connectorOverlay.style.display='none'; return; }
+    var btnRect=swapLeadsBtn.getBoundingClientRect();
+    var noteRect=leadsSwappedNote.getBoundingClientRect();
+    var x1=btnRect.right, y1=btnRect.top+btnRect.height/2;
+    var xMid=btnRect.right+20;
+    var y2=noteRect.top+noteRect.height/2;
+    var x3=noteRect.right;
+    var pts = x1+','+y1+' '+xMid+','+y1+' '+xMid+','+y2+' '+x3+','+y2;
+    connectorLine.setAttribute('points', pts);
+    connectorOverlay.style.display='block';
+  }
+  window.addEventListener('resize', updateConnectorLine);
+  window.addEventListener('scroll', updateConnectorLine, true);
+  var redTerminalCircle=document.getElementById('red-terminal-circle');
+  var blackTerminalCircle=document.getElementById('black-terminal-circle');
+  swapLeadsBtn.addEventListener('click', function(){
+    leadsSwapped=!leadsSwapped;
+    wireBlack.setAttribute('d', leadsSwapped ? WIRE_BLACK_D_SWAPPED : WIRE_BLACK_D);
+    wireRed.setAttribute('d', leadsSwapped ? WIRE_RED_D_SWAPPED : WIRE_RED_D);
+    redTerminalCircle.setAttribute('fill', leadsSwapped ? '#111111' : '#d1352c');
+    redTerminalCircle.setAttribute('stroke', leadsSwapped ? '#000000' : '#7a1a15');
+    blackTerminalCircle.setAttribute('fill', leadsSwapped ? '#d1352c' : '#111111');
+    blackTerminalCircle.setAttribute('stroke', leadsSwapped ? '#7a1a15' : '#000000');
+    leadsSwappedNote.style.display = leadsSwapped ? 'block' : 'none';
+    updateConnectorLine();
+    render();
+  });
   var leftSelect=document.getElementById('left-select');
   var rightSelect=document.getElementById('right-select');
   var leftConc=document.getElementById('left-conc');
@@ -615,8 +675,15 @@
   var pendingNeedle=0, pendingDigital=0;
   var needleCurrent=0, needleTarget=0, digitalCurrent=0, digitalTarget=0, raf=null;
   var ZERO_ERROR=0.15, zeroed=false;
+  var manualZeroOffset=0, zeroAnimating=false, zeroAnimRAF=null, zeroAnimToken=0;
   var zeroBtn=document.getElementById('zero-btn');
   var zeroStatus=document.getElementById('zero-status');
+  var screwSlot=document.getElementById('pivot-screw-slot');
+  function randomizeZeroError(){
+    var mag = 0.05 + Math.random()*0.20;
+    var sign = Math.random()<0.5 ? -1 : 1;
+    ZERO_ERROR = Math.round(sign*mag*1000)/1000;
+  }
   function updateZeroStatus(){
     if(zeroed){
       zeroStatus.textContent='Zeroed — the systematic (zero) error has been eliminated.';
@@ -653,7 +720,19 @@
     zeroControls.style.display = advancedMode ? 'block' : 'none';
     if(advancedMode){ pageTitle.innerHTML = TITLE_ADVANCED_HTML; }
     else { pageTitle.textContent = TITLE_DEFAULT; }
-    zeroed = !advancedMode;
+    if(zeroAnimRAF){ cancelAnimationFrame(zeroAnimRAF); zeroAnimRAF=null; }
+    zeroAnimToken++;
+    zeroAnimating=false;
+    screwSlot.setAttribute('stroke', '#1a1a18');
+    screwSlot.removeAttribute('transform');
+    if(advancedMode){
+      randomizeZeroError();
+      manualZeroOffset = ZERO_ERROR;
+      zeroed = false;
+    } else {
+      manualZeroOffset = 0;
+      zeroed = true;
+    }
     updateZeroStatus();
     applyTarget();
   }
@@ -733,8 +812,11 @@
       ' L'+bR[0].toFixed(2)+','+bR[1].toFixed(2)+' Z';
     needle.setAttribute('d', d);
   }
+  var meterFaceReadout=document.getElementById('meter-face-readout');
   function setReadoutText(v){
-    readout.textContent = (readoutUseSig3 ? fmtSig(v,3) : v.toFixed(2))+' V';
+    var numTxt = readoutUseSig3 ? fmtSig(v,3) : v.toFixed(2);
+    if(v>0) numTxt = '+'+numTxt;
+    meterFaceReadout.textContent = numTxt+' V';
   }
   setNeedle(0);
   setReadoutText(0);
@@ -750,11 +832,17 @@
   }
 
   function applyReveal(){
-    readout.style.filter = revealed ? 'none' : 'blur(7px)';
+    meterFaceReadout.style.filter = revealed ? 'none' : 'blur(4px)';
+    meterFaceReadout.style.opacity = revealed ? '1' : '0';
     revealBtn.textContent = revealed ? 'Hide reading' : 'Show reading';
   }
   applyReveal();
   revealBtn.addEventListener('click', function(){
+    revealed=!revealed;
+    applyReveal();
+  });
+  var meterVLabel=document.getElementById('meter-v-label');
+  meterVLabel.addEventListener('click', function(){
     revealed=!revealed;
     applyReveal();
   });
@@ -770,19 +858,116 @@
   }
 
   function applyTarget(){
-    var zOff = zeroed ? 0 : ZERO_ERROR;
+    var zOff = zeroed ? 0 : manualZeroOffset;
     needleTarget = (connected ? pendingNeedle : 0) + zOff;
     digitalTarget = (connected ? pendingDigital : 0) + zOff;
     if(raf) cancelAnimationFrame(raf);
     raf=requestAnimationFrame(animate);
   }
 
+  function easeInOutQuad(t){ return t<0.5 ? 2*t*t : 1-Math.pow(-2*t+2,2)/2; }
+  function easeOutQuad(t){ return 1-(1-t)*(1-t); }
+
+  function runZeroAnimation(onComplete){
+    if(zeroed || zeroAnimating) return;
+    zeroAnimating=true;
+    zeroBtn.disabled=true;
+    screwSlot.setAttribute('stroke', '#d1352c');
+    screwSlot.setAttribute('stroke-width', '2');
+
+    var myToken = ++zeroAnimToken;
+    var startVal = manualZeroOffset;
+    // needle below zero (negative) -> screw turns clockwise; needle above zero (positive) -> anticlockwise
+    var dir = startVal >= 0 ? -1 : 1;
+    var overshoot = (startVal >= 0 ? -1 : 1) * 0.02;
+    var currentAngle = 0;
+
+    var segments = [
+      { fromOffset: startVal,      toOffset: startVal*0.35, angleDelta: dir*360, duration: 550, ease: easeInOutQuad, pauseAfter: 160 },
+      { fromOffset: startVal*0.35, toOffset: startVal*0.04, angleDelta: dir*360, duration: 500, ease: easeInOutQuad, pauseAfter: 160 },
+      { fromOffset: startVal*0.04, toOffset: overshoot,      angleDelta: dir*130, duration: 420, ease: easeOutQuad,   pauseAfter: 180 },
+      { fromOffset: overshoot,     toOffset: 0,               angleDelta: -dir*70, duration: 480, ease: easeOutQuad,   pauseAfter: 0 }
+    ];
+
+    var segIndex = 0;
+    function runSegment(){
+      if(myToken !== zeroAnimToken) return;
+      if(segIndex >= segments.length){
+        manualZeroOffset = 0;
+        zeroed = true;
+        zeroAnimating = false;
+        screwSlot.setAttribute('stroke', '#1a1a18');
+        screwSlot.setAttribute('stroke-width', '1.6');
+        screwSlot.removeAttribute('transform');
+        applyTarget();
+        updateZeroStatus();
+        if(onComplete) onComplete();
+        return;
+      }
+      var seg = segments[segIndex];
+      var startAngle = currentAngle;
+      var t0 = performance.now();
+      function step(now){
+        if(myToken !== zeroAnimToken) return;
+        var t = Math.min(1, (now-t0)/seg.duration);
+        var eased = seg.ease(t);
+        manualZeroOffset = seg.fromOffset + (seg.toOffset-seg.fromOffset)*eased;
+        var angle = startAngle + seg.angleDelta*eased;
+        screwSlot.setAttribute('transform', 'rotate('+angle+' 230 230)');
+        applyTarget();
+        if(t<1){
+          zeroAnimRAF = requestAnimationFrame(step);
+        } else {
+          currentAngle = startAngle + seg.angleDelta;
+          segIndex++;
+          if(seg.pauseAfter>0){
+            setTimeout(runSegment, seg.pauseAfter);
+          } else {
+            runSegment();
+          }
+        }
+      }
+      zeroAnimRAF = requestAnimationFrame(step);
+    }
+    runSegment();
+  }
+
+  var errorBtn=document.getElementById('error-btn');
+  var manualErrorActive=false;
+  var ERROR_BTN_DEFAULT='Introduce an instrument reading error';
+
   zeroBtn.addEventListener('click', function(){
-    zeroed=true;
-    updateZeroStatus();
-    applyTarget();
+    runZeroAnimation(function(){
+      if(manualErrorActive){
+        manualErrorActive = false;
+        errorBtn.textContent = ERROR_BTN_DEFAULT;
+        if(!advancedMode){ zeroControls.style.display = 'none'; }
+      }
+    });
   });
 
+  errorBtn.addEventListener('click', function(){
+    if(zeroAnimating) return;
+    if(!manualErrorActive){
+      var mag = 0.01 + Math.random()*0.24;
+      ZERO_ERROR = Math.round(mag*100)/100;
+      manualZeroOffset = ZERO_ERROR;
+      zeroed = false;
+      manualErrorActive = true;
+      errorBtn.textContent = '+'+ZERO_ERROR.toFixed(2)+' V systematic error introduced';
+      zeroControls.style.display = 'block';
+      updateZeroStatus();
+      applyTarget();
+    } else {
+      runZeroAnimation(function(){
+        manualErrorActive = false;
+        errorBtn.textContent = ERROR_BTN_DEFAULT;
+        if(!advancedMode){ zeroControls.style.display = 'none'; }
+      });
+    }
+  });
+
+  var switchLever=document.getElementById('switch-lever');
   function setConnected(state){
     connected = state;
     switchWrap.setAttribute('aria-checked', connected ? 'true' : 'false');
@@ -790,12 +975,21 @@
     track.style.background = connected ? 'var(--bg-accent)' : 'var(--surface-1)';
     thumb.style.left = connected ? '20px' : '2px';
     thumb.style.background = connected ? 'var(--text-accent)' : 'var(--text-secondary)';
+    if(connected){
+      switchLever.setAttribute('x2', '205');
+      switchLever.setAttribute('y2', '4');
+    } else {
+      switchLever.setAttribute('x2', '199');
+      switchLever.setAttribute('y2', '-10');
+    }
     revealed=false;
     applyReveal();
     applyTarget();
   }
 
   switchWrap.addEventListener('click', function(){ setConnected(!connected); });
+  var lineSwitch=document.getElementById('line-switch');
+  lineSwitch.addEventListener('click', function(){ setConnected(!connected); });
   switchWrap.addEventListener('keydown', function(e){
     if(e.key===' ' || e.key==='Enter'){ e.preventDefault(); setConnected(!connected); }
   });
@@ -935,14 +1129,18 @@
 
     html += '<div class="ex-section"><span class="ex-label">Method note</span>Each electrode has its own temperature and shifts independently via E'+DEG+'(T) = E'+DEG+'(298 K) + (dE'+DEG+'/dT)(T &minus; 298). The Nernst log term itself is always evaluated at the fixed reference T = 298 K, giving the constant 0.0592/n V coefficient.</div>';
     html += '<div class="ex-section"><span class="ex-label">Salt bridge</span>An agar-agar gel infused with saturated KNO'+SUB3+' solution, set inside the glass U-tube, completes the circuit internally. Read the analogue needle first, then use "Show reading" to check yourself.</div>';
+    if(leadsSwapped){
+      html += '<div class="ex-section ex-warn"><span class="ex-label">Leads swapped</span>The black and red leads have been swapped over at the terminals, so the meter now reads the reverse polarity of the true cell potential: a positive true E<sub>cell</sub> now displays as negative, and vice versa. Click "Swap leads" again to restore the normal (black &minus;, red +) connection.</div>';
+    }
     explainText.innerHTML = html;
 
+    var meterSigned = leadsSwapped ? -signed : signed;
     if(same){
       pendingNeedle = 0; pendingDigital = 0;
-    } else if(reversed){
-      pendingNeedle = Math.max(signed, PEG_V); pendingDigital = signed;
+    } else if(meterSigned < 0){
+      pendingNeedle = Math.max(meterSigned, PEG_V); pendingDigital = meterSigned;
     } else {
-      pendingNeedle = Math.min(signed, SCALE_MAX); pendingDigital = signed;
+      pendingNeedle = Math.min(meterSigned, SCALE_MAX); pendingDigital = meterSigned;
     }
     applyTarget();
   }
@@ -961,6 +1159,12 @@
   rightConc.addEventListener('input', render);
   leftTemp.addEventListener('input', render);
   rightTemp.addEventListener('input', render);
+  var resetSatpBtn=document.getElementById('reset-satp-btn');
+  resetSatpBtn.addEventListener('click', function(){
+    leftTemp.value=25;
+    rightTemp.value=25;
+    render();
+  });
   updateConcSlider(leftConc, leftSelect.value);
   updateConcSlider(rightConc, rightSelect.value);
   render();
