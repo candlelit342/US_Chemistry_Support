@@ -183,11 +183,11 @@
 
 <div style="display:flex; align-items:center; gap:16px; margin-bottom:0.75rem; flex-wrap:wrap;">
   <label style="display:flex; align-items:center; gap:8px; font-size:13px; color:var(--text-secondary); flex:1; min-width:220px;">Left temp.
-    <input type="range" id="left-temp" min="10" max="50" step="1" value="25" style="flex:1;">
+    <input type="range" id="left-temp" min="10" max="50" step="0.5" value="25" style="flex:1;">
     <span id="left-temp-val" style="min-width:48px; font-weight:500; color:var(--text-primary);">25 &deg;C</span>
   </label>
   <label style="display:flex; align-items:center; gap:8px; font-size:13px; color:var(--text-secondary); flex:1; min-width:220px;">Right temp.
-    <input type="range" id="right-temp" min="10" max="50" step="1" value="25" style="flex:1;">
+    <input type="range" id="right-temp" min="10" max="50" step="0.5" value="25" style="flex:1;">
     <span id="right-temp-val" style="min-width:48px; font-weight:500; color:var(--text-primary);">25 &deg;C</span>
   </label>
 </div>
@@ -235,6 +235,7 @@
     <text id="left-electrode-label" x="67" y="65" text-anchor="middle" font-size="13" fill="#1a1a18">Zn</text>
     <text id="left-solution-label" x="90" y="232" text-anchor="middle" font-size="12" fill="#1a1a18">ZnSO&#8324;, 1.00 M</text>
     <text id="left-role-label" x="112" y="82" text-anchor="middle" font-size="10" fill="#1a1a18" font-style="italic">anode (&#8211;)</text>
+    <text id="left-temp-reading" x="90" y="250" text-anchor="middle" font-size="15" font-style="italic" font-weight="600" fill="#1a1a18">25.0 &#176;C</text>
 
     <path d="M204,140 L204,210 Q204,216 210,216 L330,216 Q336,216 336,210 L336,140 Z" fill="url(#hatchLiquid)"/>
     <path d="M200,90 L200,214 Q200,220 206,220 L334,220 Q340,220 340,214 L340,90" fill="none" stroke="#1a1a18" stroke-width="2.5"/>
@@ -250,6 +251,7 @@
     <text id="right-electrode-label" x="293" y="65" text-anchor="middle" font-size="13" fill="#1a1a18">Cu</text>
     <text id="right-solution-label" x="270" y="232" text-anchor="middle" font-size="12" fill="#1a1a18">CuSO&#8324;, 1.00 M</text>
     <text id="right-role-label" x="327" y="82" text-anchor="middle" font-size="10" fill="#1a1a18" font-style="italic">cathode (+)</text>
+    <text id="right-temp-reading" x="270" y="250" text-anchor="middle" font-size="15" font-style="italic" font-weight="600" fill="#1a1a18">25.0 &#176;C</text>
 
     <path d="M144,160 L144,50 Q180,30 216,50 L216,160 L204,160 L204,60 Q180,45 156,60 L156,160 Z" fill="url(#hatchLiquid)" stroke="#1a1a18" stroke-width="2"/>
     <ellipse cx="150" cy="160" rx="8" ry="4" fill="#f4efdf" stroke="#1a1a18" stroke-width="1.5"/>
@@ -289,7 +291,7 @@
       <text x="261" y="103" font-size="7" fill="#1a1a18">50</text>
     </g>
 
-    <text id="fig-caption" x="190" y="258" text-anchor="middle" font-size="11" font-style="italic" fill="#1a1a18">Fig. 1 &#8212; Zn&#8211;Cu galvanic cell, 1.00 M solutions</text>
+    <text id="fig-caption" x="190" y="272" text-anchor="middle" font-size="11" font-style="italic" fill="#1a1a18">Fig. 1 &#8212; Zn&#8211;Cu galvanic cell, 1.00 M solutions</text>
   </g>
 
   <g transform="translate(380,20)">
@@ -606,6 +608,8 @@
   var rightTempVal=document.getElementById('right-temp-val');
   var thermLeftFill=document.getElementById('therm-left-fill');
   var thermRightFill=document.getElementById('therm-right-fill');
+  var leftTempReading=document.getElementById('left-temp-reading');
+  var rightTempReading=document.getElementById('right-temp-reading');
   var exoticToggle=document.getElementById('exotic-toggle');
   var connected=false, revealed=false, readoutUseSig3=false;
   var pendingNeedle=0, pendingDigital=0;
@@ -864,10 +868,12 @@
     readoutUseSig3 = !!(L.maxConc || R.maxConc);
     leftConcVal.textContent=(L.maxConc ? fmtSig(cLeft,3) : cLeft.toFixed(2))+' M';
     rightConcVal.textContent=(R.maxConc ? fmtSig(cRight,3) : cRight.toFixed(2))+' M';
-    leftTempVal.textContent=tLeft.toFixed(0)+' °C';
-    rightTempVal.textContent=tRight.toFixed(0)+' °C';
+    leftTempVal.textContent=tLeft.toFixed(1)+' °C';
+    rightTempVal.textContent=tRight.toFixed(1)+' °C';
     updateThermometer(thermLeftFill, tLeft);
     updateThermometer(thermRightFill, tRight);
+    leftTempReading.textContent = tLeft.toFixed(1)+' °C';
+    rightTempReading.textContent = tRight.toFixed(1)+' °C';
 
     leftElLabel.textContent=Lsym;
     rightElLabel.textContent=Rsym;
