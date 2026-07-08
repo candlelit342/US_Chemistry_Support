@@ -166,7 +166,7 @@
   </label>
   <label style="display:flex; align-items:center; gap:6px; font-size:13px; color:var(--text-secondary); margin-left:auto;">
     <input type="checkbox" id="exotic-toggle" style="width:15px; height:15px; cursor:pointer;">
-    More exotic metals
+    <span style="color:#d1352c;">More exotic metals</span>
   </label>
 </div>
 
@@ -234,7 +234,7 @@
     <path d="M74,134 Q80,140 86,140 L132,140 Q138,140 144,134" fill="none" stroke="#1a1a18" stroke-width="1"/>
     <text id="left-electrode-label" x="67" y="65" text-anchor="middle" font-size="13" fill="#1a1a18">Zn</text>
     <text id="left-solution-label" x="90" y="232" text-anchor="middle" font-size="12" fill="#1a1a18">ZnSO&#8324;, 1.00 M</text>
-    <text id="left-role-label" x="90" y="82" text-anchor="middle" font-size="10" fill="#1a1a18" font-style="italic">anode (&#8211;)</text>
+    <text id="left-role-label" x="112" y="82" text-anchor="middle" font-size="10" fill="#1a1a18" font-style="italic">anode (&#8211;)</text>
 
     <path d="M204,140 L204,210 Q204,216 210,216 L330,216 Q336,216 336,210 L336,140 Z" fill="url(#hatchLiquid)"/>
     <path d="M200,90 L200,214 Q200,220 206,220 L334,220 Q340,220 340,214 L340,90" fill="none" stroke="#1a1a18" stroke-width="2.5"/>
@@ -249,7 +249,7 @@
     <path d="M300,134 Q305,140 310,140 L326,140 Q331,140 336,134" fill="none" stroke="#1a1a18" stroke-width="1"/>
     <text id="right-electrode-label" x="293" y="65" text-anchor="middle" font-size="13" fill="#1a1a18">Cu</text>
     <text id="right-solution-label" x="270" y="232" text-anchor="middle" font-size="12" fill="#1a1a18">CuSO&#8324;, 1.00 M</text>
-    <text id="right-role-label" x="270" y="82" text-anchor="middle" font-size="10" fill="#1a1a18" font-style="italic">cathode (+)</text>
+    <text id="right-role-label" x="327" y="82" text-anchor="middle" font-size="10" fill="#1a1a18" font-style="italic">cathode (+)</text>
 
     <path d="M144,160 L144,50 Q180,30 216,50 L216,160 L204,160 L204,60 Q180,45 156,60 L156,160 Z" fill="url(#hatchLiquid)" stroke="#1a1a18" stroke-width="2"/>
     <ellipse cx="150" cy="160" rx="8" ry="4" fill="#f4efdf" stroke="#1a1a18" stroke-width="1.5"/>
@@ -336,16 +336,9 @@
 </svg>
 
 <div style="float:left; width:53%; box-sizing:border-box; text-align:left; padding-right:12px;">
-  <h1 style="font-size:19px; font-weight:600; color:var(--text-primary); margin:8px 0 0; line-height:1.4;">Exploring the effect of electrode identity, aqueous ion concentration and temperature on the EMF of a cell</h1>
-  <div style="display:flex; align-items:flex-start; gap:8px; margin-top:10px;">
-    <a href="https://ibchemistrytutors.wordpress.com" target="_blank" rel="noopener" style="display:inline-flex; flex-shrink:0;" aria-label="IB Chemistry Tutors website">
-      <svg width="24" height="24" viewBox="0 0 24 24" style="flex-shrink:0;">
-        <circle cx="12" cy="12" r="11" fill="#185fa5" stroke="#ffffff" stroke-width="1.5"/>
-        <text x="12" y="16.5" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff" font-family="Georgia, 'Times New Roman', serif">W3</text>
-      </svg>
-    </a>
-    <span style="font-size:11px; font-weight:400; color:var(--text-muted); line-height:1.4; padding-top:4px;">Copyright &copy; 2026 Wilkie&rsquo;s Wonky Wonders. Free for educational use under the MIT license.</span>
-  </div>
+  <h1 id="page-title" style="font-size:19px; font-weight:600; color:var(--text-primary); margin:8px 0 0; line-height:1.4; white-space:pre-line;">Exploring the effect of electrode identity, aqueous ion concentration and temperature on the EMF of a cell</h1>
+  <a href="reduction_potentials_table.html" target="_blank" rel="noopener" style="display:inline-block; margin-top:10px; font-size:13px; padding:7px 12px; border-radius:8px; border:0.5px solid var(--border-strong); background:var(--surface-2); color:var(--text-primary); text-decoration:none;">Standard Reduction Potentials table</a>
+  <a href="galvanic_cell_cheat_sheet.html" target="_blank" rel="noopener" style="display:inline-block; margin-top:10px; margin-left:8px; font-size:13px; padding:7px 12px; border-radius:8px; border:0.5px solid var(--border-strong); background:var(--surface-2); color:var(--text-primary); text-decoration:none;">Open the Vocabulary Sheet</a>
 </div>
 
 <div style="width:41%; margin-left:57%; box-sizing:border-box; text-align:center;">
@@ -360,7 +353,14 @@
     <button id="reveal-btn" type="button">Show reading</button>
   </div>
 
-  <div style="margin-bottom:10px;">
+  <div style="display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:10px;">
+    <span style="font-size:13px; color:#d1352c;">For advanced students</span>
+    <span id="advanced-track" role="switch" aria-checked="false" tabindex="0" style="width:36px; height:20px; border-radius:11px; background:var(--surface-1); border:0.5px solid var(--border-strong); position:relative; cursor:pointer; display:inline-block; transition:background 0.2s;">
+      <span id="advanced-thumb" style="position:absolute; top:2px; left:2px; width:14px; height:14px; border-radius:50%; background:var(--text-secondary); transition:left 0.2s, background 0.2s;"></span>
+    </span>
+  </div>
+
+  <div id="zero-controls" style="margin-bottom:10px; display:none;">
     <button id="zero-btn" type="button">Use a screwdriver to adjust the needle to zero</button>
     <div id="zero-status" style="font-size:12px; font-style:italic; margin-top:5px;"></div>
   </div>
@@ -397,6 +397,8 @@
 
 <h3 style="text-align:left; font-size:14px; font-weight:600; color:var(--text-primary); margin:1.5rem 0 0.5rem;">The data from the literature (Bratsch, 1989)</h3>
 
+<p style="text-align:left; font-size:11.5px; font-style:italic; color:var(--text-muted); margin:0 0 0.75rem;">Bratsch, S. G. (1989). Standard electrode potentials and temperature coefficients in water at 298.15&nbsp;K. <em>Journal of Physical and Chemical Reference Data</em>, <em>18</em>, 1.</p>
+
 <div id="explain-text" style="font-size:13px; color:var(--text-secondary); background:var(--surface-2); border:0.5px solid var(--border); border-radius:var(--radius); padding:14px 16px; box-sizing:border-box;">
   E&deg;cell = 1.10 V. The salt bridge (an agar-agar gel infused with saturated KNO&#8323; solution, set inside the glass U-tube) completes the circuit internally. Read the analogue needle first, then use "Show reading" to check yourself.
 </div>
@@ -418,7 +420,14 @@
   <div class="src-footnotes" id="sources-footnotes"></div>
 </div>
 
-<div style="display:flex; align-items:center; gap:8px; margin-top:2rem; flex-wrap:wrap;">
+<div style="display:flex; align-items:flex-start; gap:8px; margin-top:2rem; flex-wrap:wrap;">
+  <a href="https://ibchemistrytutors.wordpress.com" target="_blank" rel="noopener" style="display:inline-flex; flex-shrink:0;" aria-label="IB Chemistry Tutors website">
+    <svg width="24" height="24" viewBox="0 0 24 24" style="flex-shrink:0;">
+      <circle cx="12" cy="12" r="11" fill="#185fa5" stroke="#ffffff" stroke-width="1.5"/>
+      <text x="12" y="16.5" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff" font-family="Georgia, 'Times New Roman', serif">W3</text>
+    </svg>
+  </a>
+  <span style="font-size:11px; font-weight:400; color:var(--text-muted); line-height:1.4; padding-top:4px;">Copyright &copy; 2026 Wilkie&rsquo;s Wonky Wonders. Free for educational use under the MIT license.</span>
   <button id="license-btn" type="button" style="font-size:11px; padding:3px 8px;">View license</button>
 </div>
 
@@ -464,11 +473,11 @@
 
   var HAZARD_INFO={
     radioactive:function(conc){
-      return 'radioactive (an alpha emitter). Water is such an effective neutron moderator that a few hundred grams of dissolved uranium can reach criticality. To avoid this embarrassment, the concentration slider for this half-cell is capped at 0.04 M — inside the criticality-safe range. In practice, uranium metal can be handled on an open bench in a designated radiological ("red") area rather than a sealed glovebox; alpha particles are stopped by about a foot of air. This is a simulated experiment only.';
+      return 'radioactive (an alpha emitter). Water is such an effective neutron moderator that a few hundred grams of dissolved uranium can reach criticality. To avoid this embarrassment, the concentration slider for this half-cell is capped at 0.04 M — within this safe, sub-criticality range. In practice, uranium metal can be handled on an open bench in a designated radiological ("red") area rather than a sealed glovebox; alpha particles are stopped by about a foot of air. This is a simulated experiment only.';
     },
     fissile:function(conc){
       var grams = conc*239.05;
-      return 'both radioactive and fissile. Water is such an effective neutron moderator that only a small aqueous concentration of dissolved plutonium can trigger criticality. Therefore, the concentration slider for this half-cell is capped at 0.03 M — inside the criticality-safe range. An aqueous plutonium concentration of '+fmtSig(conc,3)+' M you can calculate to be about '+grams.toFixed(1)+' g of plutonium per litre. In research, plutonium is always handled inside a glovebox at a licensed nuclear facility under a suitably inert atmosphere. This is a simulated experiment only.';
+      return 'both radioactive and fissile. Water is such an effective neutron moderator that only a small aqueous concentration of dissolved plutonium can trigger criticality. Therefore, the concentration slider for this half-cell is capped at 0.03 M — within this safe, sub-criticality range. An aqueous plutonium concentration of '+fmtSig(conc,3)+' M you can calculate to be about '+grams.toFixed(1)+' g of plutonium per litre. In research, plutonium is always handled inside a glovebox at a licensed nuclear facility under a suitably inert atmosphere. This is a simulated experiment only.';
     }
   };
   var SUP2='²', SUP3='³', SUPP='⁺', SUPM='⁻', SUB3='₃', DEG='°';
@@ -616,7 +625,38 @@
       zeroBtn.textContent='Use a screwdriver to adjust the needle to zero';
     }
   }
-  updateZeroStatus();
+
+  var advancedMode=false;
+  var advancedTrack=document.getElementById('advanced-track');
+  var advancedThumb=document.getElementById('advanced-thumb');
+  var zeroControls=document.getElementById('zero-controls');
+  var pageTitle=document.getElementById('page-title');
+  var TITLE_DEFAULT='Exploring the effect of electrode identity, aqueous ion concentration and temperature on the EMF of a cell';
+  var GOTHIC_FONT = "'Century Gothic', 'Trebuchet MS', 'Futura', sans-serif";
+  var TITLE_ADVANCED_HTML =
+    '<span style="display:block; font-family:'+GOTHIC_FONT+'; font-style:italic; font-weight:400; font-size:13px; color:var(--text-muted); letter-spacing:0.03em; margin-bottom:4px;">A simulated IA experimental study</span>' +
+    '<span style="display:block; font-family:'+GOTHIC_FONT+'; font-weight:700; font-size:18px; color:var(--text-primary); line-height:1.45;">What is the effect on the Reduction Potential of a metal as:</span>' +
+    '<span style="display:block; font-family:'+GOTHIC_FONT+'; font-weight:700; font-size:18px; color:var(--text-primary); line-height:1.45; padding-left:22px;">a)&nbsp;&nbsp;the concentration of the electrolyte is changed?</span>' +
+    '<span style="display:block; font-family:'+GOTHIC_FONT+'; font-weight:700; font-size:18px; color:var(--text-primary); line-height:1.45; padding-left:22px;">b)&nbsp;&nbsp;the temperature of the electrolyte is changed?</span>' +
+    '<span style="display:block; font-family:'+GOTHIC_FONT+'; font-style:italic; font-weight:400; font-size:12px; color:var(--text-muted); margin-top:6px;">(for an IA you would choose one metal, and choose either (a) or (b) but not both!)</span>';
+  function setAdvanced(state){
+    advancedMode=state;
+    advancedTrack.setAttribute('aria-checked', advancedMode ? 'true' : 'false');
+    advancedTrack.style.background = advancedMode ? '#d1352c' : 'var(--surface-1)';
+    advancedThumb.style.left = advancedMode ? '18px' : '2px';
+    advancedThumb.style.background = advancedMode ? '#ffffff' : 'var(--text-secondary)';
+    zeroControls.style.display = advancedMode ? 'block' : 'none';
+    if(advancedMode){ pageTitle.innerHTML = TITLE_ADVANCED_HTML; }
+    else { pageTitle.textContent = TITLE_DEFAULT; }
+    zeroed = !advancedMode;
+    updateZeroStatus();
+    applyTarget();
+  }
+  advancedTrack.addEventListener('click', function(){ setAdvanced(!advancedMode); });
+  advancedTrack.addEventListener('keydown', function(e){
+    if(e.key===' ' || e.key==='Enter'){ e.preventDefault(); setAdvanced(!advancedMode); }
+  });
+  setAdvanced(false);
 
   function updateConcSlider(sliderEl, sym){
     var m = METALS[sym];
@@ -786,7 +826,7 @@
     });
     sourcesTbody.innerHTML = rows;
     sourcesFootnotes.innerHTML =
-      '<div><sup>[1]</sup> E&deg; and dE&deg;/dT from Bratsch, S. G. (1989), "Standard Electrode Potentials and Temperature Coefficients in Water at 298.15 K," <em>Journal of Physical and Chemical Reference Data</em>, 18(1), 1&ndash;21 (values as supplied by the user from a scanned excerpt of the table).</div>' +
+      '<div><sup>[1]</sup> E&deg; and dE&deg;/dT from Bratsch, S. G. (1989). Standard electrode potentials and temperature coefficients in water at 298.15 K. <em>Journal of Physical and Chemical Reference Data</em>, <em>18</em>, 1 (values as supplied by the user from a scanned excerpt of the table).</div>' +
       '<div><sup>[2]</sup> Au<sup>3+</sup>/Au: E&deg; derived via Hess\'s law from two Bratsch (1989) table entries the user supplied &mdash; Au<sup>3+</sup>/Au<sup>+</sup> (E&deg; = +1.41 V) and Au<sup>+</sup>/Au (E&deg; = +1.69 V), both flagged as less-certain values in the original table: E&deg;(Au<sup>3+</sup>/Au) = [2 &times; 1.41 + 1 &times; 1.69] / 3 = +1.503 V.</div>' +
       '<div><sup>[3]</sup> Au<sup>3+</sup>/Au: dE&deg;/dT. Bratsch\'s table gives no temperature coefficient for the Au<sup>3+</sup>/Au<sup>+</sup> couple, so the Hess\'s-law route used for E&deg; above cannot be completed for dE&deg;/dT. The value shown is instead this tool\'s own approximation derived from standard third-law entropies, dE&deg;/dT = &Delta;S&deg;<sub>rxn</sub>/(nF). Treat this figure as indicative only.</div>' +
       '<div><sup>&dagger;</sup> Shown in parentheses in the original scanned table, meaning Bratsch himself rated this value as less certain (e.g. because the metal is rare, radioactive, or the couple is poorly studied experimentally).</div>' +
@@ -893,7 +933,7 @@
     if(same){
       pendingNeedle = 0; pendingDigital = 0;
     } else if(reversed){
-      pendingNeedle = PEG_V; pendingDigital = signed;
+      pendingNeedle = Math.max(signed, PEG_V); pendingDigital = signed;
     } else {
       pendingNeedle = Math.min(signed, SCALE_MAX); pendingDigital = signed;
     }
