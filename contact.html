@@ -100,6 +100,10 @@
     <button type="submit" id="submitBtn">Send Message</button>
     <div id="result"></div>
   </form>
+  <div id="thankyou" style="display:none; text-align:center; padding: 20px 0;">
+    <h2 style="margin-top:0; color:#1a1a1a;">Thank you!</h2>
+    <p style="color:#555;">Thank you for your interest in our resources. Your message has been sent.</p>
+  </div>
 </div>
 
 <script>
@@ -128,8 +132,8 @@ form.addEventListener('submit', function (e) {
     .then(async (response) => {
       let json = await response.json();
       if (response.status === 200) {
-        result.style.color = 'green';
-        result.innerHTML = 'Message sent successfully!';
+        form.style.display = 'none';
+        document.getElementById('thankyou').style.display = 'block';
       } else {
         console.log(response);
         result.style.color = 'red';
