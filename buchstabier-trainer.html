@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Buchstabier-Trainer · DIN 5009</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background:
+      repeating-linear-gradient(90deg, transparent 0 260px, rgba(242,196,0,.05) 260px 268px),
+      #26282B;
+    color: #F7F6F2;
+    font-family: 'Barlow', sans-serif;
+    padding: 20px 14px 60px;
+  }
+  .header {
+    max-width: 640px; margin: 0 auto 18px;
+    background: #1C4E9D;
+    border: 3px solid #F7F6F2; border-radius: 12px;
+    padding: 16px 20px;
+    box-shadow: 0 4px 14px rgba(0,0,0,.4);
+  }
+  .header h1 {
+    margin: 0; font-family: 'Barlow Semi Condensed', sans-serif;
+    font-weight: 700; font-size: clamp(22px, 5vw, 30px);
+    letter-spacing: .01em; line-height: 1.15;
+  }
+  .header p { margin: 4px 0 0; font-size: 13px; opacity: .85; }
+  .tabs { max-width: 640px; margin: 0 auto 22px; display: flex; gap: 8px; }
+  .tabs button {
+    flex: 1; padding: 10px 6px;
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    font-weight: 600; font-size: 15px; letter-spacing: .03em;
+    background: #33363A; color: #F7F6F2;
+    border: 2px solid #4a4e53; border-radius: 8px;
+    cursor: pointer;
+  }
+  .tabs button.on {
+    background: #F2C400; color: #101112; border-color: #101112;
+    box-shadow: 0 0 0 2px #F2C400;
+  }
+  .panel { max-width: 640px; margin: 0 auto; }
+  .hint { font-size: 14px; color: #b9bcc0; margin: 0 0 14px; }
+  .hint.center { text-align: center; margin-top: 16px; }
+
+  .schild {
+    display: inline-block;
+    background: #F2C400; color: #101112;
+    border: 2.5px solid #101112;
+    box-shadow: 0 0 0 3px #F2C400, 0 2px 6px rgba(0,0,0,.45);
+    border-radius: 8px;
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    font-weight: 600; letter-spacing: .02em;
+    text-transform: uppercase; line-height: 1.1; white-space: nowrap;
+  }
+  .schild.sm { padding: 4px 10px; font-size: 15px; }
+  .schild.md { padding: 9px 18px; font-size: 21px; }
+  .schild.lg { padding: 14px 26px; font-size: 30px; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(148px, 1fr)); gap: 10px; }
+  .cell {
+    display: flex; align-items: center; gap: 10px;
+    background: #33363A; border: 2px solid #4a4e53; border-radius: 10px;
+    padding: 10px; cursor: pointer; text-align: left;
+    color: inherit; font-family: inherit;
+  }
+  .cell:hover { border-color: #F2C400; }
+  .cellLetter {
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    font-weight: 700; font-size: 26px; color: #F2C400;
+    min-width: 24px; text-align: center;
+  }
+  .special { margin-top: 22px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .specialLabel {
+    font-family: 'Barlow Semi Condensed', sans-serif; font-weight: 600;
+    font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: #8b8f94;
+    width: 100%;
+  }
+  .specialChip {
+    background: #33363A; color: #F7F6F2; border: 2px solid #4a4e53;
+    border-radius: 999px; padding: 6px 14px; font-size: 14px; cursor: pointer;
+    font-family: 'Barlow', sans-serif;
+  }
+  .specialChip:hover { border-color: #F2C400; }
+  .specialChip b { color: #F2C400; margin-right: 4px; }
+
+  .quizTop { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }
+  .dirToggle { display: flex; gap: 6px; }
+  .dirToggle button {
+    background: #33363A; color: #F7F6F2; border: 2px solid #4a4e53;
+    border-radius: 8px; padding: 7px 12px; font-size: 13px; cursor: pointer;
+    font-family: 'Barlow Semi Condensed', sans-serif; font-weight: 600;
+  }
+  .dirToggle button.on { background: #F2C400; color: #101112; border-color: #101112; }
+  .score { display: flex; gap: 12px; font-weight: 600; font-size: 15px; }
+  .streak { color: #F2C400; }
+  .prompt { display: flex; flex-direction: column; align-items: center; gap: 8px; margin: 26px 0 24px; }
+  .bigLetter {
+    font-family: 'Barlow Semi Condensed', sans-serif; font-weight: 700;
+    font-size: 88px; line-height: 1; color: #F7F6F2;
+    background: #1C4E9D; border: 3px solid #F7F6F2; border-radius: 14px;
+    padding: 6px 34px; box-shadow: 0 4px 14px rgba(0,0,0,.4);
+  }
+  .promptLabel { color: #b9bcc0; font-size: 15px; }
+  .options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .opt {
+    display: flex; justify-content: center; align-items: center;
+    background: #33363A; border: 2px solid #4a4e53; border-radius: 10px;
+    padding: 16px 8px; cursor: pointer; min-height: 68px;
+    font-family: inherit; color: inherit;
+  }
+  .opt:hover:not(:disabled) { border-color: #F2C400; }
+  .opt.correct { border-color: #3AA655; background: #1f3a28; }
+  .opt.wrong { border-color: #C1121F; background: #3a1f22; }
+  .opt.faded { opacity: .45; }
+  .optLetter {
+    font-family: 'Barlow Semi Condensed', sans-serif; font-weight: 700;
+    font-size: 40px; color: #F7F6F2;
+  }
+  .optWrap { position: relative; }
+  .optWrap .opt { width: 100%; }
+  .audioBtn {
+    position: absolute; top: -8px; right: -6px;
+    width: 30px; height: 30px;
+    background: #101112; color: #F2C400;
+    border: 2px solid #F2C400; border-radius: 999px;
+    cursor: pointer; font-size: 13px; line-height: 1;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,.5);
+  }
+  .audioBtn:hover { background: #2a2c18; }
+  .audioBtn.inline { position: static; width: 38px; height: 38px; font-size: 16px; flex: none; }
+  .tfClaim { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; justify-content: center; }
+  .tfLetter { font-size: 48px; padding: 4px 20px; }
+  .tfWie { color: #b9bcc0; font-size: 20px; font-style: italic; }
+  .tfOptions { grid-template-columns: 1fr 1fr; max-width: 420px; margin: 0 auto; }
+  .tfBtn { font-size: 24px; }
+
+  .spellRow { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+  .spellInput {
+    flex: 1; min-width: 180px;
+    background: #F7F6F2; color: #101112;
+    border: 3px solid #101112; border-radius: 8px;
+    padding: 12px 14px; font-size: 20px;
+    font-family: 'Barlow Semi Condensed', sans-serif; font-weight: 600;
+  }
+  .playBtn {
+    background: #1C4E9D; color: #F7F6F2; border: 2px solid #F7F6F2;
+    border-radius: 8px; padding: 10px 18px; font-size: 15px; font-weight: 600;
+    cursor: pointer; font-family: 'Barlow Semi Condensed', sans-serif;
+  }
+  .playBtn:hover:not(:disabled) { background: #2760bd; }
+  .playBtn:disabled { opacity: .5; cursor: default; }
+  .spellOut { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-start; }
+  .spellItem {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    background: transparent; border: none; padding: 4px; cursor: pointer;
+    font-family: inherit; color: inherit;
+  }
+  .spellItem.unknown { cursor: default; }
+  .spellCh { font-weight: 600; font-size: 14px; color: #b9bcc0; }
+  .noSign { color: #6a6e73; font-size: 18px; padding: 6px 12px; }
+  .spellGap { width: 22px; }
+
+  .diktatResult {
+    margin-top: 18px; padding: 16px; border-radius: 10px;
+    border: 2px solid #4a4e53; background: #33363A;
+  }
+  .diktatResult.right { border-color: #3AA655; background: #1f3a28; }
+  .diktatResult.wrong { border-color: #C1121F; background: #3a1f22; }
+  .diktatVerdict {
+    margin: 0 0 12px; font-family: 'Barlow Semi Condensed', sans-serif;
+    font-weight: 700; font-size: 20px;
+  }
+  button:focus-visible, input:focus-visible { outline: 3px solid #F2C400; outline-offset: 2px; }
+  @media (prefers-reduced-motion: no-preference) {
+    .cell, .opt, .tabs button { transition: border-color .15s, background .15s, opacity .2s; }
+  }
+</style>
+</head>
+<body>
+  <header class="header">
+    <h1>Buchstabier-Trainer · DIN 5009</h1>
+    <p>Die neue deutsche Buchstabiertafel mit Städtenamen (2022)</p>
+  </header>
+
+  <nav class="tabs" aria-label="Modus">
+    <button data-tab="lernen" class="on">Lernen</button>
+    <button data-tab="quiz">Quiz</button>
+    <button data-tab="spell">Buchstabieren</button>
+    <button data-tab="diktat">Diktat</button>
+  </nav>
+
+  <main class="panel" id="panel"></main>
+
+<script>
+// ——— Daten ———
+const ALPHABET = [
+  ["A","Aachen"],["B","Berlin"],["C","Chemnitz"],["D","Düsseldorf"],
+  ["E","Essen"],["F","Frankfurt"],["G","Goslar"],["H","Hamburg"],
+  ["I","Ingelheim"],["J","Jena"],["K","Köln"],["L","Leipzig"],
+  ["M","München"],["N","Nürnberg"],["O","Offenbach"],["P","Potsdam"],
+  ["Q","Quickborn"],["R","Rostock"],["S","Salzwedel"],["T","Tübingen"],
+  ["U","Unna"],["V","Völklingen"],["W","Wuppertal"],["X","Xanten"],
+  ["Y","Ypsilon"],["Z","Zwickau"],
+];
+const SPECIAL = { "Ä":"Umlaut Aachen","Ö":"Umlaut Offenbach","Ü":"Umlaut Unna","ß":"Eszett" };
+const MAP = Object.fromEntries(ALPHABET);
+const DECOYS = {
+  A:["Augsburg","Ansbach","Aschaffenburg","Arnsberg"],
+  B:["Bremen","Bonn","Bochum","Bamberg"],
+  C:["Cottbus","Coburg","Celle","Cuxhaven"],
+  D:["Dortmund","Dresden","Duisburg","Darmstadt"],
+  E:["Erfurt","Erlangen","Emden","Eisenach"],
+  F:["Freiburg","Fulda","Flensburg","Fürth"],
+  G:["Gera","Gießen","Göttingen","Gütersloh"],
+  H:["Hannover","Heidelberg","Halle","Heilbronn"],
+  I:["Ingolstadt","Iserlohn","Itzehoe","Idstein"],
+  J:["Jülich","Jever","Jüterbog"],
+  K:["Kassel","Kiel","Koblenz","Karlsruhe"],
+  L:["Lübeck","Ludwigshafen","Lüneburg","Landshut"],
+  M:["Mainz","Mannheim","Magdeburg","Münster"],
+  N:["Neuss","Naumburg","Nordhausen","Neubrandenburg"],
+  O:["Offenburg","Oldenburg","Osnabrück","Oberhausen"],
+  P:["Passau","Paderborn","Pforzheim","Pirna"],
+  Q:["Quedlinburg","Querfurt","Quakenbrück"],
+  R:["Regensburg","Rosenheim","Recklinghausen","Ravensburg"],
+  S:["Stuttgart","Saarbrücken","Schwerin","Siegen"],
+  T:["Trier","Tuttlingen","Torgau","Troisdorf"],
+  U:["Ulm","Uelzen","Unterhaching"],
+  V:["Verden","Viersen","Villingen","Vechta"],
+  W:["Wiesbaden","Würzburg","Wolfsburg","Weimar"],
+  Z:["Zweibrücken","Zittau","Zeitz","Zwiesel"],
+};
+const DIKTAT_WORDS = [
+  "Apfel","Schule","Physik","Garten","Fenster","Wolke","Zucker",
+  "Jacke","Vogel","Quark","Yacht","Taxi","Mythos","Brücke",
+  "König","Müller","Bäcker","Straße","Größe","Jubel","Winter",
+  "Chemie","Dackel","Espresso","Nudel","Insel","Lampe","Regen",
+];
+
+// ——— Hilfsfunktionen ———
+function speak(text, rate = 0.95) {
+  try {
+    const synth = window.speechSynthesis;
+    if (!synth) return;
+    synth.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = "de-DE"; u.rate = rate;
+    const de = synth.getVoices().find(v => v.lang && v.lang.startsWith("de"));
+    if (de) u.voice = de;
+    synth.speak(u);
+  } catch (e) {}
+}
+if (window.speechSynthesis) window.speechSynthesis.getVoices();
+
+const shuffle = (arr) => {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+};
+const schild = (city, size = "md") => `<span class="schild ${size}">${city}</span>`;
+const spellChar = (ch) => {
+  if (ch === "ß") return SPECIAL["ß"];
+  const up = ch.toUpperCase();
+  return MAP[up] || SPECIAL[up] || null;
+};
+const spellWord = (word) => [...word].map(spellChar).filter(Boolean);
+
+function makeQuestion(direction) {
+  if (direction === "TF") {
+    const pool = ALPHABET.filter(([l]) => DECOYS[l]);
+    const [letter, city] = pool[Math.floor(Math.random() * pool.length)];
+    const isTrue = Math.random() < 0.5;
+    const shown = isTrue ? city : DECOYS[letter][Math.floor(Math.random() * DECOYS[letter].length)];
+    return { direction, letter, city, shown, isTrue };
+  }
+  const [letter, city] = ALPHABET[Math.floor(Math.random() * ALPHABET.length)];
+  const decoys = DECOYS[letter]
+    ? shuffle(DECOYS[letter]).slice(0, 3)
+    : shuffle(ALPHABET.filter(([l]) => l !== letter)).slice(0, 3).map(([, c]) => c);
+  return { direction, letter, city, options: shuffle([city, ...decoys]) };
+}
+
+// ——— Zustand ———
+const panel = document.getElementById("panel");
+let tab = "lernen";
+const quizState = { direction: "L2C", q: makeQuestion("L2C"), picked: null,
+  score: { right: 0, total: 0, streak: 0, best: 0 }, timer: null };
+const spellState = { word: "Eppstein" };
+const diktatState = { word: null, result: null, score: { right: 0, total: 0 } };
+
+// ——— Lernen ———
+function renderLernen() {
+  panel.innerHTML = `
+    <p class="hint">Tippe auf ein Schild, um es zu hören.</p>
+    <div class="grid">
+      ${ALPHABET.map(([l, c]) => `
+        <button class="cell" data-say="${l} wie ${c}" aria-label="${l} wie ${c}">
+          <span class="cellLetter">${l}</span>${schild(c, "sm")}
+        </button>`).join("")}
+    </div>
+    <div class="special">
+      <span class="specialLabel">Sonderzeichen</span>
+      ${Object.entries(SPECIAL).map(([ch, w]) => `
+        <button class="specialChip" data-say="${ch === "ß" ? "Eszett" : ch} wie ${w}"><b>${ch}</b> → ${w}</button>`).join("")}
+    </div>`;
+  panel.querySelectorAll("[data-say]").forEach(b =>
+    b.addEventListener("click", () => speak(b.dataset.say)));
+}
+
+// ——— Quiz ———
+function renderQuiz() {
+  const s = quizState, q = s.q;
+  const optBtns = s.direction === "L2C"
+    ? q.options.map(c => {
+        let cls = "opt";
+        if (s.picked !== null) {
+          if (c === q.city) cls += " correct";
+          else if (c === s.picked) cls += " wrong";
+          else cls += " faded";
+        }
+        return `<div class="optWrap">
+          <button class="${cls}" data-city="${c}" ${s.picked !== null ? "disabled" : ""}>${schild(c, "sm")}</button>
+          <button class="audioBtn" data-listen="${c}" aria-label="Aussprache anhören: ${c}" title="Anhören">🔊</button>
+        </div>`;
+      }).join("")
+    : ["true", "false"].map(v => {
+        const isT = v === "true";
+        let cls = "opt";
+        if (s.picked !== null) {
+          if (isT === q.isTrue) cls += " correct";
+          else if (s.picked === isT) cls += " wrong";
+          else cls += " faded";
+        }
+        return `<button class="${cls}" data-tf="${v}" ${s.picked !== null ? "disabled" : ""}>
+          <span class="optLetter tfBtn">${isT ? "✓ Richtig" : "✗ Falsch"}</span></button>`;
+      }).join("");
+
+  panel.innerHTML = `
+    <div class="quizTop">
+      <div class="dirToggle" role="tablist" aria-label="Quizmodus">
+        <button data-dir="L2C" class="${s.direction === "L2C" ? "on" : ""}">Buchstabe → Stadt</button>
+        <button data-dir="TF" class="${s.direction === "TF" ? "on" : ""}">Richtig / Falsch</button>
+      </div>
+      <div class="score">
+        <span>${s.score.right}/${s.score.total}</span>
+        <span class="streak" title="Serie">🔥 ${s.score.streak}</span>
+      </div>
+    </div>
+    <div class="prompt">
+      ${s.direction === "L2C"
+        ? `<span class="bigLetter">${q.letter}</span><span class="promptLabel">…wie?</span>`
+        : `<span class="tfClaim"><span class="bigLetter tfLetter">${q.letter}</span>
+           <span class="tfWie">wie</span>${schild(q.shown, "lg")}
+           <button class="audioBtn inline" data-listen="${q.letter}, wie ${q.shown}" aria-label="Aussprache anhören" title="Anhören">🔊</button></span>
+           <span class="promptLabel">Steht das so in der DIN 5009?</span>`}
+    </div>
+    <div class="options ${s.direction === "TF" ? "tfOptions" : ""}">${optBtns}</div>
+    ${s.direction === "TF" && s.picked !== null && !q.isTrue
+      ? `<p class="hint center">Richtig wäre: <b style="color:#F2C400">${q.letter} wie ${q.city}</b></p>` : ""}
+    ${s.score.best > 2 ? `<p class="hint center">Beste Serie: ${s.score.best}</p>` : ""}`;
+
+  panel.querySelectorAll("[data-listen]").forEach(b =>
+    b.addEventListener("click", (e) => {
+      e.stopPropagation();
+      speak(b.dataset.listen, 0.8);
+    }));
+
+  panel.querySelectorAll("[data-dir]").forEach(b =>
+    b.addEventListener("click", () => {
+      s.direction = b.dataset.dir;
+      if (s.timer) clearTimeout(s.timer);
+      s.picked = null;
+      s.q = makeQuestion(s.direction);
+      renderQuiz();
+    }));
+
+  const finish = (correct) => {
+    const streak = correct ? s.score.streak + 1 : 0;
+    s.score = { right: s.score.right + (correct ? 1 : 0), total: s.score.total + 1,
+      streak, best: Math.max(s.score.best, streak) };
+    speak(correct ? `Richtig! ${q.letter} wie ${q.city}` : `${q.letter} wie ${q.city}`);
+    s.timer = setTimeout(() => {
+      s.picked = null;
+      s.q = makeQuestion(s.direction);
+      if (tab === "quiz") renderQuiz();
+    }, 1800);
+    renderQuiz();
+  };
+  panel.querySelectorAll("[data-city]").forEach(b =>
+    b.addEventListener("click", () => {
+      if (s.picked !== null) return;
+      s.picked = b.dataset.city;
+      finish(b.dataset.city === q.city);
+    }));
+  panel.querySelectorAll("[data-tf]").forEach(b =>
+    b.addEventListener("click", () => {
+      if (s.picked !== null) return;
+      const said = b.dataset.tf === "true";
+      s.picked = said;
+      finish(said === q.isTrue);
+    }));
+}
+
+// ——— Buchstabieren ———
+function renderSpell() {
+  const parts = [...spellState.word].map((ch, i) => {
+    if (ch === " ") return `<span class="spellGap"></span>`;
+    const city = spellChar(ch);
+    return city
+      ? `<button class="spellItem" data-say="${city}">
+           <span class="spellCh">${ch.toUpperCase()}</span>${schild(city, "sm")}</button>`
+      : `<span class="spellItem unknown" title="Kein Eintrag in DIN 5009">
+           <span class="spellCh">${ch}</span><span class="noSign">—</span></span>`;
+  }).join("");
+
+  panel.innerHTML = `
+    <p class="hint">Gib ein Wort ein — es wird Schild für Schild buchstabiert.</p>
+    <div class="spellRow">
+      <input class="spellInput" id="spellInput" value="${spellState.word.replace(/"/g, "&quot;")}"
+        placeholder="z. B. Müller" maxlength="24" aria-label="Wort zum Buchstabieren">
+      <button class="playBtn" id="spellPlay">▶ Vorlesen</button>
+    </div>
+    <div class="spellOut" id="spellOut">${parts}</div>`;
+
+  const input = document.getElementById("spellInput");
+  input.addEventListener("input", () => {
+    spellState.word = input.value;
+    const pos = input.selectionStart;
+    renderSpell();
+    const ni = document.getElementById("spellInput");
+    ni.focus(); ni.setSelectionRange(pos, pos);
+  });
+  document.getElementById("spellPlay").addEventListener("click", () => {
+    const seq = spellWord(spellState.word).join(", ");
+    if (seq) speak(seq, 0.9);
+  });
+  panel.querySelectorAll(".spellOut [data-say]").forEach(b =>
+    b.addEventListener("click", () => speak(b.dataset.say)));
+}
+
+// ——— Diktat ———
+function speakDiktat() {
+  if (diktatState.word) speak(spellWord(diktatState.word).join(", ... "), 0.85);
+}
+function renderDiktat() {
+  const d = diktatState;
+  panel.innerHTML = `
+    <p class="hint">Ich buchstabiere dir ein Wort mit Städtenamen — tippe, was du gehört hast.</p>
+    <div class="quizTop">
+      <div class="spellRow" style="margin-bottom:0">
+        <button class="playBtn" id="dNew">🎲 Neues Wort</button>
+        ${d.word ? `<button class="playBtn" id="dRepeat">↻ Nochmal hören</button>` : ""}
+      </div>
+      <div class="score"><span>${d.score.right}/${d.score.total}</span></div>
+    </div>
+    ${d.word ? `
+      <div style="margin-top:20px">
+        <div class="spellRow">
+          <input class="spellInput" id="dGuess" placeholder="Gehörtes Wort…"
+            ${d.result !== null ? "disabled" : ""} aria-label="Gehörtes Wort eingeben">
+          <button class="playBtn" id="dCheck" ${d.result !== null ? "disabled" : ""}>Prüfen</button>
+        </div>
+        <div id="dResult"></div>
+      </div>`
+    : `<p class="hint center" style="margin-top:30px">Drücke „Neues Wort", um zu starten. Lautsprecher an! 🔊</p>`}`;
+
+  document.getElementById("dNew").addEventListener("click", () => {
+    let w = DIKTAT_WORDS[Math.floor(Math.random() * DIKTAT_WORDS.length)];
+    while (d.word && w === d.word) w = DIKTAT_WORDS[Math.floor(Math.random() * DIKTAT_WORDS.length)];
+    d.word = w; d.result = null;
+    renderDiktat();
+    speakDiktat();
+    const g = document.getElementById("dGuess");
+    if (g) g.focus();
+  });
+  const rep = document.getElementById("dRepeat");
+  if (rep) rep.addEventListener("click", speakDiktat);
+
+  const guess = document.getElementById("dGuess");
+  const checkBtn = document.getElementById("dCheck");
+  if (guess && checkBtn) {
+    const check = () => {
+      if (d.result !== null || !guess.value.trim()) return;
+      const right = guess.value.trim().toLowerCase() === d.word.trim().toLowerCase();
+      d.result = right ? "right" : "wrong";
+      d.score = { right: d.score.right + (right ? 1 : 0), total: d.score.total + 1 };
+      speak(right ? "Richtig!" : `Leider falsch. Das Wort war ${d.word}.`);
+      guess.disabled = true; checkBtn.disabled = true;
+      const signs = [...d.word].map(ch => {
+        const city = spellChar(ch);
+        return city ? `<span class="spellItem"><span class="spellCh">${ch.toUpperCase()}</span>${schild(city, "sm")}</span>` : "";
+      }).join("");
+      document.getElementById("dResult").innerHTML = `
+        <div class="diktatResult ${d.result}">
+          <p class="diktatVerdict">${right ? "✓ Richtig!" : "✗ Das Wort war:"}</p>
+          <div class="spellOut">${signs}</div>
+          <button class="playBtn" style="margin-top:14px" id="dNext">Nächstes Wort →</button>
+        </div>`;
+      document.getElementById("dNext").addEventListener("click", () =>
+        document.getElementById("dNew").click());
+      document.querySelector(".score span").textContent = `${d.score.right}/${d.score.total}`;
+    };
+    checkBtn.addEventListener("click", check);
+    guess.addEventListener("keydown", e => { if (e.key === "Enter") check(); });
+  }
+}
+
+// ——— Tabs ———
+const renderers = { lernen: renderLernen, quiz: renderQuiz, spell: renderSpell, diktat: renderDiktat };
+document.querySelectorAll(".tabs [data-tab]").forEach(b =>
+  b.addEventListener("click", () => {
+    tab = b.dataset.tab;
+    document.querySelectorAll(".tabs [data-tab]").forEach(x =>
+      x.classList.toggle("on", x === b));
+    if (quizState.timer) { clearTimeout(quizState.timer); quizState.timer = null; quizState.picked = null; }
+    renderers[tab]();
+  }));
+renderLernen();
+</script>
+</body>
+</html>
