@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eifelbahn · Trier → Köln · Elevation Profile</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --ink:#1d2a26; --forest:#2e5546; --moss:#7fa08c; --paper:#eef0e9;
+    --card:#f7f8f3; --signal:#c8402e; --amber:#d9932c; --line:#3c4a45;
+    --disp:'Barlow Condensed', 'Arial Narrow', sans-serif;
+    --body:'IBM Plex Sans', system-ui, sans-serif;
+  }
+  *{box-sizing:border-box; margin:0}
+  body{background:var(--paper); color:var(--ink); font-family:var(--body); padding-bottom:40px}
+  header{background:var(--forest); color:var(--paper); padding:22px 20px 18px; border-bottom:4px solid var(--signal)}
+  .wrap{max-width:980px; margin:0 auto}
+  .kicker{font-family:var(--disp); font-weight:500; letter-spacing:.22em; text-transform:uppercase; font-size:13px; color:var(--moss)}
+  h1{font-family:var(--disp); font-weight:700; font-size:clamp(34px,7vw,56px); line-height:1.02; margin:4px 0 6px; text-transform:uppercase}
+  h1 .arrow{color:var(--amber)}
+  .sub{font-size:14px; color:#cfd8cd; max-width:560px}
+  main{max-width:980px; margin:0 auto; padding:18px 12px 0}
+  .geo-bar{display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin-bottom:12px}
+  #geoBtn{font-family:var(--disp); font-weight:700; font-size:17px; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--paper); background:var(--forest); border:none; border-radius:8px; padding:10px 18px; cursor:pointer}
+  #geoBtn.live{background:var(--signal)}
+  #geoMsg{font-size:13.5px; color:var(--line); flex:1 1 240px}
+  #geoMsg strong{color:var(--signal)}
+  #geoMsg.err{color:var(--signal)}
+  .chart-box{background:var(--card); border:1px solid rgba(127,160,140,.35); border-radius:10px; padding:10px 6px 4px; overflow:hidden}
+  svg{width:100%; height:auto; display:block; touch-action:manipulation}
+  .detail{margin-top:12px; background:var(--forest); color:var(--paper); border-radius:10px; padding:16px 18px;
+    display:flex; flex-wrap:wrap; gap:8px 24px; align-items:baseline}
+  .detail .name{font-family:var(--disp); font-weight:700; font-size:30px; text-transform:uppercase; line-height:1}
+  .detail .note{font-size:13.5px; color:#cfd8cd; margin-top:4px}
+  .detail .who{flex:1 1 220px; min-width:200px}
+  .stat .lab{font-family:var(--disp); font-weight:500; font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:#9db5a5}
+  .stat .val{font-family:var(--disp); font-weight:700; font-size:24px; color:var(--paper); line-height:1.1}
+  .stat .val.amber{color:var(--amber)}
+  .list-head{font-family:var(--disp); font-weight:600; letter-spacing:.18em; text-transform:uppercase; font-size:12.5px; color:var(--line); margin:16px 0 8px}
+  .leg{display:flex; align-items:center; gap:8px; padding:1px 8px 1px 20px}
+  .leg .rail{border-left:2px dotted var(--moss); height:16px}
+  .leg .txt{font-family:var(--disp); font-weight:600; font-size:13px; color:var(--moss); letter-spacing:.05em}
+  .row{display:grid; grid-template-columns:minmax(120px,180px) 1fr 58px; align-items:center; gap:10px; width:100%;
+    border:none; background:transparent; border-radius:6px; padding:5px 8px; cursor:pointer; text-align:left; font-family:var(--body)}
+  .row.active{background:#e3e7db}
+  .row .nm{font-size:13.5px; color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  .row.active .nm{font-weight:600}
+  .row .bar{height:10px; border-radius:5px; background:#dde1d4; overflow:hidden}
+  .row .fill{display:block; height:100%; border-radius:5px; background:var(--forest); transition:width .7s ease}
+  .row.active .fill{background:var(--signal)}
+  .row .fill.summit{background:var(--amber)!important}
+  .row .m{font-family:var(--disp); font-weight:600; font-size:15px; color:var(--line); text-align:right}
+  .row .m.summit{color:var(--amber)}
+  .foot{font-size:12px; color:rgba(60,74,69,.67); margin-top:10px}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <div class="kicker">Eifelbahn · KBS 474 · not electrified</div>
+  <h1>Trier <span class="arrow">⟶</span> Köln</h1>
+  <div class="sub">164 km over the Eifel watershed. The line climbs ~420 m out of the Kyll valley to its
+  summit near Schmidtheim (~550 m), then falls ~500 m to the Rhine. Elevations approximate.</div>
+</div></header>
+
+<main>
+  <div class="geo-bar">
+    <button id="geoBtn">◎ Find me on the line</button>
+    <div id="geoMsg">Uses your phone's GPS to place you on the elevation profile.</div>
+  </div>
+  <div class="chart-box"><svg id="chart" role="img" aria-label="Elevation profile of stations from Trier to Köln"></svg></div>
+  <div class="detail" id="detail"></div>
+  <div class="list-head">All stops · tap to inspect</div>
+  <div id="list"></div>
+  <div class="foot">Distances are along the railway line — footpaths between stations will usually be somewhat
+  longer. Walking times use ~4 km/h plus 1 min per 10 m of ascent (Naismith's rule). Elevations, km points and
+  coordinates are approximate; the GPS marker snaps to straight lines between stations, so mid-leg readings can
+  be off by 1–2 km in winding valley sections.</div>
+</main>
+
+<script>
+"use strict";
+// name, km, alt(m), lat, lng, note
+const S = [
+["Trier Hbf",0,136,49.7566,6.6512,"Start in the Mosel valley"],
+["Trier-Pfalzel",4,128,49.786,6.685,"Small halt by the Mosel"],
+["Trier-Ehrang",7,127,49.8039,6.6867,"Junction; the line turns into the Kyll valley"],
+["Kordel",14,155,49.833,6.643,"Wooded sandstone cliffs of the lower Kyll"],
+["Daufenbach",18,175,49.855,6.626,"Quiet Kyll valley halt"],
+["Auw an der Kyll",22,195,49.876,6.63,"Village halt on the river"],
+["Speicher",25,210,49.888,6.618,"Climbing steadily along the Kyll"],
+["Hüttingen",29,228,49.915,6.6,"Small halt below the village"],
+["Bitburg-Erdorf",33,245,49.988,6.577,"Bus link up to Bitburg"],
+["Kyllburg",40,280,50.0386,6.5946,"Tunnel under the town spur"],
+["St. Thomas",44,295,50.058,6.607,"Halt by the old abbey"],
+["Usch/Zendscheid",47,305,50.077,6.603,"Request stop between two villages"],
+["Densborn",50,320,50.104,6.611,"Quiet mid-valley halt"],
+["Mürlenbach",55,340,50.148,6.587,"Below Bertrada castle"],
+["Birresborn",60,360,50.18,6.633,"Mineral springs country"],
+["Gerolstein",68,386,50.2218,6.6587,"Operational heart of the line; Vulkaneifel"],
+["Bewingen",72,398,50.2582,6.6714,"Small halt in the upper Kyll valley"],
+["Oberbettingen-Hillesheim",78,420,50.2903,6.6446,"Upper Kyll valley"],
+["Lissendorf",83,440,50.3186,6.6062,"Approaching the watershed"],
+["Jünkerath",87,455,50.3419,6.5786,"Former railway town"],
+["Dahlem",90,520,50.3838,6.5498,"High plateau village on the final climb"],
+["Schmidtheim",94,547,50.4033,6.5296,"Summit of the line — ~550 m watershed"],
+["Blankenheim (Wald)",100,493,50.446,6.617,"Downhill begins; Ahr source nearby"],
+["Nettersheim",107,430,50.4924,6.6266,"Urft valley, Roman aqueduct country"],
+["Urft (Steinfeld)",111,400,50.517,6.593,"Near Kloster Steinfeld"],
+["Kall",116,315,50.5449,6.5504,"Gateway to the Eifel National Park"],
+["Mechernich",123,290,50.5966,6.6511,"Old lead-mining town"],
+["Satzvey",128,215,50.6096,6.6896,"Known for its moated castle"],
+["Euskirchen",135,160,50.6596,6.7791,"Junction; out of the hills"],
+["Großbüllesheim",139,152,50.6867,6.7902,"Flat farmland halt"],
+["Weilerswist-Derkum",141,130,50.7092,6.801,"Small halt before Weilerswist"],
+["Weilerswist",143,115,50.7519,6.8408,"Erft lowlands"],
+["Erftstadt",149,95,50.8065,6.8286,"Flat run toward the Rhine plain"],
+["Brühl-Kierberg",154,90,50.8296,6.8879,"Skirting the Ville ridge"],
+["Hürth-Kalscheuren",158,62,50.8747,6.9184,"Joins the Left Rhine line"],
+["Köln Süd",161,55,50.9218,6.9337,"Inner-city station"],
+["Köln West",162.5,50,50.9358,6.937,"On the inner ring"],
+["Köln Hbf",164,45,50.9432,6.9587,"Rhine valley — journey's end"]
+].map(a=>({name:a[0],km:a[1],alt:a[2],lat:a[3],lng:a[4],note:a[5]}));
+
+const SUMMIT = S.reduce((a,b)=>b.alt>a.alt?b:a);
+const MAXKM = S[S.length-1].km, MINA=0, MAXA=600;
+const W=1200,H=520,PL=52,PR=24,PT=150,PB=34;
+const X=k=>PL+(k/MAXKM)*(W-PL-PR);
+const Y=a=>H-PB-((a-MINA)/(MAXA-MINA))*(H-PT-PB);
+const NS="http://www.w3.org/2000/svg";
+const el=(t,at)=>{const e=document.createElementNS(NS,t);for(const k in at)e.setAttribute(k,at[k]);return e};
+const css=getComputedStyle(document.documentElement);
+const col=v=>css.getPropertyValue(v).trim();
+
+let selected=21; // Schmidtheim
+let geo={status:"idle"}, watchId=null;
+
+// ── chart ──
+const svg=document.getElementById("chart");
+svg.setAttribute("viewBox",`0 0 ${W} ${H}`);
+function walkMin(d,dAlt){return Math.round(d/4*60+Math.max(0,dAlt)/10)}
+
+function drawChart(){
+  svg.innerHTML="";
+  const defs=el("defs",{});
+  defs.innerHTML=`<linearGradient id="hill" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="${col('--forest')}" stop-opacity="0.75"/>
+    <stop offset="100%" stop-color="${col('--moss')}" stop-opacity="0.15"/></linearGradient>`;
+  svg.appendChild(defs);
+  for(const a of [0,100,200,300,400,500,600]){
+    svg.appendChild(el("line",{x1:PL,x2:W-PR,y1:Y(a),y2:Y(a),stroke:col('--line'),"stroke-opacity":.14,"stroke-dasharray":"3 5"}));
+    const t=el("text",{x:PL-8,y:Y(a)+4,"text-anchor":"end","font-size":13,fill:col('--line'),"fill-opacity":.7,"font-family":"Barlow Condensed, Arial Narrow, sans-serif"});
+    t.textContent=a+" m"; svg.appendChild(t);
+  }
+  for(const k of [0,40,80,120,160]){
+    const t=el("text",{x:X(k),y:H-10,"text-anchor":"middle","font-size":13,fill:col('--line'),"fill-opacity":.7,"font-family":"Barlow Condensed, Arial Narrow, sans-serif"});
+    t.textContent="km "+k; svg.appendChild(t);
+  }
+  const line=S.map((s,i)=>`${i?"L":"M"} ${X(s.km).toFixed(1)} ${Y(s.alt).toFixed(1)}`).join(" ");
+  svg.appendChild(el("path",{d:`${line} L ${X(MAXKM)} ${Y(0)} L ${X(0)} ${Y(0)} Z`,fill:"url(#hill)"}));
+  svg.appendChild(el("path",{d:line,fill:"none",stroke:col('--forest'),"stroke-width":3,"stroke-linejoin":"round"}));
+  S.forEach((s,i)=>{
+    const isSel=i===selected, isSum=s===SUMMIT;
+    const t=el("text",{transform:`translate(${X(s.km)}, ${Y(s.alt)-14}) rotate(-62)`,"text-anchor":"start",
+      "font-size":isSel?15.5:13.5,"font-weight":(isSel||isSum)?700:600,
+      fill:isSel?col('--signal'):(isSum?col('--amber'):col('--line')),
+      "font-family":"Barlow Condensed, Arial Narrow, sans-serif","letter-spacing":"0.04em",style:"cursor:pointer;user-select:none"});
+    t.textContent=s.name+(isSum?" ▲":""); t.addEventListener("click",()=>select(i)); svg.appendChild(t);
+    svg.appendChild(el("line",{x1:X(s.km),x2:X(s.km),y1:Y(s.alt)-4,y2:Y(s.alt)-11,stroke:col('--line'),"stroke-opacity":.4,"stroke-width":1.5}));
+  });
+  const sel=S[selected];
+  svg.appendChild(el("line",{x1:X(sel.km),x2:X(sel.km),y1:Y(sel.alt),y2:Y(0),stroke:col('--signal'),"stroke-width":1.5,"stroke-dasharray":"4 4"}));
+  if(geo.status==="live"){
+    const gx=X(Math.max(0,Math.min(MAXKM,geo.km))), gy=Y(geo.alt);
+    const g=el("g",{transform:`translate(${gx}, ${gy})`});
+    g.appendChild(el("line",{y1:0,y2:Y(0)-gy,stroke:col('--signal'),"stroke-width":2}));
+    const pulse=el("circle",{r:14,fill:col('--signal'),"fill-opacity":.18});
+    const an=el("animate",{attributeName:"r",values:"10;20;10",dur:"2s",repeatCount:"indefinite"});
+    pulse.appendChild(an); g.appendChild(pulse);
+    g.appendChild(el("circle",{r:7,fill:col('--signal'),stroke:col('--paper'),"stroke-width":2.5}));
+    const yt=el("text",{y:-16,"text-anchor":"middle","font-size":17,"font-weight":700,fill:col('--signal'),
+      "font-family":"Barlow Condensed, Arial Narrow, sans-serif","letter-spacing":"0.08em"});
+    yt.textContent="YOU"; g.appendChild(yt); svg.appendChild(g);
+  }
+  S.forEach((s,i)=>{
+    const g=el("g",{style:"cursor:pointer"});
+    const hit=el("circle",{cx:X(s.km),cy:Y(s.alt),r:16,fill:"transparent"});
+    const dot=el("circle",{cx:X(s.km),cy:Y(s.alt),r:i===selected?8:5,
+      fill:i===selected?col('--signal'):col('--card'),
+      stroke:i===selected?col('--signal'):col('--forest'),"stroke-width":2.5});
+    g.appendChild(hit); g.appendChild(dot);
+    g.addEventListener("click",()=>select(i)); svg.appendChild(g);
+  });
+}
+
+// ── detail card ──
+function stat(lab,val,amber){return `<div class="stat"><div class="lab">${lab}</div><div class="val${amber?' amber':''}">${val}</div></div>`}
+function drawDetail(){
+  const s=S[selected], p=selected>0?S[selected-1]:null;
+  let h=`<div class="who"><div class="name">${s.name}</div><div class="note">${s.note}</div></div>`;
+  h+=stat("Elevation",`≈ ${s.alt} m`,s===SUMMIT);
+  h+=stat("From Trier",`km ${s.km}`);
+  h+=stat("vs. Trier Hbf",`${s.alt-S[0].alt>=0?"+":""}${s.alt-S[0].alt} m`);
+  if(p){
+    const dk=s.km-p.km, grad=((s.alt-p.alt)/(dk*1000)*1000).toFixed(1);
+    h+=stat(`Walk from ${p.name.split(" ")[0]}`,`${dk.toFixed(1)} km · ≈ ${walkMin(dk,s.alt-p.alt)} min`);
+    h+=stat(`Since ${p.name.split(" ")[0]}`,`${grad>0?"▲":"▼"} ${Math.abs(grad)} ‰`);
+  }
+  document.getElementById("detail").innerHTML=h;
+}
+
+// ── list ──
+function drawList(){
+  const box=document.getElementById("list"); box.innerHTML="";
+  S.forEach((s,i)=>{
+    if(i>0){
+      const p=S[i-1], dk=s.km-p.km, da=s.alt-p.alt;
+      const d=document.createElement("div"); d.className="leg";
+      d.innerHTML=`<span class="rail"></span><span class="txt">${dk.toFixed(1)} km · ≈ ${walkMin(dk,da)} min walk · ${da>=0?"▲":"▼"} ${Math.abs(da)} m</span>`;
+      box.appendChild(d);
+    }
+    const b=document.createElement("button");
+    b.className="row"+(i===selected?" active":"");
+    const isSum=s===SUMMIT;
+    b.innerHTML=`<span class="nm">${s.name}</span>
+      <span class="bar"><span class="fill${isSum?' summit':''}" style="width:${(s.alt-MINA)/(MAXA-MINA)*100}%"></span></span>
+      <span class="m${isSum?' summit':''}">${s.alt} m</span>`;
+    b.addEventListener("click",()=>select(i));
+    box.appendChild(b);
+  });
+}
+
+function select(i){selected=i; drawChart(); drawDetail(); drawList();}
+
+// ── GPS ──
+function locate(lat,lng){
+  const R=111.32, toXY=(la,lo)=>[lo*R*Math.cos(la*Math.PI/180), la*R];
+  const P=toXY(lat,lng); let best=null;
+  for(let i=0;i<S.length-1;i++){
+    const A=toXY(S[i].lat,S[i].lng), B=toXY(S[i+1].lat,S[i+1].lng);
+    const ax=B[0]-A[0], ay=B[1]-A[1], l2=ax*ax+ay*ay||1e-9;
+    let t=((P[0]-A[0])*ax+(P[1]-A[1])*ay)/l2; t=Math.max(0,Math.min(1,t));
+    const d=Math.hypot(P[0]-(A[0]+t*ax), P[1]-(A[1]+t*ay));
+    if(!best||d<best.d) best={d, km:S[i].km+t*(S[i+1].km-S[i].km), alt:S[i].alt+t*(S[i+1].alt-S[i].alt), a:i, b:i+1};
+  }
+  return best;
+}
+const btn=document.getElementById("geoBtn"), msg=document.getElementById("geoMsg");
+btn.addEventListener("click",()=>{
+  if(geo.status==="live"||geo.status==="locating"){
+    if(watchId!==null) navigator.geolocation.clearWatch(watchId);
+    watchId=null; geo={status:"idle"};
+    btn.classList.remove("live"); btn.textContent="◎ Find me on the line";
+    msg.className=""; msg.textContent="Uses your phone's GPS to place you on the elevation profile.";
+    drawChart(); return;
+  }
+  if(!navigator.geolocation){msg.className="err"; msg.textContent="Geolocation isn't available in this browser."; return;}
+  btn.textContent="Locating…"; msg.className=""; msg.textContent="Waiting for a GPS fix…";
+  watchId=navigator.geolocation.watchPosition(pos=>{
+    geo={status:"live",...locate(pos.coords.latitude,pos.coords.longitude)};
+    btn.classList.add("live"); btn.textContent="◉ Live — stop";
+    msg.className="";
+    msg.innerHTML=`<strong>km ${geo.km.toFixed(1)} · ≈ ${Math.round(geo.alt)} m</strong> — between ${S[geo.a].name} and ${S[geo.b].name}`+
+      (geo.d>3?` (heads up: you're ~${geo.d.toFixed(0)} km off the line itself)`:"");
+    drawChart();
+  },err=>{
+    geo={status:"error"}; btn.textContent="◎ Find me on the line"; btn.classList.remove("live");
+    msg.className="err";
+    msg.textContent=err.code===1
+      ?"Location permission was denied. Allow location access for this page and try again."
+      :"Couldn't get a GPS fix. Try again with a clearer view of the sky.";
+  },{enableHighAccuracy:true,maximumAge:5000,timeout:15000});
+});
+
+drawChart(); drawDetail(); drawList();
+</script>
+</body>
+</html>
