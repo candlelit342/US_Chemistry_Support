@@ -322,6 +322,22 @@
     letter-spacing:0.5px;margin-top:10px;
   }
   .card button:hover{filter:brightness(1.08);}
+  .next-btn{
+    font-family:'Architects Daughter',cursive;
+    background:#d43b3b;
+    border:2.2px solid var(--ink);color:#fff;font-weight:700;
+    padding:10px 26px;border-radius: 10px 16px 9px 17px / 14px 9px 17px 10px;
+    cursor:pointer;font-size:15px;
+    box-shadow: 3px 3px 0 rgba(30,30,30,.85);
+    letter-spacing:0.5px;margin-top:14px;
+    display:inline-block;text-decoration:none;
+  }
+  .next-btn:hover{filter:brightness(1.08);}
+  .back-link{
+    display:block;margin-top:12px;font-family:'Architects Daughter',cursive;
+    font-size:13px;color:var(--ink-soft);text-decoration:underline;cursor:pointer;
+  }
+  .back-link:hover{color:var(--ink);}
   .toggle-row{
     display:flex;align-items:center;gap:8px;justify-content:center;
     font-size:13px;color:var(--ink-soft);margin-top:14px;cursor:pointer;
@@ -403,6 +419,9 @@
     <div class="final-score" id="finalScore">0</div>
     <p id="finalTime"></p>
     <button id="restartBtn">Play Again</button>
+    <br>
+    <a class="next-btn" href="period-5-drop.html">Next Game: Period 5 →</a>
+    <a class="back-link" href="period-2-drop.html">Start at Period 2 again</a>
   </div>
 </div>
 

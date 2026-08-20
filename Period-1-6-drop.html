@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Period 3 Drop — Periodic Table Tetris</title>
+<title>Random Element Drop! Periods 1–6 Edition — Periodic Table Tetris</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
@@ -133,7 +133,7 @@
     z-index:1;
     display:grid;
     grid-template-columns:repeat(18,1fr);
-    grid-template-rows:20px repeat(7,44px) 20px;
+    grid-template-rows:20px repeat(6,44px) 20px;
     gap:4px;
     width:min(96vw,920px);
   }
@@ -173,11 +173,6 @@
     filter:url(#sketchy);
   }
   .cell > span{ position:relative; z-index:1; }
-  .cell.context{
-    opacity:.85;
-    filter:saturate(.65) brightness(1.05);
-    font-size:19px;
-  }
   .target-cell{
     background:#fff;
     color:#adb5bd;
@@ -194,6 +189,14 @@
   .target-cell.filled::before{
     border-style:solid;
     border-color:var(--ink);
+  }
+  /* "Remove all scaffolding! The expert level!" mode: every box that hasn't
+     been solved yet is fully hidden — not even an outline shows — leaving a
+     completely blank sheet apart from elements already placed correctly.
+     visibility (not display) is used so the grid keeps its layout and
+     column/row measurements stay correct even while a cell is invisible. */
+  .target-cell.hidden-cell{
+    visibility:hidden;
   }
   @keyframes pop{
     0%{transform:scale(0.5);}
@@ -338,12 +341,6 @@
     font-size:13px;color:var(--ink-soft);text-decoration:underline;cursor:pointer;
   }
   .back-link:hover{color:var(--ink);}
-  .toggle-row{
-    display:flex;align-items:center;gap:8px;justify-content:center;
-    font-size:13px;color:var(--ink-soft);margin-top:14px;cursor:pointer;
-    text-align:left;
-  }
-  .toggle-row input{width:16px;height:16px;cursor:pointer;flex-shrink:0;accent-color:var(--accent);}
   .final-score{font-size:32px;color:var(--accent);font-weight:800;margin:6px 0;font-family:'Architects Daughter',cursive;}
 </style>
 </head>
@@ -357,13 +354,13 @@
 
 <div class="wrap">
   <header>
-    <h1>Period 3 Drop</h1>
-    <div class="subtitle">A Periodic Table Challenge</div>
+    <h1>Random Element Drop! Periods 1–6 Edition</h1>
+    <div class="subtitle">A Periodic Table Challenge — all 72 elements across Periods 1–6 fall in random order, anywhere on the table</div>
     <div class="hud">
       <div>Score: <span id="score">0</span><span id="multiplierBadge" class="badge" hidden>×1</span></div>
       <div>Element Timer: <span id="elTimer">0.0s</span></div>
       <div>Total Time: <span id="totalTimer">00:00</span></div>
-      <div>Remaining: <span id="remaining">8</span></div>
+      <div>Remaining: <span id="remaining">72</span></div>
     </div>
     <div class="support-bar">
       <label class="switch-row" id="noColorRow">
@@ -376,6 +373,10 @@
       </label>
       <label class="switch-row">
         <input type="checkbox" id="comboToggle">
+        No colours &amp; no help hints <span class="mult">×4</span>
+      </label>
+      <label class="switch-row" id="removeAllRow">
+        <input type="checkbox" id="removeAllToggle">
         Remove all scaffolding! The expert level! <span class="mult">×6</span>
       </label>
       <div class="current-mult">Score multiplier: <span id="multiplierValue">×1</span></div>
@@ -387,40 +388,44 @@
   <div class="current-guide" id="guideText">Guide the block into place.</div>
 
   <div class="game-area" id="gameArea">
-    <div class="bg-text" id="bgText">SODIUM</div>
+    <div class="bg-text" id="bgText">PERIODS 1–6</div>
     <div class="table-grid" id="tableGrid"></div>
   </div>
 
   <div class="instructions">
     <kbd>&larr;</kbd> <kbd>&rarr;</kbd> move the block &nbsp;•&nbsp; <kbd>&darr;</kbd> drop instantly &nbsp;•&nbsp;
-    Land each Period 3 element in its correct box on the Period 3 row before it falls past it. Faster + correct = more points!
+    Every one of the 72 elements across Periods 1–6 can fall next, in completely random order and from anywhere on the table —
+    no working through Period 1, 2, 3... in sequence. Faster + correct = more points!
   </div>
 </div>
 
 <div class="overlay" id="startOverlay">
   <div class="card">
-    <h2>Period 3 Drop</h2>
-    <p>Eight mystery blocks — <b>Na</b> through <b>Ar</b> — will fall one at a time, in random order.
-    Use the arrow keys to steer each block sideways along the periodic table above,
-    and land it in its correct box on the Period 3 row before it falls past it into Period 4.</p>
-    <p>Correct placements score more points the faster you find them. Wrong placements cost points
-    and send the block back up for another try.</p>
+    <h2>Random Element Drop! Periods 1–6 Edition</h2>
+    <p>Built for students who already know Periods 1 through 6: instead of working through Period 1,
+    Period 2, Period 3 and so on in order, all <b>72 elements</b> across every one of the six
+    periods are shuffled together into one pile and fall one at a time in completely random order.</p>
+    <p>Use the arrow keys to steer each falling block sideways and land it in its correct box before it
+    reaches the bottom of its row. The block's landing row is fixed automatically by which element it is —
+    the only guess you have to make is the column. Correct placements score more points the faster you find
+    them; wrong placements cost points and send the block back up for another try.</p>
     <p>Use the switches above the board any time — even mid-game — to build your own challenge:
     hide the category colours for double points, hide the ghost-letter hints for triple points,
-    or tick "Remove all scaffolding! The expert level!" for a flat six times the points
-    (the same effect as ticking both individually, but in one click).</p>
+    or tick the combined switch for a flat four times the points. For the ultimate challenge, tick
+    <b>"Remove all scaffolding! The expert level!"</b>: every box on the entire table is hidden completely
+    (not even an outline) until you solve it — a true blank sheet, with boxes only appearing as you place
+    them correctly. This is worth a flat six times the points, and stacks with the other switches.</p>
     <button id="startBtn">Start Game</button>
   </div>
 </div>
 
 <div class="overlay" id="endOverlay" hidden>
   <div class="card">
-    <h2>Period 3 Complete!</h2>
+    <h2>You've Conquered Periods 1–6!</h2>
     <div class="final-score" id="finalScore">0</div>
     <p id="finalTime"></p>
     <button id="restartBtn">Play Again</button>
     <br>
-    <a class="next-btn" href="period-4-drop.html">Next Game: Period 4 →</a>
     <a class="back-link" href="period-2-drop.html">Start at Period 2 again</a>
   </div>
 </div>
@@ -429,72 +434,97 @@
 (function(){
   "use strict";
   const COLS = 18;
-  const ROWS = 7;
   const EXTRA_LIFT = 100; // raises the spawn point ~2 row-heights higher for more reaction time
   const ROMAN_LABELS = ['I','II','3','4','5','6','7','8','9','10','11','12','III','IV','V','VI','VII','0']; // historical group numbering, shown above the table
 
-  // Context elements: periods 1, 2, 4, 5, 6, 7 (decorative, non-interactive).
-  // Period 3 is left blank — that's the row the player fills in.
-  const context = [
-    {p:1,g:1,s:'H', z:1,cat:'nonmetal'}, {p:1,g:18,s:'He', z:2,cat:'noble'},
+  // No decorative context — every one of the 72 elements is a box the
+  // player fills in, in random order rather than period by period.
+  const context = [];
 
-    {p:2,g:1,s:'Li', z:3,cat:'alkali'}, {p:2,g:2,s:'Be', z:4,cat:'alkaline'},
-    {p:2,g:13,s:'B', z:5,cat:'metalloid'}, {p:2,g:14,s:'C', z:6,cat:'nonmetal'},
-    {p:2,g:15,s:'N', z:7,cat:'nonmetal'}, {p:2,g:16,s:'O', z:8,cat:'nonmetal'},
-    {p:2,g:17,s:'F', z:9,cat:'halogen'}, {p:2,g:18,s:'Ne', z:10,cat:'noble'},
-
-    {p:4,g:1,s:'K', z:19,cat:'alkali'}, {p:4,g:2,s:'Ca', z:20,cat:'alkaline'},
-    {p:4,g:3,s:'Sc', z:21,cat:'transition'}, {p:4,g:4,s:'Ti', z:22,cat:'transition'},
-    {p:4,g:5,s:'V', z:23,cat:'transition'}, {p:4,g:6,s:'Cr', z:24,cat:'transition'},
-    {p:4,g:7,s:'Mn', z:25,cat:'transition'}, {p:4,g:8,s:'Fe', z:26,cat:'transition'},
-    {p:4,g:9,s:'Co', z:27,cat:'transition'}, {p:4,g:10,s:'Ni', z:28,cat:'transition'},
-    {p:4,g:11,s:'Cu', z:29,cat:'transition'}, {p:4,g:12,s:'Zn', z:30,cat:'transition'},
-    {p:4,g:13,s:'Ga', z:31,cat:'posttrans'}, {p:4,g:14,s:'Ge', z:32,cat:'metalloid'},
-    {p:4,g:15,s:'As', z:33,cat:'metalloid'}, {p:4,g:16,s:'Se', z:34,cat:'nonmetal'},
-    {p:4,g:17,s:'Br', z:35,cat:'halogen'}, {p:4,g:18,s:'Kr', z:36,cat:'noble'},
-
-    {p:5,g:1,s:'Rb', z:37,cat:'alkali'}, {p:5,g:2,s:'Sr', z:38,cat:'alkaline'},
-    {p:5,g:3,s:'Y', z:39,cat:'transition'}, {p:5,g:4,s:'Zr', z:40,cat:'transition'},
-    {p:5,g:5,s:'Nb', z:41,cat:'transition'}, {p:5,g:6,s:'Mo', z:42,cat:'transition'},
-    {p:5,g:7,s:'Tc', z:43,cat:'transition'}, {p:5,g:8,s:'Ru', z:44,cat:'transition'},
-    {p:5,g:9,s:'Rh', z:45,cat:'transition'}, {p:5,g:10,s:'Pd', z:46,cat:'transition'},
-    {p:5,g:11,s:'Ag', z:47,cat:'transition'}, {p:5,g:12,s:'Cd', z:48,cat:'transition'},
-    {p:5,g:13,s:'In', z:49,cat:'posttrans'}, {p:5,g:14,s:'Sn', z:50,cat:'posttrans'},
-    {p:5,g:15,s:'Sb', z:51,cat:'metalloid'}, {p:5,g:16,s:'Te', z:52,cat:'metalloid'},
-    {p:5,g:17,s:'I', z:53,cat:'halogen'}, {p:5,g:18,s:'Xe', z:54,cat:'noble'},
-
-    {p:6,g:1,s:'Cs', z:55,cat:'alkali'}, {p:6,g:2,s:'Ba', z:56,cat:'alkaline'},
-    {p:6,g:3,s:'La', z:57,cat:'rare'}, {p:6,g:4,s:'Hf', z:72,cat:'transition'},
-    {p:6,g:5,s:'Ta', z:73,cat:'transition'}, {p:6,g:6,s:'W', z:74,cat:'transition'},
-    {p:6,g:7,s:'Re', z:75,cat:'transition'}, {p:6,g:8,s:'Os', z:76,cat:'transition'},
-    {p:6,g:9,s:'Ir', z:77,cat:'transition'}, {p:6,g:10,s:'Pt', z:78,cat:'transition'},
-    {p:6,g:11,s:'Au', z:79,cat:'transition'}, {p:6,g:12,s:'Hg', z:80,cat:'transition'},
-    {p:6,g:13,s:'Tl', z:81,cat:'posttrans'}, {p:6,g:14,s:'Pb', z:82,cat:'posttrans'},
-    {p:6,g:15,s:'Bi', z:83,cat:'posttrans'}, {p:6,g:16,s:'Po', z:84,cat:'metalloid'},
-    {p:6,g:17,s:'At', z:85,cat:'halogen'}, {p:6,g:18,s:'Rn', z:86,cat:'noble'},
-
-    {p:7,g:1,s:'Fr', z:87,cat:'alkali'}, {p:7,g:2,s:'Ra', z:88,cat:'alkaline'},
-    {p:7,g:3,s:'Ac', z:89,cat:'rare'}, {p:7,g:4,s:'Rf', z:104,cat:'transition'},
-    {p:7,g:5,s:'Db', z:105,cat:'transition'}, {p:7,g:6,s:'Sg', z:106,cat:'transition'},
-    {p:7,g:7,s:'Bh', z:107,cat:'transition'}, {p:7,g:8,s:'Hs', z:108,cat:'transition'},
-    {p:7,g:9,s:'Mt', z:109,cat:'transition'}, {p:7,g:10,s:'Ds', z:110,cat:'transition'},
-    {p:7,g:11,s:'Rg', z:111,cat:'transition'}, {p:7,g:12,s:'Cn', z:112,cat:'transition'},
-    {p:7,g:13,s:'Nh', z:113,cat:'posttrans'}, {p:7,g:14,s:'Fl', z:114,cat:'posttrans'},
-    {p:7,g:15,s:'Mc', z:115,cat:'posttrans'}, {p:7,g:16,s:'Lv', z:116,cat:'posttrans'},
-    {p:7,g:17,s:'Ts', z:117,cat:'halogen'}, {p:7,g:18,s:'Og', z:118,cat:'noble'}
+  // All 72 elements across Periods 1-6 the player must place, in NO fixed
+  // order — spawnNext() draws from a single shuffled queue covering every
+  // period at once. The Lanthanide and Actinide Series are not included
+  // (same main-table-only element set as the other Period drop games).
+  const allTargets = [
+    {p:1, g:1, s:'H', z:1, name:'Hydrogen', cat:'nonmetal'},
+    {p:1, g:18, s:'He', z:2, name:'Helium', cat:'noble'},
+    {p:2, g:1, s:'Li', z:3, name:'Lithium', cat:'alkali'},
+    {p:2, g:2, s:'Be', z:4, name:'Beryllium', cat:'alkaline'},
+    {p:2, g:13, s:'B', z:5, name:'Boron', cat:'metalloid'},
+    {p:2, g:14, s:'C', z:6, name:'Carbon', cat:'nonmetal'},
+    {p:2, g:15, s:'N', z:7, name:'Nitrogen', cat:'nonmetal'},
+    {p:2, g:16, s:'O', z:8, name:'Oxygen', cat:'nonmetal'},
+    {p:2, g:17, s:'F', z:9, name:'Fluorine', cat:'halogen'},
+    {p:2, g:18, s:'Ne', z:10, name:'Neon', cat:'noble'},
+    {p:3, g:1, s:'Na', z:11, name:'Sodium', cat:'alkali'},
+    {p:3, g:2, s:'Mg', z:12, name:'Magnesium', cat:'alkaline'},
+    {p:3, g:13, s:'Al', z:13, name:'Aluminium', cat:'posttrans'},
+    {p:3, g:14, s:'Si', z:14, name:'Silicon', cat:'metalloid'},
+    {p:3, g:15, s:'P', z:15, name:'Phosphorus', cat:'nonmetal'},
+    {p:3, g:16, s:'S', z:16, name:'Sulfur', cat:'nonmetal'},
+    {p:3, g:17, s:'Cl', z:17, name:'Chlorine', cat:'halogen'},
+    {p:3, g:18, s:'Ar', z:18, name:'Argon', cat:'noble'},
+    {p:4, g:1, s:'K', z:19, name:'Potassium', cat:'alkali'},
+    {p:4, g:2, s:'Ca', z:20, name:'Calcium', cat:'alkaline'},
+    {p:4, g:3, s:'Sc', z:21, name:'Scandium', cat:'transition'},
+    {p:4, g:4, s:'Ti', z:22, name:'Titanium', cat:'transition'},
+    {p:4, g:5, s:'V', z:23, name:'Vanadium', cat:'transition'},
+    {p:4, g:6, s:'Cr', z:24, name:'Chromium', cat:'transition'},
+    {p:4, g:7, s:'Mn', z:25, name:'Manganese', cat:'transition'},
+    {p:4, g:8, s:'Fe', z:26, name:'Iron', cat:'transition'},
+    {p:4, g:9, s:'Co', z:27, name:'Cobalt', cat:'transition'},
+    {p:4, g:10, s:'Ni', z:28, name:'Nickel', cat:'transition'},
+    {p:4, g:11, s:'Cu', z:29, name:'Copper', cat:'transition'},
+    {p:4, g:12, s:'Zn', z:30, name:'Zinc', cat:'transition'},
+    {p:4, g:13, s:'Ga', z:31, name:'Gallium', cat:'posttrans'},
+    {p:4, g:14, s:'Ge', z:32, name:'Germanium', cat:'metalloid'},
+    {p:4, g:15, s:'As', z:33, name:'Arsenic', cat:'metalloid'},
+    {p:4, g:16, s:'Se', z:34, name:'Selenium', cat:'nonmetal'},
+    {p:4, g:17, s:'Br', z:35, name:'Bromine', cat:'halogen'},
+    {p:4, g:18, s:'Kr', z:36, name:'Krypton', cat:'noble'},
+    {p:5, g:1, s:'Rb', z:37, name:'Rubidium', cat:'alkali'},
+    {p:5, g:2, s:'Sr', z:38, name:'Strontium', cat:'alkaline'},
+    {p:5, g:3, s:'Y', z:39, name:'Yttrium', cat:'transition'},
+    {p:5, g:4, s:'Zr', z:40, name:'Zirconium', cat:'transition'},
+    {p:5, g:5, s:'Nb', z:41, name:'Niobium', cat:'transition'},
+    {p:5, g:6, s:'Mo', z:42, name:'Molybdenum', cat:'transition'},
+    {p:5, g:7, s:'Tc', z:43, name:'Technetium', cat:'transition'},
+    {p:5, g:8, s:'Ru', z:44, name:'Ruthenium', cat:'transition'},
+    {p:5, g:9, s:'Rh', z:45, name:'Rhodium', cat:'transition'},
+    {p:5, g:10, s:'Pd', z:46, name:'Palladium', cat:'transition'},
+    {p:5, g:11, s:'Ag', z:47, name:'Silver', cat:'transition'},
+    {p:5, g:12, s:'Cd', z:48, name:'Cadmium', cat:'transition'},
+    {p:5, g:13, s:'In', z:49, name:'Indium', cat:'posttrans'},
+    {p:5, g:14, s:'Sn', z:50, name:'Tin', cat:'posttrans'},
+    {p:5, g:15, s:'Sb', z:51, name:'Antimony', cat:'metalloid'},
+    {p:5, g:16, s:'Te', z:52, name:'Tellurium', cat:'metalloid'},
+    {p:5, g:17, s:'I', z:53, name:'Iodine', cat:'halogen'},
+    {p:5, g:18, s:'Xe', z:54, name:'Xenon', cat:'noble'},
+    {p:6, g:1, s:'Cs', z:55, name:'Caesium', cat:'alkali'},
+    {p:6, g:2, s:'Ba', z:56, name:'Barium', cat:'alkaline'},
+    {p:6, g:3, s:'La', z:57, name:'Lanthanum', cat:'rare'},
+    {p:6, g:4, s:'Hf', z:72, name:'Hafnium', cat:'transition'},
+    {p:6, g:5, s:'Ta', z:73, name:'Tantalum', cat:'transition'},
+    {p:6, g:6, s:'W', z:74, name:'Tungsten', cat:'transition'},
+    {p:6, g:7, s:'Re', z:75, name:'Rhenium', cat:'transition'},
+    {p:6, g:8, s:'Os', z:76, name:'Osmium', cat:'transition'},
+    {p:6, g:9, s:'Ir', z:77, name:'Iridium', cat:'transition'},
+    {p:6, g:10, s:'Pt', z:78, name:'Platinum', cat:'transition'},
+    {p:6, g:11, s:'Au', z:79, name:'Gold', cat:'transition'},
+    {p:6, g:12, s:'Hg', z:80, name:'Mercury', cat:'transition'},
+    {p:6, g:13, s:'Tl', z:81, name:'Thallium', cat:'posttrans'},
+    {p:6, g:14, s:'Pb', z:82, name:'Lead', cat:'posttrans'},
+    {p:6, g:15, s:'Bi', z:83, name:'Bismuth', cat:'posttrans'},
+    {p:6, g:16, s:'Po', z:84, name:'Polonium', cat:'metalloid'},
+    {p:6, g:17, s:'At', z:85, name:'Astatine', cat:'halogen'},
+    {p:6, g:18, s:'Rn', z:86, name:'Radon', cat:'noble'}
   ];
 
-  // Target elements: Period 3 — the ones the player must place
-  const targets = [
-    {g:1, s:'Na', z:11, name:'Sodium', cat:'alkali'},
-    {g:2, s:'Mg', z:12, name:'Magnesium', cat:'alkaline'},
-    {g:13, s:'Al', z:13, name:'Aluminium', cat:'posttrans'},
-    {g:14, s:'Si', z:14, name:'Silicon', cat:'metalloid'},
-    {g:15, s:'P', z:15, name:'Phosphorus', cat:'nonmetal'},
-    {g:16, s:'S', z:16, name:'Sulfur', cat:'nonmetal'},
-    {g:17, s:'Cl', z:17, name:'Chlorine', cat:'halogen'},
-    {g:18, s:'Ar', z:18, name:'Argon', cat:'noble'}
-  ];
+  // Every target sits in a real main-table period (1-6), so the grid row is
+  // simply period+1 (row 1 is the roman-numeral header above the table).
+  function rowForPeriod(p){
+    return p + 1;
+  }
 
   const tableGrid = document.getElementById('tableGrid');
   const bgTextEl = document.getElementById('bgText');
@@ -512,6 +542,7 @@
   const noColorToggle = document.getElementById('noColorToggle');
   const noGhostToggle = document.getElementById('noGhostToggle');
   const comboToggle = document.getElementById('comboToggle');
+  const removeAllToggle = document.getElementById('removeAllToggle');
   const noColorRow = document.getElementById('noColorRow');
   const noGhostRow = document.getElementById('noGhostRow');
   const multiplierBadge = document.getElementById('multiplierBadge');
@@ -522,6 +553,7 @@
   let noColorEnabled = false;
   let noGhostEnabled = false;
   let comboEnabled = false;
+  let removeAllEnabled = false;
   let queue = [];
   let current = null;
   let currentCol = 9;
@@ -548,21 +580,19 @@
     return a;
   }
 
-  // Students can mix and match these two supports at any time, even mid-game.
-  // Hiding colours doubles points; hiding ghost hints triples them; both stack (x6).
   // Students can mix and match these supports at any time, even mid-game.
   // Hiding colours doubles points; hiding ghost hints triples them; ticking
-  // both individual boxes stacks to x6. "Remove all scaffolding! The expert
-  // level!" is a flat x6 shortcut for the same effect, in one click.
-  function colorsHidden(){ return comboEnabled || noColorEnabled; }
-  function hintsHidden(){ return comboEnabled || noGhostEnabled; }
+  // both individual boxes stacks to x6. The combo box is a flat x4 shortcut.
+  // "Remove all scaffolding! The expert level!" hides every unsolved box on
+  // the whole table (a blank sheet), strips all colour, AND removes the
+  // ghost hints — a flat x6, stacking with the other switches.
+  function colorsHidden(){ return comboEnabled || noColorEnabled || removeAllEnabled; }
+  function hintsHidden(){ return comboEnabled || noGhostEnabled || removeAllEnabled; }
 
   function computeMultiplier(){
-    if(comboEnabled) return 6;
-    let m = 1;
-    if(noColorEnabled) m *= 2;
-    if(noGhostEnabled) m *= 3;
-    return m;
+    const toggles = comboEnabled ? 4 : (1 * (noColorEnabled?2:1) * (noGhostEnabled?3:1));
+    const removeAllFactor = removeAllEnabled ? 6 : 1;
+    return toggles * removeAllFactor;
   }
 
   function updateMultiplierDisplay(){
@@ -578,8 +608,8 @@
 
   function clearVisibleGhostLetters(){
     hintBannerEl.classList.remove('show');
-    targets.forEach(t=>{
-      const cell = getTargetCell(t.g);
+    allTargets.forEach(t=>{
+      const cell = getTargetCell(t.p, t.g);
       if(cell && !cell.classList.contains('filled')){
         cell.classList.remove('ghost');
         cell.innerHTML = '<span>'+t.z+'</span>';
@@ -588,14 +618,14 @@
   }
 
   noColorToggle.addEventListener('change', function(){
-    if(comboEnabled) return;
+    if(comboEnabled || removeAllEnabled) return;
     noColorEnabled = this.checked;
     applyNoColorClass();
     updateMultiplierDisplay();
   });
 
   noGhostToggle.addEventListener('change', function(){
-    if(comboEnabled) return;
+    if(comboEnabled || removeAllEnabled) return;
     noGhostEnabled = this.checked;
     updateMultiplierDisplay();
     if(noGhostEnabled) clearVisibleGhostLetters();
@@ -614,12 +644,44 @@
       noGhostRow.classList.add('disabled');
       clearVisibleGhostLetters();
     } else {
+      // Only re-enable "Hide colours"/"Hide ghost hints" if the expert-level
+      // switch isn't also holding them disabled/redundant.
+      if(!removeAllEnabled){
+        noColorToggle.disabled = false;
+        noColorRow.classList.remove('disabled');
+        noGhostToggle.disabled = false;
+        noGhostRow.classList.remove('disabled');
+      }
+    }
+    applyNoColorClass();
+    updateMultiplierDisplay();
+  });
+
+  // "Remove all scaffolding! The expert level!" — hides every unsolved box
+  // on the ENTIRE table (a true blank sheet, not just upcoming periods),
+  // strips all category colour, AND removes the ghost-letter hints entirely
+  // (like "Hide colours" and "Hide ghost hints" above, both of which become
+  // redundant and are disabled while this is on). Stacks with the combo switch.
+  removeAllToggle.addEventListener('change', function(){
+    removeAllEnabled = this.checked;
+    if(removeAllEnabled){
+      noColorEnabled = false;
+      noGhostEnabled = false;
+      noColorToggle.checked = false;
+      noGhostToggle.checked = false;
+      noColorToggle.disabled = true;
+      noGhostToggle.disabled = true;
+      noColorRow.classList.add('disabled');
+      noGhostRow.classList.add('disabled');
+      clearVisibleGhostLetters();
+    } else if(!comboEnabled){
       noColorToggle.disabled = false;
       noGhostToggle.disabled = false;
       noColorRow.classList.remove('disabled');
       noGhostRow.classList.remove('disabled');
     }
     applyNoColorClass();
+    updateHiddenCells();
     updateMultiplierDisplay();
   });
 
@@ -630,17 +692,21 @@
       const div = document.createElement('div');
       div.className = 'cell context cat-'+el.cat;
       div.style.gridColumn = el.g;
-      div.style.gridRow = el.p + 1;
+      div.style.gridRow = rowForPeriod(el.p);
       div.innerHTML = '<span>'+el.s+'</span>';
       tableGrid.appendChild(div);
     });
 
-    targets.forEach(el=>{
+    // Every box starts colourless with just its atomic number showing —
+    // there's no "active row" to colour-code here, since any box could be
+    // called on next. Colour and symbol only appear once a box is solved.
+    allTargets.forEach(el=>{
       const div = document.createElement('div');
       div.className = 'cell target-cell';
+      div.dataset.period = el.p;
       div.dataset.group = el.g;
       div.style.gridColumn = el.g;
-      div.style.gridRow = 4;
+      div.style.gridRow = rowForPeriod(el.p);
       div.innerHTML = '<span>'+el.z+'</span>';
       tableGrid.appendChild(div);
     });
@@ -671,29 +737,48 @@
     fallingBlockEl = document.createElement('div');
     fallingBlockEl.className = 'falling-block';
     fallingBlockEl.innerHTML =
-      '<div class="symbol" id="blockSymbol">Na</div>';
+      '<div class="symbol" id="blockSymbol">?</div>';
     tableGrid.appendChild(fallingBlockEl);
+
+    updateHiddenCells();
   }
 
-  function getTargetCell(group){
-    return tableGrid.querySelector('.target-cell[data-group="'+group+'"]');
+  // A target-cell is uniquely identified by BOTH its period and its group,
+  // since e.g. group 1 has a target box in Period 1, Period 2 and Period 3 alike.
+  function getTargetCell(period, group){
+    return tableGrid.querySelector('.target-cell[data-period="'+period+'"][data-group="'+group+'"]');
   }
 
-  // Group-label cells exist for every one of the 18 columns in every game,
-  // even columns that have no element in a sparse period (e.g. Period 1-3).
-  // Using them (instead of target-cell) lets the block start/move across the
-  // full board rather than only the columns that happen to have a target.
+  // "Remove all scaffolding! The expert level!": every box that hasn't been
+  // solved yet is hidden completely, wherever it is on the table. Boxes
+  // already solved stay visible as a record of progress.
+  function updateHiddenCells(){
+    tableGrid.querySelectorAll('.target-cell').forEach(cell=>{
+      const isFilled = cell.classList.contains('filled');
+      cell.classList.toggle('hidden-cell', removeAllEnabled && !isFilled);
+    });
+  }
+
+  // Group-label cells exist for every one of the 18 columns, even columns
+  // that have no target box in a given row. Using them (instead of
+  // target-cell) lets the block move across the full board rather than
+  // only the columns that happen to have a target in the current row.
   function getColumnAnchor(group){
     return tableGrid.querySelector('.group-label[data-group="'+group+'"]');
   }
 
+  // The block's landing row is dictated entirely by which element is
+  // currently falling (there's no single "active row" — any row could be
+  // next), so this looks up the row for the CURRENT element specifically.
   function getRowTop(){
-    const cell = getTargetCell(1); // group 1 always has a target in every period
+    if(!current) return 0;
+    const cell = tableGrid.querySelector('.target-cell[data-period="'+current.p+'"]');
     return cell ? cell.offsetTop : 0;
   }
 
   function sizeBlock(){
-    const cell = getTargetCell(1);
+    if(!current) return;
+    const cell = tableGrid.querySelector('.target-cell[data-period="'+current.p+'"]');
     if(!cell) return;
     const w = cell.offsetWidth, h = cell.offsetHeight;
     fallingBlockEl.style.width = (w+6)+'px';
@@ -711,7 +796,7 @@
     scoreEl.textContent = score;
   }
   function updateRemaining(){
-    remainingEl.textContent = queue.length + (current?1:0);
+    remainingEl.textContent = allTargets.length - solvedCount;
   }
 
   function showBanner(msg, good){
@@ -729,12 +814,15 @@
     current = queue.shift();
     currentCol = Math.ceil(COLS/2);
     spawnTime = performance.now();
-    fallSpeed = 42 + solvedCount*2.5;
+    // Ramps up over the first ~22 correct placements, then plateaus — with
+    // 72 elements to get through, an ever-increasing speed would become
+    // unplayable long before the end, unlike the shorter single-period games.
+    fallSpeed = 42 + Math.min(solvedCount, 22)*2.2;
 
     document.getElementById('blockSymbol').textContent = current.s;
     fallingBlockEl.className = 'falling-block cat-'+current.cat;
     bgTextEl.textContent = current.name.toUpperCase();
-    guideTextEl.innerHTML = 'Guide <b>'+current.name+'</b> (<span class="sym-inline">'+current.s+'</span>) into its correct box on the Period 3 row.';
+    guideTextEl.innerHTML = 'Guide <b>'+current.name+'</b> (<span class="sym-inline">'+current.s+'</span>) into its correct box — it could be anywhere on the table!';
 
     sizeBlock();
     positionBlockX();
@@ -760,8 +848,9 @@
   }
 
   function fillTargetCell(target){
-    const cell = getTargetCell(target.g);
+    const cell = getTargetCell(target.p, target.g);
     cell.classList.add('filled','cat-'+target.cat);
+    cell.classList.remove('hidden-cell');
     cell.innerHTML = '<span>'+target.s+'</span>';
   }
 
@@ -770,9 +859,9 @@
     hintPauseStart = performance.now();
     hintBannerEl.textContent = message || "Here's where everything goes — take a look!";
     hintBannerEl.classList.add('show');
-    targets.forEach(t=>{
-      const cell = getTargetCell(t.g);
-      if(!cell.classList.contains('filled')){
+    allTargets.forEach(t=>{
+      const cell = getTargetCell(t.p, t.g);
+      if(cell && !cell.classList.contains('filled')){
         cell.classList.add('ghost');
         cell.innerHTML = '<span>'+t.s+'</span>';
       }
@@ -786,9 +875,9 @@
 
   function hideGhostHints(){
     hintBannerEl.classList.remove('show');
-    targets.forEach(t=>{
-      const cell = getTargetCell(t.g);
-      if(!cell.classList.contains('filled')){
+    allTargets.forEach(t=>{
+      const cell = getTargetCell(t.p, t.g);
+      if(cell && !cell.classList.contains('filled')){
         cell.classList.remove('ghost');
         cell.innerHTML = '<span>'+t.z+'</span>';
       }
@@ -805,9 +894,9 @@
   function flashAnswers(duration, message){
     hintBannerEl.textContent = message || "Here's where everything goes!";
     hintBannerEl.classList.add('show');
-    targets.forEach(t=>{
-      const cell = getTargetCell(t.g);
-      if(!cell.classList.contains('filled')){
+    allTargets.forEach(t=>{
+      const cell = getTargetCell(t.p, t.g);
+      if(cell && !cell.classList.contains('filled')){
         cell.classList.add('ghost');
         cell.innerHTML = '<span>'+t.s+'</span>';
       }
@@ -815,9 +904,9 @@
     if(flashTimer) clearTimeout(flashTimer);
     flashTimer = setTimeout(function(){
       hintBannerEl.classList.remove('show');
-      targets.forEach(t=>{
-        const cell = getTargetCell(t.g);
-        if(!cell.classList.contains('filled')){
+      allTargets.forEach(t=>{
+        const cell = getTargetCell(t.p, t.g);
+        if(cell && !cell.classList.contains('filled')){
           cell.classList.remove('ghost');
           cell.innerHTML = '<span>'+t.z+'</span>';
         }
@@ -834,7 +923,7 @@
     const multiplier = computeMultiplier();
 
     if(correct){
-      const pts = Math.max(15, Math.round(150 - elapsed*12)) * multiplier;
+      const pts = Math.round(Math.max(15, Math.round(150 - elapsed*12)) * multiplier);
       score += pts;
       solvedCount++;
       showBanner('Correct! '+target.s+' ('+target.name+')  +'+pts+' pts', true);
@@ -844,7 +933,7 @@
       updateRemaining();
       setTimeout(spawnNext, 650);
     } else {
-      const penalty = 20 * multiplier;
+      const penalty = Math.round(20 * multiplier);
       score = Math.max(0, score-penalty);
       fallingBlockEl.classList.add('wrongflash');
       setTimeout(()=>fallingBlockEl.classList.remove('wrongflash'), 350);
@@ -908,18 +997,19 @@
     comboEnabled = comboToggle.checked;
     noColorEnabled = noColorToggle.checked;
     noGhostEnabled = noGhostToggle.checked;
+    removeAllEnabled = removeAllToggle.checked;
     applyNoColorClass();
     updateMultiplierDisplay();
 
     buildTable();
-    queue = shuffle(targets);
+    queue = shuffle(allTargets); // ALL 72 elements shuffled together — no period grouping at all
     updateScore();
     updateRemaining();
     startOverlay.hidden = true;
     endOverlay.hidden = true;
     gameRunning = false;
 
-    bgTextEl.textContent = 'PERIOD 3';
+    bgTextEl.textContent = 'GOOD LUCK!';
     elTimerEl.textContent = '0.0s';
     totalTimerEl.textContent = '00:00';
 
@@ -931,7 +1021,7 @@
       spawnNext();
       rafId = requestAnimationFrame(loop);
     } else {
-      guideTextEl.innerHTML = 'Study the board — Period 3 answers are shown for 5 seconds...';
+      guideTextEl.innerHTML = 'Study the board — the full 72-element layout is shown for 5 seconds...';
       showGhostHints(5000, "Here's the full layout — study it! (5s)", function(){
         gameStart = performance.now();
         gameRunning = true;
